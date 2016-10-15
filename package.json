@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm run build && DEBUG=crescendo:* node --use-strict index.js",
-    "build": "webpack --progress --colors",
+    "start": "node ./node_modules/nodemon/bin/nodemon.js --exec \"npm run server\" --watch index.js --watch server",
+    "frontend": "node ./node_modules/nodemon/bin/nodemon.js --exec \"npm run webpack\" --watch app",
+    "server": "DEBUG=crescendo:* node --use-strict index.js",
+    "webpack": "node ./node_modules/webpack/bin/webpack.js --progress --colors --config webpack.config.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -25,6 +27,7 @@
     "eslint": "^3.5.0",
     "express": "^4.14.0",
     "html-webpack-plugin": "^2.22.0",
+    "nodemon": "^1.11.0",
     "socketio": "^1.0.0",
     "webpack": "^1.13.2",
     "webpack-dev-server": "^1.16.1"
