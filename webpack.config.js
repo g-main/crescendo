@@ -3,7 +3,6 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   entry: {
     user: './app/user/index.js',
-    landing: './app/landing/index.js',
     host: './app/host/index.js'
   },
 
@@ -24,11 +23,6 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: __dirname + '/app/user/index.html',
       filename: 'user.html',
-      inject: false
-    }),
-    new HtmlWebpackPlugin({
-      template: __dirname + '/app/landing/index.html',
-      filename: 'landing.html',
       inject: false
     }),
     new HtmlWebpackPlugin({
