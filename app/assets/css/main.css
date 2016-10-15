@@ -1,0 +1,70 @@
+html,
+body {
+  font-family: 'Lato', sans-serif;
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+.title-text {
+  font-size: 4.5em;
+  font-weight: bold;
+  font-style: italic;
+  color: #FFF;
+  text-transform: uppercase;
+}
+
+.background-video {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  z-index: -1;
+}
+
+.full-page {
+  height: 100%;
+  width: 100%;
+}
+
+.hcenter-flex-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.vcenter-flex-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.button {
+  background-color: transparent;
+  border: 2px solid #FFF;
+  color: #FFF;
+  text-transform: uppercase;
+  font-size: 1.5em;
+  padding: 10px 20px;
+  border-radius: 30px;
+  cursor: pointer;
+  outline: none;
+}
+
+.button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.vpadding {
+  padding: 30px;
+}
