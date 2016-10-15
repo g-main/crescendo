@@ -11,7 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "phaser": "^2.6.2"
+    "phaser": "^2.6.2",
+    "socket.io-client": "^1.4.8"
   },
   "devDependencies": {
     "babel": "^6.5.2",
@@ -27,9 +28,5 @@
     "socketio": "^1.0.0",
     "webpack": "^1.13.2",
     "webpack-dev-server": "^1.16.1"
-  },
-  "dependencies": {
-    "redis": "^2.6.2",
-    "socket.io-client": "^1.4.8"
   }
 }
