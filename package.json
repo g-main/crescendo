@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm run build && DEBUG=spotlightbling:* node --use-strict index.js",
+    "start": "npm run build && DEBUG=crescendo:* node --use-strict index.js",
     "build": "webpack --progress --colors",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
