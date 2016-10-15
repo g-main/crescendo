@@ -12,6 +12,7 @@ const
     room = require('./server/room');
 
 app.use('/assets', express.static('./dist/assets'));
+app.use('/lib', express.static('./dist/lib'));
 app.use('/js', express.static('./dist/js'));
 
 app.get('/', function(req, res) {
