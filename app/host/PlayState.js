@@ -11,6 +11,8 @@
     ];
     const tempo = 120;
 
+    const INTERPOLATION_STEPS = 1200;
+
     const NOTE_SIZE = {
         x: 100,
         y: 20,
@@ -44,7 +46,6 @@
         preload() {
             // Load assets
             this.game.stage.disableVisibilityChange = true;
-            this.game.load.spritesheet('coin', 'assets/img/coin.png', 32, 32, 8);
             this.game.load.audio('track', 'assets/tracks/beethoven_ode_to_joy.mp3');
         }
 
@@ -53,7 +54,6 @@
 
             //  Modify the world and camera bounds
             this.game.world.resize(this.game.world.width, this.game.world.height*1000);
-
 
             // Bar will be covered with an asset in the future, so this rectangle
             this.bottomBar = new Phaser.Rectangle(0, this.game.world.height - 20, this.game.world.width, 10);
@@ -64,16 +64,27 @@
 
             this.notes = [];
 
+            const bmd = this.game.add.bitmapData(this.game.camera.width, this.game.camera.height);
+            bmd.addToWorld(this.game.camera.x, this.game.camera.y);
+
+            let y = 0;
+            const ySize = Math.ceil(this.game.camera.height / INTERPOLATION_STEPS);
+            for (let i = 1; i <= INTERPOLATION_STEPS; i++) {
+                const c = Phaser.Color.interpolateColor(0xfd4d34, 0xe73161, INTERPOLATION_STEPS, i);
+                bmd.rect(0, y, this.game.camera.width, ySize, Phaser.Color.getWebRGB(c));
+                y += ySize;
+            }
+
             for (let i = 0; i < this.game.world.height; i += 100 ) {
                 const g = this.game.add.graphics(0, i);
                 this.notes.push(g);
-                g.lineStyle(2);
                 g.beginFill(0xffffff, 1);
-                g.drawRect(
+                g.drawRoundedRect(
                     this.game.rnd.between(0, this.game.world.width - NOTE_SIZE.x),
                     i,
                     NOTE_SIZE.x,
                     NOTE_SIZE.y,
+                    9
                 );
                 g.endFill();
             }
@@ -108,7 +119,7 @@
             // Debug / text
 
             this.game.debug.cameraInfo(this.game.camera, 32, 32);
-            this.game.debug.geom(this.bottomBar, '#0fffff');
+            this.game.debug.geom(this.bottomBar, '#ffffff');
             this.game.debug.text(this.roomId, 40, 120);
         }
     }
