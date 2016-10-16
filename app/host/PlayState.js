@@ -4,7 +4,7 @@
 
     const NOTE_SIZE = {
         x: 100,
-        y: 10,
+        y: 20,
     };
 
     class PlayState extends GameState {
@@ -14,9 +14,7 @@
 
             // Declare class members here
             this.bottomBar = null;
-            this.coins = null;
-            // this.coinSound = null;
-            // this.musicReady = false;
+            this.notes = []
         }
 
         // Toggle fullscreen
@@ -27,10 +25,6 @@
                 this.game.scale.startFullScreen(false);
             }
         }
-
-        // _musicReady() {
-        //     this.musicReady = true;
-        // }
 
         preload() {
             // Load assets
@@ -44,9 +38,9 @@
             //  Modify the world and camera bounds
             this.game.world.resize(800, 6000);
 
+
             // Bar will be covered with an asset in the future, so this rectangle
             this.bottomBar = new Phaser.Rectangle(0, 5980,800, 10);
-
 
             // Position at bottom of world
             this.game.camera.x = 0;
@@ -55,49 +49,31 @@
             // Toggle fullscreen on click
             this.game.input.onDown.add(this._goFull, this);
 
-            // Add coins (TODO: Replace with notes!)
-            this.coins = this.game.add.group();
+            this.notes = [];
 
-            for (let i = 0; i < this.game.world.height;
-                    i += 100 ) {
-                const coin = this.game.add.sprite(
-                    this.game.world.randomX,
+            for (let i = 0; i < this.game.world.height; i += 100 ) {
+                const g = this.game.add.graphics(0, i);
+                this.notes.push(g);
+                g.lineStyle(2);
+                g.beginFill(0xffffff, 1);
+                g.drawRect(
+                    this.game.rnd.between(0, this.game.world.width - NOTE_SIZE.x),
                     i,
-                    'coin',
+                    NOTE_SIZE.x,
+                    NOTE_SIZE.y,
                 );
-
-                coin.width = 32;
-                coin.height = 32;
-
-                const rotateCoin = coin.animations.add('rotate');
-                coin.animations.play('rotate', 30, true);
-                this.coins.add(coin);
+                g.endFill();
             }
-
-            // this.coinSound = game.add.audio('coin');
-
-            // this.game.sound.setDecodedCallback(
-            //     [this.coinSound],
-            //     this._musicReady.bind(this),
-            //     this,
-            // );
-
-            this.game.physics.enable([this.bottomBar, this.coins], Phaser.Physics.ARCADE);
-
         }
 
         update() {
             // no-op
-            this.game.camera.y -= 1;
-            this.bottomBar.y -= 1;
-
-            // Coin collision
-            // this.game.physics.arcade.collide(this.bottomBar, this.coins, function (bar, coin) {
-            //   coin.destroy();
-            //   if (this.musicReady) {
-            //     this.coinSound.play();
-            //   }
-            // });
+            // this.game.camera.y -= 1;
+            // this.bottomBar.y -= 1;
+            for (let i = 0; i < this.notes.length; i++){
+                const note = this.notes[i];
+                note.y += 1;
+            }
         }
 
         render() {
