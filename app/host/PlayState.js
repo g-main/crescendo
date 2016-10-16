@@ -13,10 +13,11 @@
             super(game);
 
             // Declare class members here
+            this.playing = false;
             this.bottomBar = null;
             this.coins = null;
-            // this.coinSound = null;
-            // this.musicReady = false;
+            this.gameTrack = null;
+            this.musicReady = false;
         }
 
         // Toggle fullscreen
@@ -28,14 +29,10 @@
             }
         }
 
-        // _musicReady() {
-        //     this.musicReady = true;
-        // }
-
         preload() {
             // Load assets
             this.game.load.spritesheet('coin', 'assets/img/coin.png', 32, 32, 8);
-            // this.game.load.audio('coin', 'assets/sounds/coin.mp3');
+            this.game.load.audio('track', 'assets/tracks/beethoven_ode_to_joy.mp3');
         }
 
         create() {
@@ -74,30 +71,29 @@
                 this.coins.add(coin);
             }
 
-            // this.coinSound = game.add.audio('coin');
+            this.gameTrack = this.game.add.audio('track');
 
-            // this.game.sound.setDecodedCallback(
-            //     [this.coinSound],
-            //     this._musicReady.bind(this),
-            //     this,
-            // );
+            this.game.sound.setDecodedCallback(
+                [this.gameTrack],
+                () => { this.musicReady = true; },
+                this,
+            );
 
             this.game.physics.enable([this.bottomBar, this.coins], Phaser.Physics.ARCADE);
 
         }
 
         update() {
-            // no-op
-            this.game.camera.y -= 1;
-            this.bottomBar.y -= 1;
+            if (this.musicReady) {
+                this.gameTrack.play();
+                this.playing = true;
+                this.musicReady = false;
+            }
 
-            // Coin collision
-            // this.game.physics.arcade.collide(this.bottomBar, this.coins, function (bar, coin) {
-            //   coin.destroy();
-            //   if (this.musicReady) {
-            //     this.coinSound.play();
-            //   }
-            // });
+            if (this.playing) {
+                this.game.camera.y -= 1;
+                this.bottomBar.y -= 1;
+            }
         }
 
         render() {
