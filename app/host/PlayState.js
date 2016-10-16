@@ -28,15 +28,6 @@
             this.musicReady = false;
         }
 
-        // Toggle fullscreen
-        _goFull() {
-            if (this.game.isFullScreen) {
-                this.game.scale.stopFullScreen();
-            } else {
-                this.game.scale.startFullScreen(false);
-            }
-        }
-
         preload() {
             // Load assets
             this.game.load.spritesheet('coin', 'assets/img/coin.png', 32, 32, 8);
@@ -56,9 +47,6 @@
             // Position at bottom of world
             this.game.camera.x = 0;
             this.game.camera.y = this.game.world.height - this.game.camera.height;
-
-            // Toggle fullscreen on click
-            this.game.input.onDown.add(this._goFull, this);
 
             this.notes = [];
 
