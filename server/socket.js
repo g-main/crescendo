@@ -21,32 +21,33 @@ function initialize(httpServer) {
 function createNamespace(roomId) {
     debug('Creating namespace for roomId: ' + roomId);
 
-    io
-    .of('/' + roomId)
-    .on('connection', function (socket) {
+    const room = io.of('/' + roomId);
+    room.on('connection', function (socket) {
+        console.log(`connected to ${roomId}`);
 
         socket.on('playNote', function(note) {
             debug(note);
+            room.emit('noted', note);
         });
 
-        socket.emit('sections', {
-            sections: ['sec1', 'sec2', 'sec3']
-        });
+        // socket.emit('sections', {
+        //     sections: ['sec1', 'sec2', 'sec3']
+        // });
 
-        socket.on('joinSection', function(section) {
-            if (section) {
-                socket.join(section);
-            } else {
-                debug('Uhh... why did joinSection not include a section?');
-            }
-        });
+        // socket.on('joinSection', function(section) {
+        //     if (section) {
+        //         socket.join(section);
+        //     } else {
+        //         debug('Uhh... why did joinSection not include a section?');
+        //     }
+        // });
 
-        socket.on('leaveSection', function(section) {
-            if (section) {
-                socket.leave(section);
-            } else {
-                debug('Uhh... why did leaveSection not include a section?');
-            }
-        });
+        // socket.on('leaveSection', function(section) {
+        //     if (section) {
+        //         socket.leave(section);
+        //     } else {
+        //         debug('Uhh... why did leaveSection not include a section?');
+        //     }
+        // });
     });
 }
