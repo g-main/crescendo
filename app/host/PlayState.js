@@ -13,8 +13,11 @@
             super(game);
 
             // Declare class members here
+            this.playing = false;
             this.bottomBar = null;
             this.notes = []
+            this.gameTrack = null;
+            this.musicReady = false;
         }
 
         // Toggle fullscreen
@@ -29,7 +32,7 @@
         preload() {
             // Load assets
             this.game.load.spritesheet('coin', 'assets/img/coin.png', 32, 32, 8);
-            // this.game.load.audio('coin', 'assets/sounds/coin.mp3');
+            this.game.load.audio('track', 'assets/tracks/beethoven_ode_to_joy.mp3');
         }
 
         create() {
@@ -64,12 +67,27 @@
                 );
                 g.endFill();
             }
+
+            this.gameTrack = this.game.add.audio('track');
+
+            this.game.sound.setDecodedCallback(
+                [this.gameTrack],
+                () => { this.musicReady = true; },
+                this,
+            );
         }
 
         update() {
-            // no-op
-            // this.game.camera.y -= 1;
-            // this.bottomBar.y -= 1;
+            if (this.musicReady) {
+                this.gameTrack.play();
+                this.playing = true;
+                this.musicReady = false;
+            }
+
+            if (!this.playing){
+                return;
+            }
+
             for (let i = 0; i < this.notes.length; i++){
                 const note = this.notes[i];
                 note.y += 1;
