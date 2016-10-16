@@ -3,20 +3,48 @@
     const GameState = require('./GameState.js');
     const Player = require('./Player.js');
 
-    const trackNotes = [
+    // Harcoded track notes
+    const TRACK_NOTES = [
         [3500, 4000, 4500, 5000, 7000],
         [0, 500, 3000, 5500, 6000, 6750],
         [1000, 2500],
         [1500, 2000]
     ];
-    const tempo = 120;
 
+    const NUM_NOTES = TRACK_NOTES.reduce((prev, curr) => prev + curr.length, 0);
     const INTERPOLATION_STEPS = 1200;
+    const NOTE_DELTA_Y = 5;
 
     const NOTE_SIZE = {
         x: 100,
         y: 20,
     };
+
+    class Note {
+
+        constructor(graphics, track, time) {
+            this.graphics = graphics;
+            this._track = track;
+            this.time = time;
+        }
+
+        get y() {
+            return this.graphics.y;
+        }
+
+        get track() {
+            return this._track;
+        }
+
+        get playTime() {
+            return this.time;
+        }
+
+        incrementY(delta) {
+            this.graphics.y += delta;
+        }
+
+    }
 
     class PlayState extends GameState {
         constructor(game, socket, roomId) {
@@ -75,18 +103,28 @@
                 y += ySize;
             }
 
-            for (let i = 0; i < this.game.world.height; i += 100 ) {
-                const g = this.game.add.graphics(0, i);
-                this.notes.push(g);
-                g.beginFill(0xffffff, 1);
-                g.drawRoundedRect(
-                    this.game.rnd.between(0, this.game.world.width - NOTE_SIZE.x),
-                    i,
-                    NOTE_SIZE.x,
-                    NOTE_SIZE.y,
-                    9
-                );
-                g.endFill();
+            for (let i = 0; i < TRACK_NOTES.length; i++) {
+                for (let j = 0; j < TRACK_NOTES[i].length; j++) {
+                    const g = this.game.add.graphics(
+                        i * this.game.camera.width/TRACK_NOTES.length,
+                        (this.game.world.height - 20) - 60 * NOTE_DELTA_Y * TRACK_NOTES[i][j]/1000,
+                    );
+                    g.beginFill(0xffffff, 1);
+                    g.drawRoundedRect(
+                        0,
+                        0,
+                        NOTE_SIZE.x,
+                        NOTE_SIZE.y,
+                        9,
+                    );
+                    g.endFill();
+
+                    this.notes.push(new Note(
+                        g, // graphics
+                        i, // track #
+                        TRACK_NOTES[i][j], // time at which note should be played
+                    ));
+                }
             }
 
             this.gameTrack = this.game.add.audio('track');
@@ -111,14 +149,13 @@
 
             for (let i = 0; i < this.notes.length; i++){
                 const note = this.notes[i];
-                note.y += 1;
+                note.incrementY(NOTE_DELTA_Y);
             }
         }
 
         render() {
             // Debug / text
-
-            this.game.debug.cameraInfo(this.game.camera, 32, 32);
+            // TODO: Turn this into an actual rectangle (using graphics)
             this.game.debug.geom(this.bottomBar, '#ffffff');
             this.game.debug.text(this.roomId, 40, 120);
         }
