@@ -2,6 +2,14 @@
 
     const GameState = require('./GameState.js');
 
+    const trackNotes = [
+        [3500, 4000, 4500, 5000, 7000],
+        [0, 500, 3000, 5500, 6000, 6750],
+        [1000, 2500],
+        [1500, 2000]
+    ];
+    const tempo = 120;
+
     const NOTE_SIZE = {
         x: 100,
         y: 20,
