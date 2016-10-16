@@ -24,7 +24,7 @@
 
         constructor(graphics, track, time) {
             this.graphics = graphics;
-            // this.track = track;
+            this._track = track;
             this.time = time;
         }
 
@@ -32,9 +32,9 @@
             return this.graphics.y;
         }
 
-        // get track() {
-        //     return this.track;
-        // }
+        get track() {
+            return this._track;
+        }
 
         get playTime() {
             return this.time;
