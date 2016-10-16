@@ -25,6 +25,10 @@ function createNamespace(roomId) {
     .of('/' + roomId)
     .on('connection', function (socket) {
 
+        socket.on('playNote', function(note) {
+            debug(note);
+        });
+
         socket.emit('sections', {
             sections: ['sec1', 'sec2', 'sec3']
         });
