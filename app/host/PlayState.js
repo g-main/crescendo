@@ -47,11 +47,11 @@
             this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
 
             //  Modify the world and camera bounds
-            this.game.world.resize(800, 6000);
+            this.game.world.resize(this.game.world.width, this.game.world.height*1000);
 
 
             // Bar will be covered with an asset in the future, so this rectangle
-            this.bottomBar = new Phaser.Rectangle(0, 5980,800, 10);
+            this.bottomBar = new Phaser.Rectangle(0, this.game.world.height - 20, this.game.world.width, 10);
 
             // Position at bottom of world
             this.game.camera.x = 0;

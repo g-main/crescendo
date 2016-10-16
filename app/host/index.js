@@ -5,8 +5,8 @@
     const Phaser = window.Phaser;
 
     const game = new Phaser.Game(
-        window.width,
-        window.height,
+        window.innerWidth,
+        window.innerHeight,
         Phaser.Canvas,
         'Game',
     );
