@@ -3,80 +3,8 @@
   <head>
     <meta charset="UTF-8">
     <title>Crescendo</title>
-    <style type="text/css">
-        html, body {
-            height: 100%;
-            margin: 0;
-        }
-
-        #page-wrapper {
-            align-items: center;
-            display: flex;
-            height: 100%;
-            justify-content: center;
-        }
-
-        #button-wrapper {
-            display: flex;
-            flex-flow: row;
-            justify-content: space-between;
-            padding: 0 50px;
-            width: 100%;
-        }
-
-        .button {
-            background-color: #FFF;
-            border-radius: 175px;
-            box-shadow: 0px 0px 25px 0px rgba(0,0,0,0.2);
-            height: 175px;
-            position: relative;
-            transition: box-shadow 0.3s ease;
-            width: 175px;
-        }
-
-        .button:active {
-            box-shadow: 0px 0px 50px 0px rgba(0,0,0,0.35);
-        }
-
-        .button-color-ring {
-            background-color: #008aff;
-            border-radius: 150px;
-            height: 150px;
-            left: 50%;
-            position: absolute;
-            top: 50%;
-            transform: translateX(-50%) translateY(-50%);
-            width: 150px;
-        }
-
-        .button-inner {
-            background: -webkit-radial-gradient(center, ellipse cover, #ffffff 0%,#e6e6e6 100%);
-            border-radius: 125px;
-            height: 125px;
-            left: 50%;
-            position: absolute;
-            top: 50%;
-            transform: translateX(-50%) translateY(-50%);
-            width: 125px;
-        }
-
-        .ring-blue {
-            background-color: #008aff;
-        }
-
-        .ring-green {
-            background-color: #00b800;
-        }
-
-        .ring-yellow {
-            background-color: #ffce00;
-        }
-
-        .ring-red {
-            background-color: #ff3700;
-        }
-
-    </style>
+    <link rel="stylesheet" type="text/css" href="/assets/css/user.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,900" rel="stylesheet">
   </head>
   <body>
       <div id="page-wrapper">
@@ -99,6 +27,20 @@
               <div class="button" data-ring="red">
                   <div class="button-color-ring ring-red"></div>
                   <div class="button-inner"></div>
+              </div>
+          </div>
+          <div class="horizontal-separator"></div>
+          <div id="metadata-wrapper">
+              <div id="metadata-track">
+                  <div class="track-artist">Drake</div>
+                  <div class="track-title">Hotline Bling</div>
+                  <div class="track-record-label">OVO</div>
+              </div>
+              <div id="metadata-record-label" class="record-label-logo logo-ovo"></div>
+              <div id="metadata-player">
+                  <div class="player-id">Player 3</div>
+                  <div class="player-name">Travis Scott</div>
+                  <div class="player-instrument-name">Drums</div>
               </div>
           </div>
       </div>
