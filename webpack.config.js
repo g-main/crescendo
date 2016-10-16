@@ -19,7 +19,6 @@ module.exports = {
     },
 
     plugins: [
-        new HtmlWebpackPlugin(),
         new HtmlWebpackPlugin({
             template: __dirname + '/app/user/index.html',
             filename: 'user.html',
