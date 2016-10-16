@@ -4,12 +4,14 @@
     const PlayState = require('./PlayState.js');
     const Phaser = window.Phaser;
 
-    const game = new Phaser.Game(
-        window.innerWidth,
-        window.innerHeight,
-        Phaser.Canvas,
-        'Game',
-    );
+    const gameConfig = {
+        height: window.innerHeight,
+        renderer: Phaser.Canvas,
+        resolution: window.devicePixelRatio,
+        width: window.innerWidth
+    };
+
+    const game = new Phaser.Game(gameConfig);
 
     game.state.add('Play', new PlayState(game));
     game.state.start('Play');

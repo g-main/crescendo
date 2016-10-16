@@ -64,13 +64,13 @@
             for (let i = 0; i < this.game.world.height; i += 100 ) {
                 const g = this.game.add.graphics(0, i);
                 this.notes.push(g);
-                g.lineStyle(2);
                 g.beginFill(0xffffff, 1);
-                g.drawRect(
+                g.drawRoundedRect(
                     this.game.rnd.between(0, this.game.world.width - NOTE_SIZE.x),
                     i,
                     NOTE_SIZE.x,
                     NOTE_SIZE.y,
+                    9
                 );
                 g.endFill();
             }
