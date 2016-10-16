@@ -11,7 +11,10 @@
             let button = ev.target;
             while (button.className !== 'button') button = button.parentNode;
             console.log(button.dataset.ring);
-            socket.emit('playNote', {color: button.dataset.ring});
+            socket.emit('playNote', {
+                color: button.dataset.ring,
+                timestamp: Date.now()
+            });
         });
     });
 })();

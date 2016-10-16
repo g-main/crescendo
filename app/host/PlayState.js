@@ -1,6 +1,7 @@
 (function() {
 
     const GameState = require('./GameState.js');
+    const Player = require('./Player.js');
 
     // Harcoded track notes
     const TRACK_NOTES = [
@@ -46,9 +47,9 @@
     }
 
     class PlayState extends GameState {
-
-        constructor(game) {
+        constructor(game, socket, roomId) {
             super(game);
+            this.initializeSocket(socket);
 
             // Declare class members here
             this.playing = false;
@@ -56,10 +57,23 @@
             this.notes = []
             this.gameTrack = null;
             this.musicReady = false;
+
+            this.player = new Player('mah name');
+            this.roomId = roomId;
+        }
+
+        handleNotePlayed(data) {
+            // Logic to check it was correctly played
+            console.log(data);
+        }
+
+        initializeSocket(socket) {
+            socket.on('noted', this.handleNotePlayed);
         }
 
         preload() {
             // Load assets
+            this.game.stage.disableVisibilityChange = true;
             this.game.load.audio('track', 'assets/tracks/beethoven_ode_to_joy.mp3');
         }
 
@@ -143,6 +157,7 @@
             // Debug / text
             // TODO: Turn this into an actual rectangle (using graphics)
             this.game.debug.geom(this.bottomBar, '#ffffff');
+            this.game.debug.text(this.roomId, 40, 120);
         }
     }
 
