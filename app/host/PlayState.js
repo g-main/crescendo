@@ -20,6 +20,8 @@
         y: 20,
     };
 
+    const NUM_USERS = 1;
+
     class Note {
 
         constructor(graphics, track, time) {
@@ -119,8 +121,9 @@
 
             for (let i = 0; i < TRACK_NOTES.length; i++) {
                 for (let j = 0; j < TRACK_NOTES[i].length; j++) {
+                    const track_width = this.game.camera.width/(TRACK_NOTES.length);
                     const g = this.game.add.graphics(
-                        i * this.game.camera.width/TRACK_NOTES.length,
+                        (i * track_width + (track_width - NOTE_SIZE.x)/2 ) / NUM_USERS,
                         (this.game.world.height - 20) - 60 * NOTE_DELTA_Y * TRACK_NOTES[i][j]/1000,
                     );
                     g.beginFill(0xffffff, 1);
