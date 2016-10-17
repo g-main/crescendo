@@ -106,8 +106,6 @@
             this.game.camera.x = 0;
             this.game.camera.y = this.game.world.height - this.game.camera.height;
 
-            this.notes = [];
-
             const bmd = this.game.add.bitmapData(this.game.camera.width, this.game.camera.height);
             bmd.addToWorld(this.game.camera.x, this.game.camera.y);
 
@@ -174,8 +172,8 @@
             // Debug / text
             // TODO: Turn this into an actual rectangle (using graphics)
             this.game.debug.geom(this.bottomBar, '#ffffff');
-            this.game.debug.text(this.roomId, 40, 120);
             this.game.debug.text(this.player.score, 40, 160);
+            this.game.debug.text(`Room ID: ${this.roomId}`, 40, 120);
         }
     }
 
