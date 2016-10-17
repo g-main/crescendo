@@ -60,15 +60,31 @@
 
             this.player = new Player('mah name');
             this.roomId = roomId;
+            this.startTime = null;
         }
 
         handleNotePlayed(data) {
             // Logic to check it was correctly played
-            console.log(data);
+            let color = {
+                blue: 0,
+                green: 1,
+                yellow: 2,
+                red: 3
+            };
+
+            let trackIndex = color[data.color];
+            let relativeTime = data.timestamp - this.startTime;
+
+            TRACK_NOTES[trackIndex].filter(note => {
+                if (relativeTime > note-100 && relativeTime <= note + 100) {
+                    this.player.score += 10;
+                }
+            });
+            // TODO: delete note on success
         }
 
         initializeSocket(socket) {
-            socket.on('noted', this.handleNotePlayed);
+            socket.on('noted', this.handleNotePlayed.bind(this));
         }
 
         preload() {
@@ -141,6 +157,7 @@
                 this.gameTrack.play();
                 this.playing = true;
                 this.musicReady = false;
+                this.startTime = Date.now();
             }
 
             if (!this.playing){
@@ -158,6 +175,7 @@
             // TODO: Turn this into an actual rectangle (using graphics)
             this.game.debug.geom(this.bottomBar, '#ffffff');
             this.game.debug.text(this.roomId, 40, 120);
+            this.game.debug.text(this.player.score, 40, 160);
         }
     }
 
