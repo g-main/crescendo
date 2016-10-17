@@ -20,6 +20,15 @@
             }
 
             this.game.input.keyboard.addKey(Phaser.Keyboard.W).onDown.addOnce(this.handleStart, this);
+            this.game.add.text(80, 80, 'Crescendo', {
+                font: '100px Arial',
+                fill: '#FFFFFF'
+            });
+
+            this.game.add.text(80, 200, 'Press "w" to start', {
+                font: '50px Arial',
+                fill: '#FFFFFF'
+            });
         }
 
         handleStart() {
