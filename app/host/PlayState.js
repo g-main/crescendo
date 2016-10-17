@@ -20,6 +20,9 @@
         y: 20,
     };
 
+    const TRACK_LINE_WIDTH = 10; // pixels
+
+
     const NUM_USERS = 1;
 
     class Note {
@@ -57,6 +60,7 @@
             this.playing = false;
             this.bottomBar = null;
             this.notes = []
+            this.trackLines = []
             this.gameTrack = null;
             this.musicReady = false;
 
@@ -102,7 +106,7 @@
             this.game.world.resize(this.game.world.width, this.game.world.height*1000);
 
             // Bar will be covered with an asset in the future, so this rectangle
-            this.bottomBar = new Phaser.Rectangle(0, this.game.world.height - 20, this.game.world.width, 10);
+            this.bottomBar = new Phaser.Rectangle(0, this.game.world.height - 20, this.game.world.width, 2);
 
             // Position at bottom of world
             this.game.camera.x = 0;
@@ -119,9 +123,15 @@
                 y += ySize;
             }
 
+            const track_width = this.game.camera.width/(TRACK_NOTES.length);
             for (let i = 0; i < TRACK_NOTES.length; i++) {
+                // Draw lines
+                this.trackLines.push( new Phaser.Rectangle(
+                    (i * track_width + (track_width - TRACK_LINE_WIDTH)/2) / NUM_USERS, 0, TRACK_LINE_WIDTH, this.game.world.height,
+                ));
+
+                // Draw notes
                 for (let j = 0; j < TRACK_NOTES[i].length; j++) {
-                    const track_width = this.game.camera.width/(TRACK_NOTES.length);
                     const g = this.game.add.graphics(
                         (i * track_width + (track_width - NOTE_SIZE.x)/2 ) / NUM_USERS,
                         (this.game.world.height - 20) - 60 * NOTE_DELTA_Y * TRACK_NOTES[i][j]/1000,
@@ -130,7 +140,7 @@
                     g.drawRoundedRect(
                         0,
                         0,
-                        NOTE_SIZE.x,
+                        NOTE_SIZE.x / NUM_USERS,
                         NOTE_SIZE.y,
                         9,
                     );
@@ -175,6 +185,9 @@
             // Debug / text
             // TODO: Turn this into an actual rectangle (using graphics)
             this.game.debug.geom(this.bottomBar, '#ffffff');
+            for (let i = 0; i < this.trackLines.length; i++) {
+                this.game.debug.geom(this.trackLines[i], 'rgba(255, 255, 255, 0.8)');
+            }
             this.game.debug.text(this.player.score, 40, 160);
             this.game.debug.text(`Room ID: ${this.roomId}`, 40, 120);
         }
