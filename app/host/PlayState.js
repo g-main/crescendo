@@ -28,6 +28,7 @@
     class Note {
 
         constructor(graphics, track, time) {
+            this.initialY = graphics.y;
             this.graphics = graphics;
             this._track = track;
             this.time = time;
@@ -45,8 +46,8 @@
             return this.time;
         }
 
-        incrementY(delta) {
-            this.graphics.y += delta;
+        recalculatePosition(time) {
+            this.graphics.y = this.initialY + (NOTE_DELTA_Y * 60 / 1000) * time;
         }
 
     }
@@ -175,9 +176,11 @@
                 return;
             }
 
+            let relativeTime = Date.now() - this.startTime;
             for (let i = 0; i < this.notes.length; i++){
                 const note = this.notes[i];
-                note.incrementY(NOTE_DELTA_Y);
+                // note.incrementY(NOTE_DELTA_Y);
+                note.recalculatePosition(relativeTime);
             }
         }
 
