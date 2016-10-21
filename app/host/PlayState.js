@@ -5,10 +5,10 @@
 
     // Harcoded track notes
     const TRACK_NOTES = [
-        [3500, 4000, 4500, 5000, 7000],
-        [0, 500, 3000, 5500, 6000, 6750],
-        [1000, 2500],
-        [1500, 2000]
+        [3500, 4000, 4500, 5000, 7000, 11500, 12000, 12500, 13000, 15000, 17500, 19500, 22000, 23000, 27500, 28000, 28500, 29000, 31000],
+        [0, 500, 3000, 5500, 6000, 6750, 8000, 8500, 11000, 13500, 14000, 14750, 15000, 16000, 16500, 18000, 20000, 21500, 22500, 24000, 24500, 27000, 29500, 30000, 30750],
+        [1000, 2500, 9000, 10500, 17000, 18500, 19000, 20500, 21000, 25000, 26500],
+        [1500, 2000, 9500, 10000, 12000, 18750, 20750, 25500, 26000]
     ];
 
     const NUM_NOTES = TRACK_NOTES.reduce((prev, curr) => prev + curr.length, 0);
@@ -28,6 +28,7 @@
     class Note {
 
         constructor(graphics, track, time) {
+            this.initialY = graphics.y;
             this.graphics = graphics;
             this._track = track;
             this.time = time;
@@ -45,8 +46,8 @@
             return this.time;
         }
 
-        incrementY(delta) {
-            this.graphics.y += delta;
+        recalculatePosition(time) {
+            this.graphics.y = this.initialY + (NOTE_DELTA_Y * 60 / 1000) * time;
         }
 
     }
@@ -175,9 +176,11 @@
                 return;
             }
 
+            let relativeTime = Date.now() - this.startTime;
             for (let i = 0; i < this.notes.length; i++){
                 const note = this.notes[i];
-                note.incrementY(NOTE_DELTA_Y);
+                // note.incrementY(NOTE_DELTA_Y);
+                note.recalculatePosition(relativeTime);
             }
         }
 
