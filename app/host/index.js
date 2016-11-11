@@ -2,7 +2,7 @@
     const io = require('socket.io-client');
     const constants = require('../constants.js');
     const MenuState = require('./MenuState.js');
-    const LoadState = require('./LoadState.js');
+    const JoinState = require('./JoinState.js');
     const PlayState = require('./PlayState.js');
     const Phaser = window.Phaser;
 
@@ -48,8 +48,9 @@
         const game = new Phaser.Game(gameConfig);
 
         game.state.add('Play', new PlayState(game, socket, roomId));
-        game.state.add('Load', new LoadState(game));
+        game.state.add('Join', new JoinState(game));
         game.state.add('Menu', new MenuState(game));
+
         game.state.start('Menu');
     }
 

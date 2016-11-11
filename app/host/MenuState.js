@@ -32,7 +32,7 @@
         }
 
         handleStart() {
-            this.game.state.start('Load');
+            this.game.state.start('Join');
         }
     }
 
