@@ -165,6 +165,11 @@
                 () => { this.musicReady = true; },
                 this,
             );
+
+            this.game.input.keyboard.addKey(Phaser.Keyboard.L).onDown.addOnce(() => {
+                this.gameTrack.stop();
+                this.game.state.start('Summary');
+            }, this);
         }
 
         update() {

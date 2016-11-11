@@ -3,7 +3,7 @@
     const TextStyles = require('./TextStyles.js');
     const INTERPOLATION_STEPS = 1200;
 
-    class MenuState extends GameState {
+    class SummaryState extends GameState {
         constructor(game) {
             super(game);
         }
@@ -20,16 +20,16 @@
                 y += ySize;
             }
 
-            this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER).onDown.addOnce(this.handleStart, this);
+            this.game.add.text(this.centerX(365), 50, 'Game Summary', TextStyles.TITLE_FONT_STYLE);
+            this.game.add.text(this.centerX(450), this.game.camera.height - 100, 'Press R to start a new game or Q to exit', TextStyles.CALL_TO_ACTION_FONT_STYLE);
 
-            this.game.add.text(this.centerX(240), 50, 'Crescendo', TextStyles.TITLE_FONT_STYLE);
-            this.game.add.text(this.centerX(252), 300, 'An SE 464 Project made by:', TextStyles.TEXT_FONT_STYLE);
-            this.game.add.text(this.centerX(575), 370, 'Sameer Chitley, Jami Boy Mohammad, Hasya Shah, Geoffrey Yu', TextStyles.TEXT_FONT_STYLE);
-            this.game.add.text(this.centerX(245), this.game.camera.height - 150, 'Press ENTER to start!', TextStyles.CALL_TO_ACTION_FONT_STYLE);
-        }
+            this.game.input.keyboard.addKey(Phaser.Keyboard.R).onDown.addOnce(() => {
+                this.game.state.start('Join');
+            }, this);
 
-        handleStart() {
-            this.game.state.start('Join');
+            this.game.input.keyboard.addKey(Phaser.Keyboard.Q).onDown.addOnce(() => {
+                this.game.state.start('Menu');
+            }, this);
         }
 
         centerX(offset) {
@@ -37,5 +37,6 @@
         }
     }
 
-    module.exports = MenuState;
+    module.exports = SummaryState;
 })();
+

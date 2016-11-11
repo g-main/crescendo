@@ -4,6 +4,7 @@
     const MenuState = require('./MenuState.js');
     const JoinState = require('./JoinState.js');
     const PlayState = require('./PlayState.js');
+    const SummaryState = require('./SummaryState.js');
     const Phaser = window.Phaser;
 
     function httpGet(url) {
@@ -50,6 +51,7 @@
         game.state.add('Play', new PlayState(game, socket, roomId));
         game.state.add('Join', new JoinState(game));
         game.state.add('Menu', new MenuState(game));
+        game.state.add('Summary', new SummaryState(game));
 
         game.state.start('Menu');
     }
