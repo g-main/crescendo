@@ -83,7 +83,7 @@
             let relativeTime = data.timestamp - this.startTime;
 
             TRACK_NOTES[trackIndex].filter(note => {
-                if (relativeTime > note-100 && relativeTime <= note + 100) {
+                if (relativeTime > note-250 && relativeTime <= note + 250) {
                     this.player.score += 10;
                 }
             });

@@ -2,6 +2,21 @@
     const GameState = require('./GameState.js');
     const INTERPOLATION_STEPS = 1200;
 
+    const TITLE_FONT_STYLE = {
+        font: '100px Arial',
+        fill: '#ffffff'
+    };
+
+    const TEXT_FONT_STYLE = {
+        font: '40px Arial',
+        fill: '#ffffff'
+    };
+
+    const CALL_TO_ACTION_FONT_STYLE = {
+        font: '50px Arial',
+        fill: '#ffffff'
+    };
+
     class MenuState extends GameState {
         constructor(game) {
             super(game);
@@ -19,20 +34,20 @@
                 y += ySize;
             }
 
-            this.game.input.keyboard.addKey(Phaser.Keyboard.W).onDown.addOnce(this.handleStart, this);
-            this.game.add.text(80, 80, 'Crescendo', {
-                font: '100px Arial',
-                fill: '#FFFFFF'
-            });
+            this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER).onDown.addOnce(this.handleStart, this);
 
-            this.game.add.text(80, 200, 'Press "w" to start', {
-                font: '50px Arial',
-                fill: '#FFFFFF'
-            });
+            this.game.add.text(this.centerX(240), 50, 'Crescendo', TITLE_FONT_STYLE);
+            this.game.add.text(this.centerX(252), 300, 'An SE 464 Project made by:', TEXT_FONT_STYLE);
+            this.game.add.text(this.centerX(575), 370, 'Sameer Chitley, Jami Boy Mohammad, Hasya Shah, Geoffrey Yu', TEXT_FONT_STYLE);
+            this.game.add.text(this.centerX(245), this.game.camera.height - 150, 'Press ENTER to start!', CALL_TO_ACTION_FONT_STYLE);
         }
 
         handleStart() {
             this.game.state.start('Join');
+        }
+
+        centerX(offset) {
+            return this.game.camera.width / 2 - offset;
         }
     }
 
