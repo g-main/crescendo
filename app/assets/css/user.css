@@ -34,12 +34,12 @@ div {
 
 .button {
     background-color: #FFF;
-    border-radius: 175px;
+    border-radius: 125px;
     box-shadow: 0px 0px 25px 0px rgba(0,0,0,0.2);
-    height: 175px;
+    height: 125px;
     position: relative;
     transition: box-shadow 0.3s ease;
-    width: 175px;
+    width: 125px;
 }
 
 .button:active {
@@ -48,24 +48,24 @@ div {
 
 .button-color-ring {
     background-color: #008aff;
-    border-radius: 150px;
-    height: 150px;
+    border-radius: 110px;
+    height: 110px;
     left: 50%;
     position: absolute;
     top: 50%;
     transform: translateX(-50%) translateY(-50%);
-    width: 150px;
+    width: 110px;
 }
 
 .button-inner {
     background: -webkit-radial-gradient(center, ellipse cover, #ffffff 0%,#e6e6e6 100%);
-    border-radius: 125px;
-    height: 125px;
+    border-radius: 90px;
+    height: 90px;
     left: 50%;
     position: absolute;
     top: 50%;
     transform: translateX(-50%) translateY(-50%);
-    width: 125px;
+    width: 90px;
 }
 
 .ring-blue {
