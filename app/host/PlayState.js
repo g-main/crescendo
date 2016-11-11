@@ -98,6 +98,9 @@
             // Load assets
             this.game.stage.disableVisibilityChange = true;
             this.game.load.audio('track', 'assets/tracks/beethoven_ode_to_joy.mp3');
+
+            // Enable FPS
+            this.game.time.advancedTiming = true;
         }
 
         create() {
@@ -193,6 +196,8 @@
             }
             this.game.debug.text(this.player.score, 40, 160);
             this.game.debug.text(`Room ID: ${this.roomId}`, 40, 120);
+
+            this.game.debug.text(`FPS: ${this.game.time.fps}`, 40, 30);
         }
     }
 
