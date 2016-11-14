@@ -4,9 +4,10 @@
 
     class JoinState extends GameState {
 
-        constructor(game) {
+        constructor(game, roomId) {
             super(game);
             this.songIndex = 0;
+            this.roomId = roomId;
         }
 
         create() {
@@ -21,6 +22,7 @@
         render() {
             this.game.debug.text('Use "O" and "P" keys to select a song.', 40, 100);
             this.game.debug.text(`Current Song: ${SONGS[this.songIndex]}`, 40, 140);
+            this.game.debug.text(`Room Id: ${this.roomId}`, 40, 180);
 
             this.game.debug.text('Press SPACE to start!', 40, this.game.camera.y + this.game.camera.height - 50);
         }
