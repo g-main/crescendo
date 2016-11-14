@@ -12,7 +12,6 @@
     ];
 
     const NUM_NOTES = TRACK_NOTES.reduce((prev, curr) => prev + curr.length, 0);
-    const INTERPOLATION_STEPS = 1200;
     const NOTE_DELTA_Y = 5;
 
     const NOTE_SIZE = {
@@ -24,6 +23,8 @@
 
 
     const NUM_USERS = 1;
+
+    const TRACK_KEY = 'track';
 
     class Note {
 
@@ -82,7 +83,7 @@
             let trackIndex = color[data.color];
             let relativeTime = data.timestamp - this.startTime;
 
-            TRACK_NOTES[trackIndex].filter(note => {
+            TRACK_NOTES[trackIndex].forEach(note => {
                 if (relativeTime > note-250 && relativeTime <= note + 250) {
                     this.player.score += 10;
                 }
@@ -97,7 +98,10 @@
         preload() {
             // Load assets
             this.game.stage.disableVisibilityChange = true;
-            this.game.load.audio('track', 'assets/tracks/beethoven_ode_to_joy.mp3');
+
+            if (!this.cache.checkSoundKey(TRACK_KEY)) {
+                this.game.load.audio(TRACK_KEY, 'assets/tracks/beethoven_ode_to_joy.mp3');
+            }
 
             // Enable FPS
             this.game.time.advancedTiming = true;
@@ -107,7 +111,7 @@
             this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
 
             //  Modify the world and camera bounds
-            this.game.world.resize(this.game.world.width, this.game.world.height*1000);
+            this.game.world.resize(this.game.world.width, this.game.world.height);
 
             // Bar will be covered with an asset in the future, so this rectangle
             this.bottomBar = new Phaser.Rectangle(0, this.game.world.height - 20, this.game.world.width, 2);
@@ -115,17 +119,6 @@
             // Position at bottom of world
             this.game.camera.x = 0;
             this.game.camera.y = this.game.world.height - this.game.camera.height;
-
-            const bmd = this.game.add.bitmapData(this.game.camera.width, this.game.camera.height);
-            bmd.addToWorld(this.game.camera.x, this.game.camera.y);
-
-            let y = 0;
-            const ySize = Math.ceil(this.game.camera.height / INTERPOLATION_STEPS);
-            for (let i = 1; i <= INTERPOLATION_STEPS; i++) {
-                const c = Phaser.Color.interpolateColor(0xfd4d34, 0xe73161, INTERPOLATION_STEPS, i);
-                bmd.rect(0, y, this.game.camera.width, ySize, Phaser.Color.getWebRGB(c));
-                y += ySize;
-            }
 
             const track_width = this.game.camera.width/(TRACK_NOTES.length);
             for (let i = 0; i < TRACK_NOTES.length; i++) {
@@ -158,7 +151,7 @@
                 }
             }
 
-            this.gameTrack = this.game.add.audio('track');
+            this.gameTrack = this.game.add.audio(TRACK_KEY);
 
             this.game.sound.setDecodedCallback(
                 [this.gameTrack],
@@ -167,7 +160,6 @@
             );
 
             this.game.input.keyboard.addKey(Phaser.Keyboard.L).onDown.addOnce(() => {
-                this.gameTrack.stop();
                 this.game.state.start('Summary');
             }, this);
         }
@@ -203,6 +195,16 @@
             this.game.debug.text(`Room ID: ${this.roomId}`, 40, 120);
 
             this.game.debug.text(`FPS: ${this.game.time.fps}`, 40, 30);
+        }
+
+        shutdown() {
+            this.gameTrack.stop();
+            this.gameTrack.destroy();
+            this.gameTrack = null;
+            this.bottomBar = null;
+            this.trackLines = [];
+            this.notes.forEach((note) => (note.graphics.destroy()));
+            this.notes = [];
         }
     }
 

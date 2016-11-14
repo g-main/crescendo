@@ -43,7 +43,8 @@
             height: window.innerHeight,
             renderer: Phaser.Canvas,
             resolution: window.devicePixelRatio,
-            width: window.innerWidth
+            width: window.innerWidth,
+            transparent: true
         };
 
         const game = new Phaser.Game(gameConfig);

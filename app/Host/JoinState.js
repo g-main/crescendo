@@ -1,6 +1,5 @@
 (function() {
     const GameState = require('./GameState.js');
-    const INTERPOLATION_STEPS = 1200;
     const SONGS = ["ODE TO JOY", "FAKE_SONG_2", "FAKE_SONG_3"];
 
     class JoinState extends GameState {
@@ -11,18 +10,6 @@
         }
 
         create() {
-            const bmd = this.game.add.bitmapData(this.game.camera.width, this.game.camera.height);
-            bmd.addToWorld(this.game.camera.x, this.game.camera.y);
-
-            // Draw background
-            let y = 0;
-            const ySize = Math.ceil(this.game.camera.height / INTERPOLATION_STEPS);
-            for (let i = 1; i <= INTERPOLATION_STEPS; i++) {
-                const c = Phaser.Color.interpolateColor(0xfd4d34, 0xe73161, INTERPOLATION_STEPS, i);
-                bmd.rect(0, y, this.game.camera.width, ySize, Phaser.Color.getWebRGB(c));
-                y += ySize;
-            }
-
             // Scroll through songs
             this.game.input.keyboard.addKey(Phaser.Keyboard.O).onDown.add(this.prevSong, this);
             this.game.input.keyboard.addKey(Phaser.Keyboard.P).onDown.add(this.nextSong, this);
