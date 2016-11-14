@@ -54,7 +54,7 @@
     }
 
     class PlayState extends GameState {
-        constructor(game, socket, roomId) {
+        constructor(game, socket) {
             super(game);
             this.initializeSocket(socket);
 
@@ -67,7 +67,6 @@
             this.musicReady = false;
 
             this.player = new Player('mah name');
-            this.roomId = roomId;
             this.startTime = null;
         }
 
@@ -192,7 +191,6 @@
                 this.game.debug.geom(this.trackLines[i], 'rgba(255, 255, 255, 0.8)');
             }
             this.game.debug.text(this.player.score, 40, 160);
-            this.game.debug.text(`Room ID: ${this.roomId}`, 40, 120);
 
             this.game.debug.text(`FPS: ${this.game.time.fps}`, 40, 30);
         }

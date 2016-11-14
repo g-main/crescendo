@@ -44,13 +44,13 @@
             renderer: Phaser.Canvas,
             resolution: window.devicePixelRatio,
             width: window.innerWidth,
-            transparent: true
+            transparent: true,
         };
 
         const game = new Phaser.Game(gameConfig);
 
         game.state.add('Play', new PlayState(game, socket, roomId));
-        game.state.add('Join', new JoinState(game));
+        game.state.add('Join', new JoinState(game, roomId));
         game.state.add('Menu', new MenuState(game));
         game.state.add('Summary', new SummaryState(game));
 
