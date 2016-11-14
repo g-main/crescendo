@@ -5,7 +5,7 @@ html, body {
 
 body {
     font-family: 'Lato', sans-serif;
-    font-size: 16px;
+    font-size: 12px;
     font-weight: 400;
 }
 
@@ -34,12 +34,12 @@ div {
 
 .button {
     background-color: #FFF;
-    border-radius: 125px;
+    border-radius: 115px;
     box-shadow: 0px 0px 25px 0px rgba(0,0,0,0.2);
-    height: 125px;
+    height: 115px;
     position: relative;
     transition: box-shadow 0.3s ease;
-    width: 125px;
+    width: 115px;
 }
 
 .button:active {
@@ -48,24 +48,24 @@ div {
 
 .button-color-ring {
     background-color: #008aff;
-    border-radius: 110px;
-    height: 110px;
+    border-radius: 95px;
+    height: 95px;
     left: 50%;
     position: absolute;
     top: 50%;
     transform: translateX(-50%) translateY(-50%);
-    width: 110px;
+    width: 95px;
 }
 
 .button-inner {
     background: -webkit-radial-gradient(center, ellipse cover, #ffffff 0%,#e6e6e6 100%);
-    border-radius: 90px;
-    height: 90px;
+    border-radius: 80px;
+    height: 80px;
     left: 50%;
     position: absolute;
     top: 50%;
     transform: translateX(-50%) translateY(-50%);
-    width: 90px;
+    width: 80px;
 }
 
 .ring-blue {
@@ -107,8 +107,8 @@ div {
     content: '';
     background: url('../img/drums.png') no-repeat center center;
     background-size: contain;
-    height: 50px;
-    left: -90px;
+    height: 40px;
+    left: -80px;
     position: absolute;
     top: 5px;
     width: 75px;
@@ -124,7 +124,7 @@ div {
 
 .horizontal-separator {
     border-top: 1px solid rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    padding: 10px;
     width: 100%;
 }
 
