@@ -1,6 +1,7 @@
 (function() {
     const GameState = require('./GameState.js');
     const TextStyles = require('./TextStyles.js');
+    const {GAME_STATES} = require('../../constants.js');
 
     class MenuState extends GameState {
         constructor(game) {
@@ -17,7 +18,7 @@
         }
 
         handleStart() {
-            this.game.state.start('Join');
+            this.game.state.start(GAME_STATES.JOIN);
         }
 
         centerX(offset) {

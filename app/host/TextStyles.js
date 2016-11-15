@@ -11,6 +11,10 @@
         CALL_TO_ACTION_FONT_STYLE: {
             font: '50px Lato',
             fill: '#ffffff'
+        },
+        PLAYER_NAME_CARD: {
+            font: '25px Lato',
+            fill: '#000000'
         }
     };
 })();

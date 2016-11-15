@@ -4,6 +4,8 @@
     const JoinState = require('./JoinState.js');
     const PlayState = require('./PlayState.js');
     const SummaryState = require('./SummaryState.js');
+    const LoadState = require('./LoadState.js');
+    const {GAME_STATES} = require('../../constants.js');
     const Phaser = window.Phaser;
 
     function httpGet(url) {
@@ -48,12 +50,13 @@
 
         const game = new Phaser.Game(gameConfig);
 
-        game.state.add('Play', new PlayState(game, socket));
-        game.state.add('Join', new JoinState(game, roomId));
-        game.state.add('Menu', new MenuState(game));
-        game.state.add('Summary', new SummaryState(game));
+        game.state.add(GAME_STATES.LOAD, new LoadState(game));
+        game.state.add(GAME_STATES.PLAY, new PlayState(game, socket));
+        game.state.add(GAME_STATES.JOIN, new JoinState(game, roomId, socket));
+        game.state.add(GAME_STATES.MENU, new MenuState(game));
+        game.state.add(GAME_STATES.SUMMARY, new SummaryState(game));
 
-        game.state.start('Menu');
+        game.state.start(GAME_STATES.LOAD);
     }
 
     initialize();

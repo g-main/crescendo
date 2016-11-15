@@ -38,7 +38,9 @@ module.exports = {
     ],
 
     resolve: {
-        constants$: './constants.js'
+        alias: {
+            parameters$: './constants.js'
+        }
     }
 };
 /* eslint-enable */

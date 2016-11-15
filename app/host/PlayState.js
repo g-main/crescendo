@@ -2,6 +2,7 @@
 
     const GameState = require('./GameState.js');
     const Player = require('./Player.js');
+    const {GAME_STATES} = require('../../constants.js');
 
     // Harcoded track notes
     const TRACK_NOTES = [
@@ -102,10 +103,6 @@
         preload() {
             // Load assets
             this.game.stage.disableVisibilityChange = true;
-
-            if (!this.cache.checkSoundKey(TRACK_KEY)) {
-                this.game.load.audio(TRACK_KEY, 'assets/tracks/beethoven_ode_to_joy.mp3');
-            }
 
             // Enable FPS
             this.game.time.advancedTiming = true;
@@ -244,7 +241,7 @@
         }
 
         transitionToSummary() {
-            this.game.state.start('Summary');
+            this.game.state.start(GAME_STATES.SUMMARY);
         }
     }
 
