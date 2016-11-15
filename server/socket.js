@@ -1,4 +1,5 @@
 const
+    constants = require('../constants'),
     debug = require('debug')('crescendo:socket'),
     socketio = require('socket.io');
 
@@ -23,11 +24,11 @@ function createNamespace(roomId) {
 
     const room = io.of('/' + roomId);
     room.on('connection', function (socket) {
-        console.log(`connected to ${roomId}`);
+        debug(`connected to ${roomId}`);
 
-        socket.on('playNote', function(note) {
-            debug(note);
-            room.emit('noted', note);
+        socket.on(constants.SOCKET_EVENTS.PLAY_NOTE, (note) => {
+            debug(`Note played: ${note}`);
+            room.emit(constants.SOCKET_EVENTS.HANDLE_NOTE, note);
         });
 
         // socket.emit('sections', {
