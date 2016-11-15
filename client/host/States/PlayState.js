@@ -128,23 +128,30 @@ export default class PlayState extends GameState {
         for (let u = 0; u < NUM_USERS; u++) {
             for (let i = 0; i < TRACK_NOTES.length; i++) {
 
+                // Make the notes and tracks closer together (reduce horizontal spacing)
+                // as more users are added to clearly seperate each user's play area
+                // Draw notes
+                const globalNotePositiveOffset = this.game.camera.width / (TRACK_NOTES.length * NUM_USERS * 4);
+                const noteNegativeOffset = i * globalNotePositiveOffset;
+
                 const globalTrackLocation = u * this.game.camera.width / NUM_USERS;
-                const localTrackOffset = ((i * trackWidth) + ((trackWidth - TRACK_LINE_WIDTH) / 2)) / NUM_USERS;
+                const localTrackOffset = ((i * trackWidth) + ((trackWidth - TRACK_LINE_WIDTH) / 2)) / NUM_USERS - noteNegativeOffset;
+
                 const trackGraphic = this.game.add.graphics(
-                    globalTrackLocation + localTrackOffset, /* x */
+                    globalNotePositiveOffset + globalTrackLocation + localTrackOffset, /* x */
                     0, /* y */
                 );
                 trackGraphic.beginFill(0xffffff, 1);
                 trackGraphic.drawRect(0, 0, TRACK_LINE_WIDTH, this.game.world.height);
                 trackGraphic.endFill();
 
-                // Draw notes
                 for (let j = 0; j < TRACK_NOTES[i].length; j++) {
 
-                    const localNoteOffset = ((i * trackWidth) + ((trackWidth - NOTE_SIZE.x) / 2)) / NUM_USERS;
                     const globalNoteLocation = u * this.game.camera.width / NUM_USERS;
+                    const localNoteOffset = ((i * trackWidth) + ((trackWidth - NOTE_SIZE.x) / 2)) / NUM_USERS - noteNegativeOffset;
+
                     const g = this.game.add.graphics(
-                        globalNoteLocation + localNoteOffset, /* x */
+                        globalNotePositiveOffset + globalNoteLocation + localNoteOffset, /* x */
                         (this.game.world.height - 20) - ((60 * NOTE_DELTA_Y * TRACK_NOTES[i][j]) / 1000), /* y */
                     );
                     // Draw outer note rectangle (white border)
@@ -186,9 +193,9 @@ export default class PlayState extends GameState {
                     );
                     g.endFill();
                     const note = new Note(
-                        g, // graphics
-                        i, // track #
-                        TRACK_NOTES[i][j], // time at which note should be played
+                        g, /* graphics */
+                        i, /* track # */
+                        TRACK_NOTES[i][j], /* time at which note should be played */
                     );
 
                     this.notes[u].push(note);
