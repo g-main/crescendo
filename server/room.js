@@ -1,56 +1,44 @@
-const
-    debug = require('debug')('crescendo:room'),
-    crypto = require('crypto');
+import crypto from 'crypto';
 
-let hosts = {},
-    rooms = {};
-
-module.exports = {
-    createHost: createHost,
-    checkHostExists: checkHostExists,
-    checkRoomExists: checkRoomExists
-};
-
-function generateHostId() {
-    let hostId;
-
-    try {
-        hostId = crypto.randomBytes(8).toString('hex');
-        if (hosts[hostId]) throw 'Exists already!';
-    } catch (err) {
-        hostId = generateHostId();
+export default class Room {
+    constructor() {
+        this.hosts = {};
+        this.rooms = {};
     }
 
-    return hostId;
-}
+    createHost() {
+        const hostId = this._generateHostId();
+        const roomId = hostId.substring(0, 4);
 
-function createHost() {
-    let hostId = generateHostId(),
-        roomId = hostId.substring(0,4);
+        this.hosts[hostId] = true;
+        this.rooms[roomId] = {};
 
-    hosts[hostId] = true;
-    rooms[roomId] = {};
+        return { hostId, roomId };
+    }
 
-    return { hostId: hostId, roomId: roomId };
-}
+    checkHostExists(hostId) {
+        return !!this.hosts[hostId];
+    }
 
-function addSection(roomId, section) {
-    rooms[roomId][section] = true;
-}
+    checkRoomExists(roomId) {
+        return !!this.rooms[roomId];
+    }
 
-function removeSection(roomId, section) {
-    delete rooms[roomId][section];
-}
+    _generateHostId() {
+        const hostId = crypto.randomBytes(8).toString('hex');
+        return !this.hosts[hostId] ? hostId : this._generateHostId();
+    }
 
-function checkRoomExists(roomId) {
-    return !!rooms[roomId];
-}
+    _addSection(roomId, section) {
+        this.rooms[roomId][section] = true;
+    }
 
-function removeHost(hostId) {
-    delete hosts[hostId];
-    delete rooms[hostId.substring(0,4)];
-}
+    _removeSection(roomId, section) {
+        delete this.rooms[roomId][section];
+    }
 
-function checkHostExists(hostId) {
-    return !!hosts[hostId];
+    _removeHost(hostId) {
+        delete this.hosts[hostId];
+        delete this.rooms[hostId.substring(0, 4)];
+    }
 }

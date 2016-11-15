@@ -1,41 +1,45 @@
-const
-    debug = require('debug')('crescendo:index'),
-    express = require('express'),
-    http = require('http'),
-    path = require('path'),
+import debugModule from 'debug';
+import express from 'express';
+import http from 'http';
+import path from 'path';
 
-    app = express(),
-    httpServer = http.createServer(app),
-    apiRouter = express.Router(),
+import Socket from './server/socket';
+import Room from './server/room';
 
-    io = require('./server/socket'),
-    room = require('./server/room');
+(() => {
+    const app = express();
+    const httpServer = http.createServer(app);
+    const apiRouter = express.Router(); // eslint-disable-line
+    const debug = debugModule('crescendo:socket');
 
-app.use('/assets', express.static('./dist/assets'));
-app.use('/lib', express.static('./dist/lib'));
-app.use('/js', express.static('./dist/js'));
+    const socket = new Socket(httpServer);
+    const room = new Room();
 
-app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname, './dist/host.html'));
-});
+    app.use('/assets', express.static('./dist/assets'));
+    app.use('/lib', express.static('./dist/lib'));
+    app.use('/js', express.static('./dist/js'));
 
-app.get(/^\/[a-fA-F0-9]{4}\/?$/, function(req, res) {
-    if (room.checkRoomExists(req.url.split('/')[1].toLowerCase())) {
-        res.sendFile(path.join(__dirname, './dist/user.html'));
-    } else {
-        res.redirect('/');
-    }
-});
+    app.get('/', (req, res) => {
+        res.sendFile(path.join(__dirname, './dist/host.html'));
+    });
 
-apiRouter.get('/create', function(req, res) {
-    let host = room.createHost();
-    io.createNamespace(host.roomId);
-    res.json(host);
-});
+    app.get(/^\/[a-fA-F0-9]{4}\/?$/, (req, res) => {
+        if (room.checkRoomExists(req.url.split('/')[1].toLowerCase())) {
+            res.sendFile(path.join(__dirname, './dist/user.html'));
+        } else {
+            res.redirect('/');
+        }
+    });
 
-app.use('/api/v0', apiRouter);
+    apiRouter.get('/create', (req, res) => {
+        const host = room.createHost();
+        socket.createNamespace(host.roomId);
+        res.json(host);
+    });
 
-httpServer.listen(3000, function() {
-    debug('OMG! Server is up!');
-    io.initialize(httpServer);
-});
+    app.use('/api/v0', apiRouter);
+
+    httpServer.listen(3000, () => {
+        debug('OMG! Server is up!');
+    });
+})();

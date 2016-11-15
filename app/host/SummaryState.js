@@ -1,31 +1,24 @@
-(function() {
-    const GameState = require('./GameState.js');
-    const TextStyles = require('./TextStyles.js');
-    const {GAME_STATES} = require('../../constants.js');
+import GameState from './GameState';
+import TextStyles from './TextStyles';
+import { GAME_STATES } from '../../constants';
 
-    class SummaryState extends GameState {
-        constructor(game) {
-            super(game);
-        }
+export default class SummaryState extends GameState {
+    create() {
+        this.game.add.text(this.centerX(365), 50,
+            'Game Summary', TextStyles.TITLE_FONT_STYLE);
+        this.game.add.text(this.centerX(450), this.game.camera.height - 100,
+            'Press R to start a new game or Q to exit', TextStyles.CALL_TO_ACTION_FONT_STYLE);
 
-        create() {
-            this.game.add.text(this.centerX(365), 50, 'Game Summary', TextStyles.TITLE_FONT_STYLE);
-            this.game.add.text(this.centerX(450), this.game.camera.height - 100, 'Press R to start a new game or Q to exit', TextStyles.CALL_TO_ACTION_FONT_STYLE);
+        this.game.input.keyboard.addKey(Phaser.Keyboard.R).onDown.addOnce(() => {
+            this.game.state.start(GAME_STATES.JOIN);
+        }, this);
 
-            this.game.input.keyboard.addKey(Phaser.Keyboard.R).onDown.addOnce(() => {
-                this.game.state.start(GAME_STATES.JOIN);
-            }, this);
-
-            this.game.input.keyboard.addKey(Phaser.Keyboard.Q).onDown.addOnce(() => {
-                this.game.state.start(GAME_STATES.MENU);
-            }, this);
-        }
-
-        centerX(offset) {
-            return this.game.camera.width / 2 - offset;
-        }
+        this.game.input.keyboard.addKey(Phaser.Keyboard.Q).onDown.addOnce(() => {
+            this.game.state.start(GAME_STATES.MENU);
+        }, this);
     }
 
-    module.exports = SummaryState;
-})();
-
+    centerX(offset) {
+        return (this.game.camera.width / 2) - offset;
+    }
+}

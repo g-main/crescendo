@@ -3,8 +3,8 @@ var CopyWebpackPlugin = require('copy-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
     entry: {
-        user: './app/user/index.js',
-        host: './app/host/index.js'
+        user: ['whatwg-fetch', './app/user/index.js'],
+        host: ['whatwg-fetch', './app/host/index.js']
     },
 
     output: {

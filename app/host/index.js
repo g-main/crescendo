@@ -1,43 +1,15 @@
-(function() {
-    const io = require('socket.io-client');
-    const MenuState = require('./MenuState.js');
-    const JoinState = require('./JoinState.js');
-    const PlayState = require('./PlayState.js');
-    const SummaryState = require('./SummaryState.js');
-    const LoadState = require('./LoadState.js');
-    const {GAME_STATES} = require('../../constants.js');
+import 'whatwg-fetch';
+
+import io from 'socket.io-client';
+import MenuState from './MenuState';
+import JoinState from './JoinState';
+import PlayState from './PlayState';
+import LoadState from './LoadState';
+import SummaryState from './SummaryState.js';
+import { GAME_STATES } from '../../constants';
+
+(() => {
     const Phaser = window.Phaser;
-
-    function httpGet(url) {
-        const promise = new Promise((resolve, reject) => {
-            const request = new XMLHttpRequest();
-
-            request.onreadystatechange = () => {
-                if (request.readyState !== XMLHttpRequest.DONE) {
-                    return;
-                }
-
-                if (request.status === 200) {
-                    resolve(request);
-                } else {
-                    reject(request);
-                }
-            };
-            request.open('GET', url, true);
-            request.send();
-        });
-
-        return promise;
-    }
-
-    function initialize() {
-        httpGet('/api/v0/create').then(request => {
-            let roomId = JSON.parse(request.response).roomId;
-            let socket = io.connect(`/${roomId}`);
-            console.log(roomId);
-            initializeGame(socket, roomId);
-        });
-    }
 
     function initializeGame(socket, roomId) {
         const gameConfig = {
@@ -57,6 +29,16 @@
         game.state.add(GAME_STATES.SUMMARY, new SummaryState(game));
 
         game.state.start(GAME_STATES.LOAD);
+    }
+
+    function initialize() {
+        fetch('/api/v0/create', { method: 'GET' })
+            .then(request => request.json())
+            .then(response => {
+                const roomId = response.roomId;
+                const socket = io.connect(`/${roomId}`);
+                initializeGame(socket, roomId);
+            });
     }
 
     initialize();

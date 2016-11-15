@@ -1,17 +1,15 @@
-const
-    debug = require('debug')("spotlightbling:redis"),
-    redis = require('redis');
+import debugModule from 'debug';
+import redis from 'redis';
 
-let redisClient;
+const debug = debugModule('crescendo:socket');
 
-module.exports = {
-    getClient: function() {
-        if (!redisClient) {
-            redisClient = redis.createClient();
-            redisClient.on("error", function (error) {
-                debug(error);
-            });
+export default class Redis {
+    static redisClient = null;
+    getClass() {
+        if (!Redis.redisClient) {
+            Redis.redisClient = redis.createClient();
+            Redis.redisClient.on('error', (error) => debug(error));
         }
-        return redisClient;
+        return Redis.redisClient;
     }
-};
+}

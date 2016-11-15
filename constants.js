@@ -12,5 +12,5 @@ module.exports = {
         PLAY: 'Play',
         JOIN: 'Join',
         SUMMARY: 'Summary',
-    }
+    },
 };

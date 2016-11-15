@@ -7,6 +7,14 @@
     "import"
   ],
   "rules": {
-    "indent": ["error", 4]
+    "indent": ["error", 4],
+    "no-underscore-dangle": ["error", { "allowAfterThis": true }]
+  },
+  "globals": {
+    "fetch": false,
+    "window": false,
+    "Phaser": false,
+    "screen": false,
+    "document": false
   }
 }
