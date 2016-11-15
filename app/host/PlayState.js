@@ -23,7 +23,7 @@
 
     const NUM_USERS = 1;
 
-    const TRACK_KEY =   'track';
+    const TRACK_KEY = 'track';
 
     // The amount of time (in note travel distance) after which the last note moves offscreen before we move to the next state
     const END_GAME_OFFSET = 240;
