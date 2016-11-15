@@ -19,6 +19,7 @@ import create from './server/routes/create';
 
     // Initialize Assets
     app.use('/assets', express.static('./build/assets'));
+    app.use('/tracks', express.static('./shared/tracks'));
     app.use('/js', express.static('./build/js'));
 
     // Initialize Client Routes
