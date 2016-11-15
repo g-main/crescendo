@@ -1,6 +1,5 @@
-import { GAME_STATES } from 'constants';
+import { GAME_STATES, TEXT_STYLES } from 'constants';
 import GameState from './GameState';
-import TextStyles from './TextStyles';
 
 export default class MenuState extends GameState {
     create() {
@@ -8,14 +7,14 @@ export default class MenuState extends GameState {
             .onDown.addOnce(this.handleStart, this);
 
         this.game.add.text(this.centerX(240), 50,
-            'Crescendo', TextStyles.TITLE_FONT_STYLE);
+            'Crescendo', TEXT_STYLES.TITLE_FONT_STYLE);
         this.game.add.text(this.centerX(252), 300,
-            'An SE 464 Project made by:', TextStyles.TEXT_FONT_STYLE);
+            'An SE 464 Project made by:', TEXT_STYLES.TEXT_FONT_STYLE);
         this.game.add.text(this.centerX(575), 370,
             'Sameer Chitley, Jami Boy Mohammad, Hasya Shah, Geoffrey Yu',
-            TextStyles.TEXT_FONT_STYLE);
+            TEXT_STYLES.TEXT_FONT_STYLE);
         this.game.add.text(this.centerX(245), this.game.camera.height - 150,
-            'Press ENTER to start!', TextStyles.CALL_TO_ACTION_FONT_STYLE);
+            'Press ENTER to start!', TEXT_STYLES.CALL_TO_ACTION_FONT_STYLE);
     }
 
     handleStart() {

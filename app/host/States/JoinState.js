@@ -1,6 +1,5 @@
-import { GAME_STATES, INSTRUMENTS } from 'constants';
+import { GAME_STATES, INSTRUMENTS, TEXT_STYLES } from 'constants';
 import GameState from './GameState';
-import TextStyles from './TextStyles';
 
 const SONGS = ['Ode to Joy', 'Fake Song', 'Another Fake Song'];
 
@@ -65,7 +64,7 @@ export default class JoinState extends GameState {
         cardBackground.endFill();
 
         const instrument = this.game.add.image(20, 80, type);
-        const playerNameText = this.game.add.text(0, 0, name, TextStyles.PLAYER_NAME_CARD);
+        const playerNameText = this.game.add.text(0, 0, name, TEXT_STYLES.PLAYER_NAME_CARD);
 
         playerNameText.alignTo(instrument, Phaser.TOP_CENTER, 0, 20);
         playerCard.add(cardBackground);

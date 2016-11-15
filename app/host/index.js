@@ -1,11 +1,11 @@
 import 'whatwg-fetch';
 import io from 'socket.io-client';
 import { GAME_STATES } from 'constants';
-import MenuState from './MenuState';
-import JoinState from './JoinState';
-import PlayState from './PlayState';
-import LoadState from './LoadState';
-import SummaryState from './SummaryState.js';
+import MenuState from './States/MenuState';
+import JoinState from './States/JoinState';
+import PlayState from './States/PlayState';
+import LoadState from './States/LoadState';
+import SummaryState from './States/SummaryState.js';
 
 
 (() => {

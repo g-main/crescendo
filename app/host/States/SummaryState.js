@@ -1,13 +1,12 @@
-import { GAME_STATES } from 'constants';
+import { GAME_STATES, TEXT_STYLES } from 'constants';
 import GameState from './GameState';
-import TextStyles from './TextStyles';
 
 export default class SummaryState extends GameState {
     create() {
         this.game.add.text(this.centerX(365), 50,
-            'Game Summary', TextStyles.TITLE_FONT_STYLE);
+            'Game Summary', TEXT_STYLES.TITLE_FONT_STYLE);
         this.game.add.text(this.centerX(450), this.game.camera.height - 100,
-            'Press R to start a new game or Q to exit', TextStyles.CALL_TO_ACTION_FONT_STYLE);
+            'Press R to start a new game or Q to exit', TEXT_STYLES.CALL_TO_ACTION_FONT_STYLE);
 
         this.game.input.keyboard.addKey(Phaser.Keyboard.R).onDown.addOnce(() => {
             this.game.state.start(GAME_STATES.JOIN);
