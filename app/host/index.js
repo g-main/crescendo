@@ -1,12 +1,12 @@
 import 'whatwg-fetch';
-
 import io from 'socket.io-client';
+import { GAME_STATES } from 'constants';
 import MenuState from './MenuState';
 import JoinState from './JoinState';
 import PlayState from './PlayState';
 import LoadState from './LoadState';
 import SummaryState from './SummaryState.js';
-import { GAME_STATES } from '../../constants';
+
 
 (() => {
     const Phaser = window.Phaser;

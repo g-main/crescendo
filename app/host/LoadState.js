@@ -1,5 +1,5 @@
+import { GAME_STATES, INSTRUMENTS } from 'constants';
 import GameState from './GameState';
-import { GAME_STATES, INSTRUMENTS } from '../../constants';
 
 export default class LoadState extends GameState {
     preload() {

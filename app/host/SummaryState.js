@@ -1,6 +1,6 @@
+import { GAME_STATES } from 'constants';
 import GameState from './GameState';
 import TextStyles from './TextStyles';
-import { GAME_STATES } from '../../constants';
 
 export default class SummaryState extends GameState {
     create() {

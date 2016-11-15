@@ -1,5 +1,5 @@
 import io from 'socket.io-client';
-import { SOCKET_EVENTS } from '../../constants';
+import { SOCKET_EVENTS } from 'constants';
 
 const roomId = window.location.pathname.split('/')[1].toLowerCase();
 const socket = io.connect(`/${roomId}`);

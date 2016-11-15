@@ -1,4 +1,5 @@
 /* eslint-disable */
+var path = require( 'path' );
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
@@ -20,12 +21,12 @@ module.exports = {
 
     plugins: [
         new HtmlWebpackPlugin({
-            template: __dirname + '/app/user/index.html',
+            template: path.resolve(__dirname, 'app', 'user', 'index.html'),
             filename: 'user.html',
             inject: false
         }),
         new HtmlWebpackPlugin({
-            template: __dirname + '/app/host/index.html',
+            template: path.resolve(__dirname, 'app', 'host', 'index.html'),
             filename: 'host.html',
             inject: false
         }),
@@ -39,7 +40,7 @@ module.exports = {
 
     resolve: {
         alias: {
-            parameters$: './constants.js'
+            constants$: path.resolve(__dirname, 'constants.js')
         }
     }
 };

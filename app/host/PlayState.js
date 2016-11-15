@@ -1,6 +1,6 @@
+import { GAME_STATES, SOCKET_EVENTS } from 'constants';
 import GameState from './GameState';
 import Player from './Player';
-import { GAME_STATES, SOCKET_EVENTS } from '../../constants';
 
 const TRACK_NOTES = [
     [3500, 4000, 4500, 5000, 7000, 11500, 12000, 12500, 13000, 15000,

@@ -1,6 +1,6 @@
+import { GAME_STATES, INSTRUMENTS } from 'constants';
 import GameState from './GameState';
 import TextStyles from './TextStyles';
-import { GAME_STATES, INSTRUMENTS } from '../../constants';
 
 const SONGS = ['Ode to Joy', 'Fake Song', 'Another Fake Song'];
 
