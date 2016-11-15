@@ -13,11 +13,110 @@ div {
     box-sizing: border-box;
 }
 
+input {
+    background: white;
+    border: 0;
+    border-bottom: 1px solid #fff;
+    border-radius: 10px;
+    box-sizing: border-box;
+    display: block;
+    font-family: 'Lato', sans-serif;
+    font-size: 12px;
+    margin: 0;
+    outline: none;
+    padding: 10px 0 10px 10px;
+    transition: all 0.3s ease;
+    vertical-align: middle;
+    width: 100%;
+}
+
+.hidden {
+    display: none !important;
+}
+
 #page-wrapper {
     display: flex;
     flex-flow: column;
     height: 100%;
     padding: 25px 50px;
+}
+
+#page-wrapper.player-setup {
+    background: -webkit-linear-gradient(top, rgba(252,79,52,1) 0%, rgba(232,49,98,1) 100%);
+    background: linear-gradient(to bottom, rgba(252,79,52,1) 0%, rgba(232,49,98,1) 100%);
+}
+
+/* Player Setup */
+
+.player-setup {
+    color: #fff;
+}
+
+#player-setup-wrapper {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+    justify-content: space-between;
+}
+
+#player-setup-header {
+    font-size: 16px;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+.player-setup-heading {
+    font-style: italic;
+}
+
+#player-name {
+    margin: 10px 0;
+}
+
+#instrument-selector-wrapper {
+    display: flex;
+    flex: 1;
+    flex-flow: column;
+    margin-top: 20px;
+}
+
+#instrument-selector-instruments {
+    display: flex;
+    flex: 1;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.instrument-selector-instrument {
+    background: url('../img/drums.png') center center no-repeat;
+    background-size: auto 60%;
+    border-radius: 10px;
+    filter: invert(100%);
+    flex: 1;
+    margin-right: 20px;
+    transition: all 0.5s ease;
+}
+
+.instrument-selector-instrument:last-child {
+    margin-right: 0;
+}
+
+.instrument-selector-instrument.instrument-guitar {
+    background-image: url('../img/guitar.png');
+}
+
+.instrument-selected {
+    background-color: #fff;
+    filter: invert(0%);
+}
+
+/* Play */
+
+#play-wrapper {
+    display: flex;
+    flex: 1;
+    flex-flow: column;
+    justify-content: space-between;
 }
 
 /* Buttons */
@@ -28,7 +127,6 @@ div {
     flex: 1;
     flex-flow: row;
     justify-content: space-between;
-    /*padding: 0 50px;*/
     width: 100%;
 }
 
@@ -87,8 +185,10 @@ div {
 /* Metadata */
 
 #metadata-wrapper {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: space-between;
+    padding-top: 20px;
     width: 100%;
 }
 
@@ -114,10 +214,19 @@ div {
     width: 75px;
 }
 
-.track-artist,
-.player-id {
+#metadata-player.instrument-guitar:before {
+    background: url('../img/guitar.png') no-repeat center center;
+    background-size: contain;
+}
+
+.metadata-track-artist,
+#metadata-player-id {
     font-weight: 700;
     text-transform: uppercase;
+}
+
+#metadata-instrument:first-letter {
+    text-transform:capitalize;
 }
 
 /* Misc. */
@@ -126,6 +235,10 @@ div {
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     padding: 10px;
     width: 100%;
+}
+
+.horizontal-separator.white {
+    border-top: 1px solid rgba(255,255,255,1);
 }
 
 .logo-ovo {

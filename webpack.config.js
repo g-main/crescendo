@@ -35,6 +35,10 @@ module.exports = {
                 to: 'assets'
             }
         ])
-    ]
+    ],
+
+    resolve: {
+        constants$: './constants.js'
+    }
 };
 /* eslint-enable */
