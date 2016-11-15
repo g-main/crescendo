@@ -6,7 +6,7 @@
   "scripts": {
     "start": "$(npm bin)/concurrently --kill-others \"npm run frontend\" \"npm run server\"",
     "frontend": "$(npm bin)/webpack --progress --colors --config webpack.config.js --watch",
-    "server": "DEBUG=crescendo:* $(npm bin)/nodemon --use-strict index.js --watch index.js --watch server",
+    "server": "DEBUG=crescendo:* $(npm bin)/nodemon --exec babel-node --use-strict index.js --watch index.js --watch server",
     "webpack": "$(npm bin)/webpack --progress --colors --config webpack.config.js",
     "lint": "$(npm bin)/eslint"
   },
@@ -19,14 +19,16 @@
     "babel-preset-stage-0": "^6.16.0",
     "concurrently": "^3.1.0",
     "copy-webpack-plugin": "^3.0.1",
+    "debug": "^2.3.2",
     "express": "^4.14.0",
     "html-webpack-plugin": "^2.22.0",
     "nodemon": "^1.11.0",
     "socket.io-client": "^1.4.8",
-    "socketio": "^1.0.0",
+    "socket.io": "^1.0.0",
     "webpack": "^1.13.2"
   },
   "devDependencies": {
+    "babel-cli": "^6.18.0",
     "babel-eslint": "^7.1.0",
     "eslint": "^3.3.1",
     "eslint-config-airbnb": "^10.0.1",

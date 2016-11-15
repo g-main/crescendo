@@ -1,18 +1,15 @@
-const
-    constants = require('../constants'),
-    debug = require('debug')('crescendo:socket'),
-    socketio = require('socket.io');
+import debugModule from 'debug';
+import socket from 'socket.io';
+
+import constants from '../constants';
+
+const debug = debugModule('crescendo:socket');
 
 let io;
 
-module.exports = {
-    createNamespace: createNamespace,
-    initialize: initialize
-};
-
 function initialize(httpServer) {
     if (!io) {
-        io = socketio.listen(httpServer);
+        io = socket.listen(httpServer);
         debug('Initialized socket.io');
     } else {
         debug('Why is socket.js being initialized more than once?!');
@@ -20,10 +17,10 @@ function initialize(httpServer) {
 }
 
 function createNamespace(roomId) {
-    debug('Creating namespace for roomId: ' + roomId);
+    debug(`Creating namespace for roomId: ${roomId}`);
 
-    const room = io.of('/' + roomId);
-    room.on('connection', function (socket) {
+    const room = io.of(`/${roomId}`);
+    room.on('connection', (socket) => {
         debug(`connected to ${roomId}`);
 
         socket.on(constants.SOCKET_EVENTS.PLAY_NOTE, (note) => {
@@ -52,3 +49,9 @@ function createNamespace(roomId) {
         // });
     });
 }
+
+export {
+    createNamespace,
+    initialize,
+};
+
