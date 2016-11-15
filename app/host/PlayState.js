@@ -23,10 +23,13 @@
 
     const NUM_USERS = 1;
 
-    const TRACK_KEY = 'track';
+    const TRACK_KEY =   'track';
 
     // The amount of time (in note travel distance) after which the last note moves offscreen before we move to the next state
     const END_GAME_OFFSET = 240;
+
+    // The size of the note inset (how big the "colored" part of the ring should be)
+    const NOTE_INSET = 9;
 
     class Note {
 
@@ -144,7 +147,32 @@
                         9,
                     );
                     g.endFill();
-
+                    let noteColor = 0xffffff;
+                    switch(i) {
+                        case 0:
+                            noteColor = 0x008aff;
+                            break;
+                        case 1:
+                            noteColor = 0x00b800;
+                            break;
+                        case 2:
+                            noteColor = 0xffce00;
+                            break;
+                        case 3:
+                            noteColor = 0xff3700;
+                            break;
+                        default:
+                            break;
+                    }
+                    g.beginFill(noteColor, 1);
+                    g.drawRoundedRect(
+                        3,
+                        3,
+                        NOTE_SIZE.x / NUM_USERS - 6,
+                        NOTE_SIZE.y - 6,
+                        9,
+                    );
+                    g.endFill();
                     const note = new Note(
                         g, // graphics
                         i, // track #
