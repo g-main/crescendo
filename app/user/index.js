@@ -1,6 +1,8 @@
 (function() {
     // Force screen to be in landscape orientation. Do not remove!
-    screen.orientation.lock('landscape');
+    if (screen && screen.orientation && screen.orientation.lock) {
+        screen.orientation.lock('landscape');
+    }
 
     const io = require('socket.io-client');
 
