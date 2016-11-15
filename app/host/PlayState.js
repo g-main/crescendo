@@ -21,10 +21,12 @@
 
     const TRACK_LINE_WIDTH = 10; // pixels
 
-
     const NUM_USERS = 1;
 
     const TRACK_KEY = 'track';
+
+    // The amount of time (in note travel distance) after which the last note moves offscreen before we move to the next state
+    const END_GAME_OFFSET = 240;
 
     class Note {
 
@@ -68,6 +70,7 @@
 
             this.player = new Player('mah name');
             this.startTime = null;
+            this.lastNoteInSong = null;
         }
 
         handleNotePlayed(data) {
@@ -142,11 +145,16 @@
                     );
                     g.endFill();
 
-                    this.notes.push(new Note(
+                    const note = new Note(
                         g, // graphics
                         i, // track #
                         TRACK_NOTES[i][j], // time at which note should be played
-                    ));
+                    );
+
+                    this.notes.push(note);
+                    if (this.lastNoteInSong == null || this.lastNoteInSong.y > g.y) {
+                        this.lastNoteInSong = note;
+                    }
                 }
             }
 
@@ -158,9 +166,10 @@
                 this,
             );
 
-            this.game.input.keyboard.addKey(Phaser.Keyboard.L).onDown.addOnce(() => {
-                this.game.state.start('Summary');
-            }, this);
+            this.game.input.keyboard.addKey(Phaser.Keyboard.L).onDown.addOnce(
+                this.transitionToSummary.bind(this),
+                this,
+            );
         }
 
         update() {
@@ -180,6 +189,11 @@
                 const note = this.notes[i];
                 // note.incrementY(NOTE_DELTA_Y);
                 note.recalculatePosition(relativeTime);
+            }
+
+            // Check for last note having moved off screen ( plus an offset )
+            if (this.lastNoteInSong.y > this.game.camera.y + this.game.camera.height + END_GAME_OFFSET) {
+                this.transitionToSummary();
             }
         }
 
@@ -203,6 +217,10 @@
             this.trackLines = [];
             this.notes.forEach((note) => (note.graphics.destroy()));
             this.notes = [];
+        }
+
+        transitionToSummary() {
+            this.game.state.start('Summary');
         }
     }
 
