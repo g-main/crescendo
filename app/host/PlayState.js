@@ -67,7 +67,6 @@
             this.playing = false;
             this.bottomBar = null;
             this.notes = []
-            this.trackLines = []
             this.gameTrack = null;
             this.musicReady = false;
 
@@ -127,10 +126,11 @@
 
             const track_width = this.game.camera.width/(TRACK_NOTES.length);
             for (let i = 0; i < TRACK_NOTES.length; i++) {
-                // Draw lines
-                this.trackLines.push( new Phaser.Rectangle(
-                    (i * track_width + (track_width - TRACK_LINE_WIDTH)/2) / NUM_USERS, 0, TRACK_LINE_WIDTH, this.game.world.height,
-                ));
+
+                const trackGraphic = this.game.add.graphics((i * track_width + (track_width - TRACK_LINE_WIDTH)/2) / NUM_USERS, 0);
+                trackGraphic.beginFill(0xffffff, 1);
+                trackGraphic.drawRect(0, 0, TRACK_LINE_WIDTH, this.game.world.height);
+                trackGraphic.endFill();
 
                 // Draw notes
                 for (let j = 0; j < TRACK_NOTES[i].length; j++) {
@@ -229,9 +229,6 @@
             // Debug / text
             // TODO: Turn this into an actual rectangle (using graphics)
             this.game.debug.geom(this.bottomBar, '#ffffff');
-            for (let i = 0; i < this.trackLines.length; i++) {
-                this.game.debug.geom(this.trackLines[i], 'rgba(255, 255, 255, 0.8)');
-            }
             this.game.debug.text(this.player.score, 40, 160);
 
             this.game.debug.text(`FPS: ${this.game.time.fps}`, 40, 30);
@@ -242,7 +239,6 @@
             this.gameTrack.destroy();
             this.gameTrack = null;
             this.bottomBar = null;
-            this.trackLines = [];
             this.notes.forEach((note) => (note.graphics.destroy()));
             this.notes = [];
         }
