@@ -1,3 +1,4 @@
+/* eslint-disable */
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
@@ -13,8 +14,7 @@ module.exports = {
 
     module: {
         loaders: [
-            { test: /\.js?$/, loaders: ['babel'], exclude: /node_modules/ },
-            { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader'},
+            { test: /\.js$/, loaders: ['babel-loader'], exclude: /node_modules/ },
         ]
     },
 
@@ -34,12 +34,7 @@ module.exports = {
                 from: 'app/assets',
                 to: 'assets'
             }
-        ]),
-        new CopyWebpackPlugin([
-            {
-                from: 'app/lib',
-                to: 'lib'
-            }
         ])
     ]
 };
+/* eslint-enable */
