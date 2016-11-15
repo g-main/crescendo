@@ -3,45 +3,67 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+    <meta name="mobile-web-app-capable" content="yes">
     <title>Crescendo</title>
     <link rel="stylesheet" type="text/css" href="/assets/css/user.css">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,900" rel="stylesheet">
   </head>
   <body>
-      <div id="page-wrapper">
-          <div id="button-wrapper">
-              <div class="button" data-ring="blue">
-                  <div class="button-color-ring ring-blue"></div>
-                  <div class="button-inner"></div>
+      <div id="page-wrapper" class="player-setup">
+          <div id="player-setup-wrapper">
+              <div id="player-setup-header-wrapper">
+                  <div id="player-setup-header">Welcome to Crescendo!</div>
+                  <div class="horizontal-separator white"></div>
               </div>
 
-              <div class="button" data-ring="green">
-                  <div class="button-color-ring ring-green"></div>
-                  <div class="button-inner"></div>
+              <div id="player-name-wrapper">
+                  <div class="player-setup-heading">What's your name?</div>
+                  <input id="player-name" type="text" name="player-name">
               </div>
 
-              <div class="button" data-ring="yellow">
-                  <div class="button-color-ring ring-yellow"></div>
-                  <div class="button-inner"></div>
-              </div>
-
-              <div class="button" data-ring="red">
-                  <div class="button-color-ring ring-red"></div>
-                  <div class="button-inner"></div>
+              <div id="instrument-selector-wrapper">
+                  <div class="player-setup-heading">Pick your favorite instrument!</div>
+                  <div id="instrument-selector-instruments">
+                      <div class="instrument-selector-instrument instrument-drums" data-instrument="drums"></div>
+                      <div class="instrument-selector-instrument instrument-guitar" data-instrument="guitar"></div>
+                  </div>
               </div>
           </div>
-          <div class="horizontal-separator"></div>
-          <div id="metadata-wrapper">
-              <div id="metadata-track">
-                  <div class="track-artist">Drake</div>
-                  <div class="track-title">Hotline Bling</div>
-                  <div class="track-record-label">OVO</div>
+          <div id="play-wrapper" class="hidden">
+              <div id="button-wrapper">
+                  <div class="button" data-ring="blue">
+                      <div class="button-color-ring ring-blue"></div>
+                      <div class="button-inner"></div>
+                  </div>
+
+                  <div class="button" data-ring="green">
+                      <div class="button-color-ring ring-green"></div>
+                      <div class="button-inner"></div>
+                  </div>
+
+                  <div class="button" data-ring="yellow">
+                      <div class="button-color-ring ring-yellow"></div>
+                      <div class="button-inner"></div>
+                  </div>
+
+                  <div class="button" data-ring="red">
+                      <div class="button-color-ring ring-red"></div>
+                      <div class="button-inner"></div>
+                  </div>
               </div>
-              <div id="metadata-record-label" class="record-label-logo logo-ovo"></div>
-              <div id="metadata-player">
-                  <div class="player-id">Player 3</div>
-                  <div class="player-name">Travis Scott</div>
-                  <div class="player-instrument-name">Drums</div>
+
+              <div id="metadata-wrapper">
+                  <div id="metadata-track">
+                      <div class="metadata-track-artist">Drake</div>
+                      <div class="metadata-track-title">Hotline Bling</div>
+                      <div class="metadata-track-record-label">OVO</div>
+                  </div>
+                  <div id="metadata-record-label" class="record-label-logo logo-ovo"></div>
+                  <div id="metadata-player">
+                      <div id="metadata-player-id">Player 3</div>
+                      <div id="metadata-player-name">Travis Scott</div>
+                      <div id="metadata-instrument">Drums</div>
+                  </div>
               </div>
           </div>
       </div>
