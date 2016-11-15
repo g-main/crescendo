@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'Lato';
+  src: url('https://fonts.googleapis.com/css?family=Lato:400,700,900') format('truetype');
+}
+
 html,
 body {
   font-family: 'Lato', sans-serif;
@@ -12,6 +17,11 @@ body {
   background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(252,79,52,1)), color-stop(100%, rgba(232,49,98,1)));
   background: -webkit-linear-gradient(top, rgba(252,79,52,1) 0%, rgba(232,49,98,1) 100%);
   background: linear-gradient(to bottom, rgba(252,79,52,1) 0%, rgba(232,49,98,1) 100%);
+}
+
+#font-loader {
+  position: absolute;
+  opacity: 0;
 }
 
 .title-text {
