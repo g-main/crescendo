@@ -1,6 +1,5 @@
 (function() {
     const io = require('socket.io-client');
-    const constants = require('../constants.js');
     const MenuState = require('./MenuState.js');
     const JoinState = require('./JoinState.js');
     const PlayState = require('./PlayState.js');
