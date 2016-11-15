@@ -1,15 +1,16 @@
 /* eslint-disable */
-var path = require( 'path' );
+var path = require('path');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+
 module.exports = {
     entry: {
-        user: ['whatwg-fetch', './app/user/index.js'],
-        host: ['whatwg-fetch', './app/host/index.js']
+        user: ['whatwg-fetch', path.resolve(__dirname, 'user', 'index.js')],
+        host: ['whatwg-fetch', path.resolve(__dirname, 'host', 'index.js')]
     },
 
     output: {
-        path: 'dist',
+        path: path.resolve(__dirname, '..', 'build'),
         filename: 'js/[name].bundle.js'
     },
 
@@ -21,26 +22,27 @@ module.exports = {
 
     plugins: [
         new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, 'app', 'user', 'index.html'),
+            template: path.resolve(__dirname, 'user', 'index.html'),
             filename: 'user.html',
             inject: false
         }),
         new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, 'app', 'host', 'index.html'),
+            template: path.resolve(__dirname, 'host', 'index.html'),
             filename: 'host.html',
             inject: false
         }),
         new CopyWebpackPlugin([
             {
-                from: 'app/assets',
+                from: path.resolve(__dirname, 'assets'),
                 to: 'assets'
             }
         ])
     ],
 
+
     resolve: {
         alias: {
-            constants$: path.resolve(__dirname, 'constants.js')
+            constants$: path.resolve(__dirname, '..', 'shared', 'constants.js')
         }
     }
 };

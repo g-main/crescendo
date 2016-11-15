@@ -1,44 +1,35 @@
 import debugModule from 'debug';
 import express from 'express';
 import http from 'http';
-import path from 'path';
 
-import Socket from './server/socket';
-import Room from './server/room';
+import socket from './server/lib/socket';
+
+import index from './server/routes/index';
+import join from './server/routes/join';
+import create from './server/routes/create';
 
 (() => {
     const app = express();
     const httpServer = http.createServer(app);
-    const apiRouter = express.Router(); // eslint-disable-line
+    const apiRouter = express.Router(); // eslint-disable-line new-cap
     const debug = debugModule('crescendo:socket');
 
-    const socket = new Socket(httpServer);
-    const room = new Room();
+    // Initialize socket
+    socket.initialize(httpServer);
 
-    app.use('/assets', express.static('./dist/assets'));
-    app.use('/lib', express.static('./dist/lib'));
-    app.use('/js', express.static('./dist/js'));
+    // Initialize Assets
+    app.use('/assets', express.static('./build/assets'));
+    app.use('/js', express.static('./build/js'));
 
-    app.get('/', (req, res) => {
-        res.sendFile(path.join(__dirname, './dist/host.html'));
-    });
+    // Initialize Client Routes
+    app.get('/', index.get);
+    app.get(/^\/[a-fA-F0-9]{4}\/?$/, join.get);
+    apiRouter.get('/create', create.get);
 
-    app.get(/^\/[a-fA-F0-9]{4}\/?$/, (req, res) => {
-        if (room.checkRoomExists(req.url.split('/')[1].toLowerCase())) {
-            res.sendFile(path.join(__dirname, './dist/user.html'));
-        } else {
-            res.redirect('/');
-        }
-    });
-
-    apiRouter.get('/create', (req, res) => {
-        const host = room.createHost();
-        socket.createNamespace(host.roomId);
-        res.json(host);
-    });
-
+    // Initialize API Routes
     app.use('/api/v0', apiRouter);
 
+    // Initialize Server
     httpServer.listen(3000, () => {
         debug('OMG! Server is up!');
     });
