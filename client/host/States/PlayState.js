@@ -12,7 +12,7 @@ const TRACK_NOTES = [
     [1500, 2000, 9500, 10000, 12000, 18750, 20750, 25500, 26000],
 ];
 
-const NOTE_DELTA_Y = 5;
+const NOTE_DELTA_Y = 4;
 
 const NOTE_SIZE = {
     x: 100,
@@ -21,7 +21,8 @@ const NOTE_SIZE = {
 
 const TRACK_LINE_WIDTH = 10; // pixels
 
-const NUM_USERS = 1;
+// TODO: turn this constant into a member variable passed in from the previous state
+const NUM_USERS = 4;
 
 const TRACK_KEY = 'track';
 
@@ -63,17 +64,20 @@ export default class PlayState extends GameState {
         // Declare class members here
         this.playing = false;
         this.bottomBar = null;
-        this.notes = [];
         this.gameTrack = null;
         this.musicReady = false;
+        this.notes = [];
+        for (let u = 0; u < NUM_USERS; u++) {
+            this.notes.push([]);
+        }
 
         this.player = new Player('mah name');
         this.startTime = null;
         this.lastNoteInSong = null;
     }
 
+    // Logic to check each note was correctly played (works for one player)
     handleNotePlayed(data) {
-        // Logic to check it was correctly played
         const color = {
             blue: 0,
             green: 1,
@@ -90,6 +94,8 @@ export default class PlayState extends GameState {
             }
         });
         // TODO: delete note on success (if implemented, need to keep last note)
+        // Suggsted: don't delete the note, there are only so many ever drawn on screen
+        // and not enough remain in memory for a leak (if properly destroyed)
     }
 
     initializeSocket(socket) {
@@ -119,64 +125,76 @@ export default class PlayState extends GameState {
         this.game.camera.y = this.game.world.height - this.game.camera.height;
 
         const trackWidth = this.game.camera.width / (TRACK_NOTES.length);
-        for (let i = 0; i < TRACK_NOTES.length; i++) {
-            const trackGraphic = this.game.add.graphics(((i * trackWidth) +
-                ((trackWidth - TRACK_LINE_WIDTH) / 2)) / NUM_USERS, 0);
-            trackGraphic.beginFill(0xffffff, 1);
-            trackGraphic.drawRect(0, 0, TRACK_LINE_WIDTH, this.game.world.height);
-            trackGraphic.endFill();
+        for (let u = 0; u < NUM_USERS; u++) {
+            for (let i = 0; i < TRACK_NOTES.length; i++) {
 
-            // Draw notes
-            for (let j = 0; j < TRACK_NOTES[i].length; j++) {
-                const g = this.game.add.graphics(
-                    ((i * trackWidth) + ((trackWidth - NOTE_SIZE.x) / 2)) / NUM_USERS,
-                    (this.game.world.height - 20) - ((60 * NOTE_DELTA_Y * TRACK_NOTES[i][j])
-                    / 1000),
+                const globalTrackLocation = u * this.game.camera.width / NUM_USERS;
+                const localTrackOffset = ((i * trackWidth) + ((trackWidth - TRACK_LINE_WIDTH) / 2)) / NUM_USERS;
+                const trackGraphic = this.game.add.graphics(
+                    globalTrackLocation + localTrackOffset, /* x */
+                    0, /* y */
                 );
-                g.beginFill(0xffffff, 1);
-                g.drawRoundedRect(
-                    0,
-                    0,
-                    NOTE_SIZE.x / NUM_USERS,
-                    NOTE_SIZE.y,
-                    9,
-                );
-                g.endFill();
-                let noteColor = 0xffffff;
-                switch (i) {
-                case 0:
-                    noteColor = 0x008aff;
-                    break;
-                case 1:
-                    noteColor = 0x00b800;
-                    break;
-                case 2:
-                    noteColor = 0xffce00;
-                    break;
-                case 3:
-                    noteColor = 0xff3700;
-                    break;
-                default:
-                    break;
-                }
-                g.beginFill(noteColor, 1);
-                g.drawRoundedRect(
-                    3,
-                    3,
-                    (NOTE_SIZE.x / NUM_USERS) - 6,
-                    NOTE_SIZE.y - 6,
-                    9,
-                );
-                g.endFill();
-                const note = new Note(
-                    g, // graphics
-                    i, // track #
-                    TRACK_NOTES[i][j], // time at which note should be played
-                );
+                trackGraphic.beginFill(0xffffff, 1);
+                trackGraphic.drawRect(0, 0, TRACK_LINE_WIDTH, this.game.world.height);
+                trackGraphic.endFill();
 
-                this.notes.push(note);
-                if (this.lastNoteInSong == null || this.lastNoteInSong.y > g.y) {
-                    this.lastNoteInSong = note;
+                // Draw notes
+                for (let j = 0; j < TRACK_NOTES[i].length; j++) {
+
+                    const localNoteOffset = ((i * trackWidth) + ((trackWidth - NOTE_SIZE.x) / 2)) / NUM_USERS;
+                    const globalNoteLocation = u * this.game.camera.width / NUM_USERS;
+                    const g = this.game.add.graphics(
+                        globalNoteLocation + localNoteOffset, /* x */
+                        (this.game.world.height - 20) - ((60 * NOTE_DELTA_Y * TRACK_NOTES[i][j]) / 1000), /* y */
+                    );
+                    // Draw outer note rectangle (white border)
+                    g.beginFill(0xffffff, 1);
+                    g.drawRoundedRect(
+                        0, /* topLeftX */
+                        0, /* topLeftY */
+                        NOTE_SIZE.x / NUM_USERS, /* width */
+                        NOTE_SIZE.y, /* height */
+                        9, /* roundness */
+                    );
+                    g.endFill();
+                    // Assign color of note based on track
+                    let noteColor = 0xffffff;
+                    switch (i) {
+                    case 0:
+                        noteColor = 0x008aff;
+                        break;
+                    case 1:
+                        noteColor = 0x00b800;
+                        break;
+                    case 2:
+                        noteColor = 0xffce00;
+                        break;
+                    case 3:
+                        noteColor = 0xff3700;
+                        break;
+                    default:
+                        break;
+                    }
+                    // Draw inner note rectangle (filled color of note)
+                    g.beginFill(noteColor, 1);
+                    g.drawRoundedRect(
+                        3, /* topLeftX */
+                        3, /* topLeftY */
+                        (NOTE_SIZE.x / NUM_USERS) - 6, /* width */
+                        NOTE_SIZE.y - 6, /* height */
+                        9, /* roundness */
+                    );
+                    g.endFill();
+                    const note = new Note(
+                        g, // graphics
+                        i, // track #
+                        TRACK_NOTES[i][j], // time at which note should be played
+                    );
+
+                    this.notes[u].push(note);
+                    if (this.lastNoteInSong == null || this.lastNoteInSong.y > g.y) {
+                        this.lastNoteInSong = note;
+                    }
                 }
             }
         }
@@ -208,9 +226,11 @@ export default class PlayState extends GameState {
         }
 
         const relativeTime = Date.now() - this.startTime;
-        for (let i = 0; i < this.notes.length; i++) {
-            const note = this.notes[i];
-            note.recalculatePosition(relativeTime);
+        for (let u = 0; u < NUM_USERS; u++) {
+            for (let i = 0; i < this.notes[u].length; i++) {
+                const note = this.notes[u][i];
+                note.recalculatePosition(relativeTime);
+            }
         }
 
         // Check for last note having moved off screen ( plus an offset )
@@ -234,7 +254,7 @@ export default class PlayState extends GameState {
         this.gameTrack.destroy();
         this.gameTrack = null;
         this.bottomBar = null;
-        this.notes.forEach((note) => (note.graphics.destroy()));
+        this.notes.forEach(noteArray => { noteArray.forEach( note => { note.graphics.destroy(); }); });
         this.notes = [];
     }
 
