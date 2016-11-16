@@ -65,12 +65,14 @@ export default class PlayState extends GameState {
         socket.on(SOCKET_EVENTS.HANDLE_NOTE, this.handleNotePlayed.bind(this));
     }
 
-    init(track, playerCount) {
+    init(gameInfo) {
+        console.log(JSON.stringify(gameInfo));
+
         this.trackName = track.name;
         this.trackNotes = track.track;
         this.trackFile = track.file;
 
-        this.playerCount = playerCount;
+        this.playerCount = playerGroup.getNumPlayers();
         this.initNotes();
     }
 

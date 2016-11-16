@@ -106,11 +106,14 @@ export default class JoinState extends GameState {
         fetch(`/api/v0/track/${trackFile}`, { method: 'GET' })
             .then(request => request.json())
             .then(response => {
+                const gameInfo = {
+                    track: response,
+                    playerGroup: this.playerGroup,
+                };
                 this.game.state.start(GAME_STATES.PLAY,
                     true,
                     false,
-                    response,
-                    this.playerGroup.getNumPlayers(),
+                    gameInfo,
                 );
             });
     }
