@@ -1,15 +1,31 @@
-import { GAME_STATES, INSTRUMENTS, TEXT_STYLES } from 'constants';
+import { GAME_STATES, INSTRUMENTS, TEXT_STYLES, SOCKET_EVENTS } from 'constants';
 import GameState from './GameState';
+import PlayerGroup from '../Models/PlayerGroup';
+import PlayerJoinPresenter from '../Presenters/PlayerJoinPresenter';
 
 const SONGS = ['Ode to Joy', 'Fake Song', 'Another Fake Song'];
 
 export default class JoinState extends GameState {
-    constructor(game, roomId) {
+    constructor(game, roomId, socket) {
         super(game);
+        this.initializeSocket(socket);
         this.songIndex = 0;
         this.roomId = roomId;
-        this.playerCount = 0;
         this.songText = SONGS[this.songIndex];
+        this.playerGroup = new PlayerGroup();
+        this.playerPresenter = new PlayerJoinPresenter(game, this.playerGroup);
+    }
+
+    initializeSocket(socket) {
+        socket.on(SOCKET_EVENTS.JOIN_GAME, ({id, name, instrument}) => {
+            this.playerGroup.addPlayer(id, name, instrument);
+            this.playerPresenter.notifyChanged();
+        });
+
+        socket.on(SOCKET_EVENTS.LEFT_GAME, ({id}) => {
+            this.playerGroup.removePlayer(id);
+            this.playerPresenter.notifyChanged();
+        });
     }
 
     create() {
@@ -77,16 +93,6 @@ export default class JoinState extends GameState {
             'Press SPACE to start!',
             TEXT_STYLES.CALL_TO_ACTION_FONT_STYLE,
         ).anchor.setTo(0.5, 0.5);
-
-        this.game.input.keyboard.addKey(Phaser.Keyboard.A)
-            .onDown.add(() => {
-                this.renderPlayer(
-                    `Player ${this.playerCount + 1}`,
-                    INSTRUMENTS.DRUMS,
-                    (this.playerCount * 230) + (20 * this.playerCount),
-                    200);
-                this.playerCount++;
-            }, this);
     }
 
     handleStart() {
@@ -107,25 +113,5 @@ export default class JoinState extends GameState {
 
     updateSongText() {
         this.songText.setText(SONGS[this.songIndex]);
-    }
-
-    renderPlayer(name, type, x, y) {
-        const playerCard = this.game.add.group();
-        const cardBackground = this.game.add.graphics(0, 0);
-        cardBackground.beginFill(0xffffff, 1);
-        cardBackground.drawRoundedRect(0, 0, 230, 256, 9);
-        cardBackground.endFill();
-
-        const instrument = this.game.add.image(20, 80, type);
-        const playerNameText = this.game.add.text(0, 0, name, TEXT_STYLES.PLAYER_NAME_CARD);
-
-        playerNameText.alignTo(instrument, Phaser.TOP_CENTER, 0, 20);
-        playerCard.add(cardBackground);
-        playerCard.add(instrument);
-        playerCard.add(playerNameText);
-        playerCard.x = x;
-        playerCard.y = y;
-
-        return playerCard;
     }
 }

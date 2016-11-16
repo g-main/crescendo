@@ -1,10 +1,14 @@
 const SOCKET_EVENTS = {
     PLAY_NOTE: 'PlayNote',
     HANDLE_NOTE: 'Noted',
+    JOIN_GAME_REQUEST: 'JoinGameRequest', // Controller -> Server
+    JOIN_GAME: 'JoinGame',  // Server -> Host
+    LEFT_GAME: 'LeftGame',
 };
 
 const INSTRUMENTS = {
     DRUMS: 'drums',
+    GUITAR: 'guitar',
 };
 
 const GAME_STATES = {
