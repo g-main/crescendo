@@ -7,7 +7,6 @@ import PlayState from './States/PlayState';
 import LoadState from './States/LoadState';
 import SummaryState from './States/SummaryState.js';
 
-
 (() => {
     const Phaser = window.Phaser;
 

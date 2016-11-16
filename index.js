@@ -7,6 +7,7 @@ import socket from './server/lib/socket';
 import index from './server/routes/index';
 import join from './server/routes/join';
 import create from './server/routes/create';
+import tracks from './server/routes/tracks';
 
 (() => {
     const app = express();
@@ -25,9 +26,11 @@ import create from './server/routes/create';
     // Initialize Client Routes
     app.get('/', index.get);
     app.get(/^\/[a-fA-F0-9]{4}\/?$/, join.get);
-    apiRouter.get('/create', create.get);
 
     // Initialize API Routes
+    apiRouter.get('/create', create.get);
+    apiRouter.get('/tracks', tracks.getTracks);
+    apiRouter.get('/track/:trackFile', tracks.getTrack);
     app.use('/api/v0', apiRouter);
 
     // Initialize Server

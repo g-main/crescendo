@@ -34,4 +34,12 @@ const TEXT_STYLES = {
     },
 };
 
-export { SOCKET_EVENTS, INSTRUMENTS, GAME_STATES, TEXT_STYLES };
+const TRACK_EXTENSION = '.trk';
+
+export {
+    SOCKET_EVENTS,
+    INSTRUMENTS,
+    GAME_STATES,
+    TEXT_STYLES,
+    TRACK_EXTENSION,
+};

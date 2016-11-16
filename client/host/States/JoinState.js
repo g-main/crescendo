@@ -1,14 +1,19 @@
 import { GAME_STATES, INSTRUMENTS, TEXT_STYLES } from 'constants';
 import GameState from './GameState';
 
-const SONGS = ['Ode to Joy', 'Fake Song', 'Another Fake Song'];
-
 export default class JoinState extends GameState {
     constructor(game, roomId) {
         super(game);
         this.songIndex = 0;
         this.roomId = roomId;
         this.playerCount = 0;
+        this.songList = [];
+
+        fetch('/api/v0/tracks', { method: 'GET' })
+            .then(request => request.json())
+            .then(response => {
+                this.songList = response.tracks;
+            });
     }
 
     create() {
@@ -33,7 +38,7 @@ export default class JoinState extends GameState {
 
     render() {
         this.game.debug.text('Use "O" and "P" keys to select a song.', 40, 100);
-        this.game.debug.text(`Current Song: ${SONGS[this.songIndex]}`, 40, 140);
+        this.game.debug.text(`Current Song: ${this.songList[this.songIndex].name}`, 40, 140);
         this.game.debug.text(`Room Id: ${this.roomId}`, 40, 180);
         this.game.debug.text(
             'Press SPACE to start!',
@@ -43,16 +48,21 @@ export default class JoinState extends GameState {
     }
 
     handleStart() {
-        this.game.state.start(GAME_STATES.PLAY);
+        const trackFile = this.songList[this.songIndex].file;
+        fetch(`/api/v0/track/${trackFile}`, { method: 'GET' })
+            .then(request => request.json())
+            .then(response => {
+                this.game.state.start(GAME_STATES.PLAY, false, false, response);
+            });
     }
 
     nextSong() {
-        this.songIndex = (this.songIndex + 1) % SONGS.length;
+        this.songIndex = (this.songIndex + 1) % this.songList.length;
     }
 
     prevSong() {
         if ((--this.songIndex) < 0) {
-            this.songIndex = SONGS.length - 1;
+            this.songIndex = this.songList.length - 1;
         }
     }
 
