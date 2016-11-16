@@ -16,7 +16,11 @@ export default class JoinState extends GameState {
             .then(request => request.json())
             .then(response => {
                 this.songList = response.tracks;
-                this.songText = this.songList[this.songIndex].name;
+                this.songText = this.game.add.text(
+                    this.game.camera.width / 2, 120,
+                    this.songList[this.songIndex].name,
+                    TEXT_STYLES.CALL_TO_ACTION_FONT_STYLE,
+                ).anchor.setTo(0.5, 0.5);
             });
 
         this.playerGroup = new PlayerGroup();
@@ -46,23 +50,20 @@ export default class JoinState extends GameState {
 
         // Room ID
         this.game.add.text(
-            (7 * this.game.camera.width) / 8,
-            30,
+            this.game.camera.width, 0,
             `Room ID: ${this.roomId}`,
-            TEXT_STYLES.SMALL_TEXT_FONT_STYLE,
-        ).anchor.setTo(0, 0.5);
+            TEXT_STYLES.SMALL_TEXT_FONT_STYLE
+        ).anchor.setTo(1, 0);
 
         // Select song text
         this.game.add.text(
-            this.game.camera.width / 2,
-            60,
+            this.game.camera.width / 2, 60,
             'Select a Song:',
             TEXT_STYLES.TEXT_FONT_STYLE,
         ).anchor.setTo(0.5, 0.5);
 
         this.songText = this.game.add.text(
-            this.game.camera.width / 2,
-            120,
+            this.game.camera.width / 2, 120,
             this.songList[this.songIndex].name,
             TEXT_STYLES.CALL_TO_ACTION_FONT_STYLE,
         );
@@ -70,34 +71,29 @@ export default class JoinState extends GameState {
 
         // Arrow keys to navigate (change song)
         this.game.add.text(
-            this.game.camera.width / 4,
-            120,
+            this.game.camera.width / 4, 120,
             '<',
             TEXT_STYLES.CALL_TO_ACTION_FONT_STYLE,
         ).anchor.setTo(0.5, 0.5);
 
         this.game.add.text(
-            this.game.camera.width / 4,
-            155,
+            this.game.camera.width / 4, 155,
             '(O)',
             TEXT_STYLES.SMALL_TEXT_FONT_STYLE,
         ).anchor.setTo(0.5, 0.5);
 
         this.game.add.text(
-            (3 * this.game.camera.width) / 4,
-            120,
+            (3 * this.game.camera.width) / 4, 120,
             '>',
             TEXT_STYLES.CALL_TO_ACTION_FONT_STYLE,
         ).anchor.setTo(0.5, 0.5);
 
         this.game.add.text(
-            (3 * this.game.camera.width) / 4,
-            155,
+            (3 * this.game.camera.width) / 4, 155,
             '(P)',
             TEXT_STYLES.SMALL_TEXT_FONT_STYLE,
         ).anchor.setTo(0.5, 0.5);
 
-        // Play Game text!
         this.game.add.text(
             this.game.camera.width / 2,
             this.game.camera.height - 50,

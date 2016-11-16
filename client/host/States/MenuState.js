@@ -4,8 +4,8 @@ import GameState from './GameState';
 export default class MenuState extends GameState {
     create() {
         function addText(game, height, text) {
-            return game.add.text((game.camera.width / 2) - (text.length * 10),
-                height, text, TEXT_STYLES.TEXT_FONT_STYLE);
+            return game.add.text(game.camera.width / 2, height, text,
+                TEXT_STYLES.TEXT_FONT_STYLE).anchor.setTo(0.5, 0.5);
         }
 
         this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER)
