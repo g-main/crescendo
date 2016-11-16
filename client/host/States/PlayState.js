@@ -263,6 +263,9 @@ export default class PlayState extends GameState {
         this.bottomBar = null;
         this.notes.forEach(noteArray => { noteArray.forEach( note => { note.graphics.destroy(); }); });
         this.notes = [];
+        for (let u = 0; u < NUM_USERS; u++) {
+            this.notes.push([]);
+        }
     }
 
     transitionToSummary() {
