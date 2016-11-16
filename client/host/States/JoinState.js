@@ -21,18 +21,26 @@ export default class JoinState extends GameState {
         this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR)
             .onDown.addOnce(this.handleStart, this);
 
+        // Room ID
+        this.game.add.text(
+            (7 * this.game.camera.width) / 8,
+            30,
+            `Room ID: ${this.roomId}`,
+            TEXT_STYLES.SMALL_TEXT_FONT_STYLE,
+        ).anchor.setTo(0, 0.5);
+
         // Select song text
         this.game.add.text(
             this.game.camera.width / 2,
             60,
             'Select a Song:',
-            TEXT_STYLES.CENETERED_TEXT_FONT_STYLE,
+            TEXT_STYLES.TEXT_FONT_STYLE,
         ).anchor.setTo(0.5, 0.5);
         this.songText = this.game.add.text(
             this.game.camera.width / 2,
             120,
             SONGS[this.songIndex],
-            TEXT_STYLES.CENTERED_CALL_TO_ACTION_FONT_STYLE,
+            TEXT_STYLES.CALL_TO_ACTION_FONT_STYLE,
         );
         this.songText.anchor.setTo(0.5, 0.5);
 
@@ -41,25 +49,33 @@ export default class JoinState extends GameState {
             this.game.camera.width / 4,
             120,
             '<',
-            TEXT_STYLES.CENTERED_CALL_TO_ACTION_FONT_STYLE,
+            TEXT_STYLES.CALL_TO_ACTION_FONT_STYLE,
         ).anchor.setTo(0.5, 0.5);
         this.game.add.text(
             this.game.camera.width / 4,
             155,
             '(O)',
-            TEXT_STYLES.CENTERED_SMALL_TEXT_FONT_STYLE,
+            TEXT_STYLES.SMALL_TEXT_FONT_STYLE,
         ).anchor.setTo(0.5, 0.5);
         this.game.add.text(
             (3 * this.game.camera.width) / 4,
             120,
             '>',
-            TEXT_STYLES.CENTERED_CALL_TO_ACTION_FONT_STYLE,
+            TEXT_STYLES.CALL_TO_ACTION_FONT_STYLE,
         ).anchor.setTo(0.5, 0.5);
         this.game.add.text(
             (3 * this.game.camera.width) / 4,
             155,
             '(P)',
-            TEXT_STYLES.CENTERED_SMALL_TEXT_FONT_STYLE,
+            TEXT_STYLES.SMALL_TEXT_FONT_STYLE,
+        ).anchor.setTo(0.5, 0.5);
+
+        // Play Game text!
+        this.game.add.text(
+            this.game.camera.width / 2,
+            this.game.camera.height - 50,
+            'Press SPACE to start!',
+            TEXT_STYLES.CALL_TO_ACTION_FONT_STYLE,
         ).anchor.setTo(0.5, 0.5);
 
         this.game.input.keyboard.addKey(Phaser.Keyboard.A)
@@ -71,15 +87,6 @@ export default class JoinState extends GameState {
                     200);
                 this.playerCount++;
             }, this);
-    }
-
-    render() {
-        this.game.debug.text(`Room Id: ${this.roomId}`, 40, 180);
-        this.game.debug.text(
-            'Press SPACE to start!',
-            40,
-            (this.game.camera.y + this.game.camera.height) - 50
-        );
     }
 
     handleStart() {

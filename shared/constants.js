@@ -28,24 +28,13 @@ const TEXT_STYLES = {
         font: '50px Lato',
         fill: '#ffffff',
     },
+    SMALL_TEXT_FONT_STYLE: {
+        font: '25px Lato',
+        fill: '#ffffff',
+    },
     PLAYER_NAME_CARD: {
         font: '25px Lato',
         fill: '#000000',
-    },
-    CENETERED_TEXT_FONT_STYLE: {
-        align: 'center',
-        font: '40px Lato',
-        fill: '#ffffff',
-    },
-    CENTERED_CALL_TO_ACTION_FONT_STYLE: {
-        align: 'center',
-        font: '50px Lato',
-        fill: '#ffffff',
-    },
-    CENTERED_SMALL_TEXT_FONT_STYLE: {
-        align: 'center',
-        font: '25px Lato',
-        fill: '#ffffff',
     },
 };
 
