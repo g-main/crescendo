@@ -9,6 +9,7 @@ export default class JoinState extends GameState {
         this.songIndex = 0;
         this.roomId = roomId;
         this.playerCount = 0;
+        this.songText = SONGS[this.songIndex];
     }
 
     create() {
@@ -19,6 +20,47 @@ export default class JoinState extends GameState {
         // Start game on spae
         this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR)
             .onDown.addOnce(this.handleStart, this);
+
+        // Select song text
+        this.game.add.text(
+            this.game.camera.width / 2,
+            60,
+            'Select a Song:',
+            TEXT_STYLES.CENETERED_TEXT_FONT_STYLE,
+        ).anchor.setTo(0.5, 0.5);
+        this.songText = this.game.add.text(
+            this.game.camera.width / 2,
+            120,
+            SONGS[this.songIndex],
+            TEXT_STYLES.CENTERED_CALL_TO_ACTION_FONT_STYLE,
+        );
+        this.songText.anchor.setTo(0.5, 0.5);
+
+        // Arrow keys to navigate (change song)
+        this.game.add.text(
+            this.game.camera.width / 4,
+            120,
+            '<',
+            TEXT_STYLES.CENTERED_CALL_TO_ACTION_FONT_STYLE,
+        ).anchor.setTo(0.5, 0.5);
+        this.game.add.text(
+            this.game.camera.width / 4,
+            155,
+            '(O)',
+            TEXT_STYLES.CENTERED_SMALL_TEXT_FONT_STYLE,
+        ).anchor.setTo(0.5, 0.5);
+        this.game.add.text(
+            (3 * this.game.camera.width) / 4,
+            120,
+            '>',
+            TEXT_STYLES.CENTERED_CALL_TO_ACTION_FONT_STYLE,
+        ).anchor.setTo(0.5, 0.5);
+        this.game.add.text(
+            (3 * this.game.camera.width) / 4,
+            155,
+            '(P)',
+            TEXT_STYLES.CENTERED_SMALL_TEXT_FONT_STYLE,
+        ).anchor.setTo(0.5, 0.5);
 
         this.game.input.keyboard.addKey(Phaser.Keyboard.A)
             .onDown.add(() => {
@@ -32,8 +74,6 @@ export default class JoinState extends GameState {
     }
 
     render() {
-        this.game.debug.text('Use "O" and "P" keys to select a song.', 40, 100);
-        this.game.debug.text(`Current Song: ${SONGS[this.songIndex]}`, 40, 140);
         this.game.debug.text(`Room Id: ${this.roomId}`, 40, 180);
         this.game.debug.text(
             'Press SPACE to start!',
@@ -48,12 +88,18 @@ export default class JoinState extends GameState {
 
     nextSong() {
         this.songIndex = (this.songIndex + 1) % SONGS.length;
+        this.updateSongText();
     }
 
     prevSong() {
         if ((--this.songIndex) < 0) {
             this.songIndex = SONGS.length - 1;
         }
+        this.updateSongText();
+    }
+
+    updateSongText() {
+        this.songText.setText(SONGS[this.songIndex]);
     }
 
     renderPlayer(name, type, x, y) {
