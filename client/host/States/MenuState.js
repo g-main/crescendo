@@ -8,7 +8,7 @@ export default class MenuState extends GameState {
                     .anchor.setTo(0.5, 0.5);
 
         this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER)
-            .onDown.addOnce(() => this.game.state.start(GAME_STATES.JOIN), this);
+            .onDown.addOnce(() => { this.game.state.start(GAME_STATES.JOIN); }, this);
 
         addText(this.game, 80, 'Crescendo', TEXT_STYLES.TITLE_FONT_STYLE);
         addText(this.game, (this.game.camera.height / 2) - 50, 'An SE 464 Project made by:');
