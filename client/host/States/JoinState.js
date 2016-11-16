@@ -10,6 +10,7 @@ export default class JoinState extends GameState {
         this.songIndex = 0;
         this.roomId = roomId;
         this.songList = [];
+        this.startGameText = null;
 
         fetch('/api/v0/tracks', { method: 'GET' })
             .then(request => request.json())
@@ -42,10 +43,6 @@ export default class JoinState extends GameState {
         // Scroll through songs
         this.game.input.keyboard.addKey(Phaser.Keyboard.O).onDown.add(this.prevSong, this);
         this.game.input.keyboard.addKey(Phaser.Keyboard.P).onDown.add(this.nextSong, this);
-
-        // Start game on spae
-        this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR)
-            .onDown.addOnce(this.handleStart, this);
 
         // Room ID
         this.game.add.text(
@@ -93,12 +90,13 @@ export default class JoinState extends GameState {
             TEXT_STYLES.SMALL_TEXT_FONT_STYLE,
         ).anchor.setTo(0.5, 0.5);
 
-        this.game.add.text(
+        this.startGameText = this.game.add.text(
             this.game.camera.width / 2,
             this.game.camera.height - 50,
             'Press SPACE to start!',
             TEXT_STYLES.CALL_TO_ACTION_FONT_STYLE,
-        ).anchor.setTo(0.5, 0.5);
+        );
+        this.startGameText.anchor.setTo(0.5, 0.5);
     }
 
     handleStart() {
@@ -128,5 +126,19 @@ export default class JoinState extends GameState {
             this.songIndex = this.songList.length - 1;
         }
         this.songText.setText(this.songList[this.songIndex].name);
+    }
+
+    update() {
+        if (this.playerGroup.getNumPlayers() > 0 && !this.startGameText.visible) {
+            this.startGameText.visible = true;
+            // Start game on spae
+            this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR)
+                .onDown.addOnce(this.handleStart, this);
+        } else if (this.playerGroup.getNumPlayers() < 1 && this.startGameText.visible) {
+            this.startGameText.visible = false;
+            // Start game on spae
+            this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR)
+                .onDown.remove(this.handleStart, this);
+        }
     }
 }
