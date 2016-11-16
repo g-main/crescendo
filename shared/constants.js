@@ -1,10 +1,14 @@
 const SOCKET_EVENTS = {
     PLAY_NOTE: 'PlayNote',
     HANDLE_NOTE: 'Noted',
+    JOIN_GAME_REQUEST: 'JoinGameRequest', // Controller -> Server
+    JOIN_GAME: 'JoinGame',  // Server -> Host
+    LEFT_GAME: 'LeftGame',
 };
 
 const INSTRUMENTS = {
     DRUMS: 'drums',
+    GUITAR: 'guitar',
 };
 
 const GAME_STATES = {
@@ -26,6 +30,10 @@ const TEXT_STYLES = {
     },
     CALL_TO_ACTION_FONT_STYLE: {
         font: '50px Lato',
+        fill: '#ffffff',
+    },
+    SMALL_TEXT_FONT_STYLE: {
+        font: '25px Lato',
         fill: '#ffffff',
     },
     PLAYER_NAME_CARD: {

@@ -53,6 +53,10 @@ const socket = io.connect(`/${roomId}`);
         });
     }
 
+    function joinGame() {
+        socket.emit(SOCKET_EVENTS.JOIN_GAME_REQUEST, playerData);
+    }
+
     function onInstrumentSelected(ev) {
         const page = document.getElementById('page-wrapper');
         const playerSetup = document.getElementById('player-setup-wrapper');
@@ -74,8 +78,9 @@ const socket = io.connect(`/${roomId}`);
             // Hide player setup content.
             playerSetup.classList.add('hidden');
 
-            // Initialize play content and show.
+            // Initialize play content, join game, and show.
             initializePlay();
+            joinGame();
             play.classList.remove('hidden');
         }, 1000);
     }

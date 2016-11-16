@@ -1,7 +1,8 @@
 export default class Player {
-    constructor(name) {
+    constructor(id, name, instrument) {
+        this.id = id;
         this.name = name;
-        this.type = 'drums';
+        this.instrument = instrument;
         this.score = 0;
     }
 

@@ -1,9 +1,12 @@
-import { GAME_STATES, INSTRUMENTS, TEXT_STYLES } from 'constants';
+import { GAME_STATES, TEXT_STYLES, SOCKET_EVENTS } from 'constants';
 import GameState from './GameState';
+import PlayerGroup from '../Models/PlayerGroup';
+import PlayerJoinPresenter from '../Presenters/PlayerJoinPresenter';
 
 export default class JoinState extends GameState {
-    constructor(game, roomId) {
+    constructor(game, roomId, socket) {
         super(game);
+        this.initializeSocket(socket);
         this.songIndex = 0;
         this.roomId = roomId;
         this.playerCount = 0;
@@ -13,7 +16,23 @@ export default class JoinState extends GameState {
             .then(request => request.json())
             .then(response => {
                 this.songList = response.tracks;
+                this.songText = this.songList[this.songIndex].name;
             });
+
+        this.playerGroup = new PlayerGroup();
+        this.playerPresenter = new PlayerJoinPresenter(game, this.playerGroup);
+    }
+
+    initializeSocket(socket) {
+        socket.on(SOCKET_EVENTS.JOIN_GAME, ({ id, name, instrument }) => {
+            this.playerGroup.addPlayer(id, name, instrument);
+            this.playerPresenter.notifyChanged();
+        });
+
+        socket.on(SOCKET_EVENTS.LEFT_GAME, ({ id }) => {
+            this.playerGroup.removePlayer(id);
+            this.playerPresenter.notifyChanged();
+        });
     }
 
     create() {
@@ -25,26 +44,62 @@ export default class JoinState extends GameState {
         this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR)
             .onDown.addOnce(this.handleStart, this);
 
-        this.game.input.keyboard.addKey(Phaser.Keyboard.A)
-            .onDown.add(() => {
-                this.renderPlayer(
-                    `Player ${this.playerCount + 1}`,
-                    INSTRUMENTS.DRUMS,
-                    (this.playerCount * 230) + (20 * this.playerCount),
-                    200);
-                this.playerCount++;
-            }, this);
-    }
+        // Room ID
+        this.game.add.text(
+            (7 * this.game.camera.width) / 8,
+            30,
+            `Room ID: ${this.roomId}`,
+            TEXT_STYLES.SMALL_TEXT_FONT_STYLE,
+        ).anchor.setTo(0, 0.5);
 
-    render() {
-        this.game.debug.text('Use "O" and "P" keys to select a song.', 40, 100);
-        this.game.debug.text(`Current Song: ${this.songList[this.songIndex].name}`, 40, 140);
-        this.game.debug.text(`Room Id: ${this.roomId}`, 40, 180);
-        this.game.debug.text(
-            'Press SPACE to start!',
-            40,
-            (this.game.camera.y + this.game.camera.height) - 50
+        // Select song text
+        this.game.add.text(
+            this.game.camera.width / 2,
+            60,
+            'Select a Song:',
+            TEXT_STYLES.TEXT_FONT_STYLE,
+        ).anchor.setTo(0.5, 0.5);
+        this.songText = this.game.add.text(
+            this.game.camera.width / 2,
+            120,
+            this.songList[this.songIndex].name,
+            TEXT_STYLES.CALL_TO_ACTION_FONT_STYLE,
         );
+        this.songText.anchor.setTo(0.5, 0.5);
+
+        // Arrow keys to navigate (change song)
+        this.game.add.text(
+            this.game.camera.width / 4,
+            120,
+            '<',
+            TEXT_STYLES.CALL_TO_ACTION_FONT_STYLE,
+        ).anchor.setTo(0.5, 0.5);
+        this.game.add.text(
+            this.game.camera.width / 4,
+            155,
+            '(O)',
+            TEXT_STYLES.SMALL_TEXT_FONT_STYLE,
+        ).anchor.setTo(0.5, 0.5);
+        this.game.add.text(
+            (3 * this.game.camera.width) / 4,
+            120,
+            '>',
+            TEXT_STYLES.CALL_TO_ACTION_FONT_STYLE,
+        ).anchor.setTo(0.5, 0.5);
+        this.game.add.text(
+            (3 * this.game.camera.width) / 4,
+            155,
+            '(P)',
+            TEXT_STYLES.SMALL_TEXT_FONT_STYLE,
+        ).anchor.setTo(0.5, 0.5);
+
+        // Play Game text!
+        this.game.add.text(
+            this.game.camera.width / 2,
+            this.game.camera.height - 50,
+            'Press SPACE to start!',
+            TEXT_STYLES.CALL_TO_ACTION_FONT_STYLE,
+        ).anchor.setTo(0.5, 0.5);
     }
 
     handleStart() {
@@ -58,31 +113,17 @@ export default class JoinState extends GameState {
 
     nextSong() {
         this.songIndex = (this.songIndex + 1) % this.songList.length;
+        this.updateSongText();
     }
 
     prevSong() {
         if ((--this.songIndex) < 0) {
             this.songIndex = this.songList.length - 1;
         }
+        this.updateSongText();
     }
 
-    renderPlayer(name, type, x, y) {
-        const playerCard = this.game.add.group();
-        const cardBackground = this.game.add.graphics(0, 0);
-        cardBackground.beginFill(0xffffff, 1);
-        cardBackground.drawRoundedRect(0, 0, 230, 256, 9);
-        cardBackground.endFill();
-
-        const instrument = this.game.add.image(20, 80, type);
-        const playerNameText = this.game.add.text(0, 0, name, TEXT_STYLES.PLAYER_NAME_CARD);
-
-        playerNameText.alignTo(instrument, Phaser.TOP_CENTER, 0, 20);
-        playerCard.add(cardBackground);
-        playerCard.add(instrument);
-        playerCard.add(playerNameText);
-        playerCard.x = x;
-        playerCard.y = y;
-
-        return playerCard;
+    updateSongText() {
+        this.songText.setText(this.songList[this.songIndex].name);
     }
 }
