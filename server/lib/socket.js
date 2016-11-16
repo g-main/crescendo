@@ -1,11 +1,12 @@
 import debugModule from 'debug';
 import socketio from 'socket.io';
-import crypto from 'crypto';
+import { generateId } from './idmanager';
 
 import { SOCKET_EVENTS } from '../../shared/constants';
 
 const debug = debugModule('crescendo:socket');
 let io = null;
+const allocatedIds = {};
 
 export default {
     initialize(httpServer) {
@@ -21,19 +22,22 @@ export default {
 
         const room = io.of(`/${roomId}`);
         room.on('connection', (socket) => {
-            const id = crypto.randomBytes(16).toString('hex');
+            const id = generateId(16, allocatedIds);
+            allocatedIds[id] = true;
+
             debug(`connected to ${roomId} as ${id}`);
 
             socket.on(SOCKET_EVENTS.PLAY_NOTE, (note) => {
                 room.emit(SOCKET_EVENTS.HANDLE_NOTE, note);
             });
 
-            socket.on(SOCKET_EVENTS.JOIN_GAME_REQUEST, ({name, instrument}) => {
-                room.emit(SOCKET_EVENTS.JOIN_GAME, {id, name, instrument});
+            socket.on(SOCKET_EVENTS.JOIN_GAME_REQUEST, ({ name, instrument }) => {
+                room.emit(SOCKET_EVENTS.JOIN_GAME, { id, name, instrument });
             });
 
             socket.on('disconnect', () => {
-                room.emit(SOCKET_EVENTS.LEFT_GAME, {id});
+                delete allocatedIds[id];
+                room.emit(SOCKET_EVENTS.LEFT_GAME, { id });
             });
         });
     },

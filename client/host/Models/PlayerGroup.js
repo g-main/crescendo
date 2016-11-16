@@ -6,7 +6,7 @@ export default class PlayerGroup {
     }
 
     addPlayer(id, name, instrument) {
-        if (!!this.players[id]) return;
+        if (this.players[id]) return;
         this.players[id] = new Player(id, name, instrument);
     }
 
@@ -24,4 +24,4 @@ export default class PlayerGroup {
             callback(this.players[key]);
         });
     }
-};
+}
