@@ -3,16 +3,17 @@ import GameState from './GameState';
 
 export default class MenuState extends GameState {
     create() {
-        this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER)
-            .onDown.addOnce(this.handleStart, this);
+        function addText(game, height, text) {
+            return game.add.text((game.camera.width / 2) - (text.length * 10),
+                height, text, TEXT_STYLES.TEXT_FONT_STYLE);
+        }
 
-        this.game.add.text(this.centerX(240), 50,
-            'Crescendo', TEXT_STYLES.TITLE_FONT_STYLE);
-        this.game.add.text(this.centerX(252), 300,
-            'An SE 464 Project made by:', TEXT_STYLES.TEXT_FONT_STYLE);
-        this.game.add.text(this.centerX(575), 370,
-            'Sameer Chitley, Jami Boy Mohammad, Hasya Shah, Geoffrey Yu',
-            TEXT_STYLES.TEXT_FONT_STYLE);
+        this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER)
+            .onDown.addOnce(() => this.game.state.start(GAME_STATES.JOIN), this);
+
+        addText(this.game, 50, 'Crescendo');
+        addText(this.game, 300, 'An SE 464 Project made by:');
+        addText(this.game, 370, 'Sameer Chitley, Jami Boy Mohammad, Hasya Shah, and Geoffrey Yu');
 
         this.game.add.text(
             this.game.camera.width / 2,
@@ -20,13 +21,5 @@ export default class MenuState extends GameState {
             'Press ENTER to start!',
             TEXT_STYLES.CALL_TO_ACTION_FONT_STYLE
         ).anchor.setTo(0.5, 0.5);
-    }
-
-    handleStart() {
-        this.game.state.start(GAME_STATES.JOIN);
-    }
-
-    centerX(offset) {
-        return (this.game.camera.width / 2) - offset;
     }
 }
