@@ -9,7 +9,6 @@ export default class JoinState extends GameState {
         this.initializeSocket(socket);
         this.songIndex = 0;
         this.roomId = roomId;
-        this.playerCount = 0;
         this.songList = [];
 
         fetch('/api/v0/tracks', { method: 'GET' })
@@ -107,7 +106,12 @@ export default class JoinState extends GameState {
         fetch(`/api/v0/track/${trackFile}`, { method: 'GET' })
             .then(request => request.json())
             .then(response => {
-                this.game.state.start(GAME_STATES.PLAY, true, false, response);
+                this.game.state.start(GAME_STATES.PLAY,
+                    true,
+                    false,
+                    response,
+                    this.playerGroup.getNumPlayers(),
+                );
             });
     }
 

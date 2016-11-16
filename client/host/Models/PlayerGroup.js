@@ -24,4 +24,8 @@ export default class PlayerGroup {
             callback(this.players[key]);
         });
     }
+
+    getNumPlayers() {
+        return Object.keys(this.players).length;
+    }
 }

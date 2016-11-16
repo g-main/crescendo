@@ -12,9 +12,6 @@ const NOTE_SIZE = {
 
 const TRACK_LINE_WIDTH = 10; // pixels
 
-// TODO: turn this constant into a member variable passed in from the previous state
-const NUM_USERS = 4;
-
 const TRACK_KEY = 'track';
 
 // The amount of time (in note travel distance) after which the
@@ -49,13 +46,18 @@ export default class PlayState extends GameState {
         this.bottomBar = null;
         this.gameTrack = null;
         this.musicReady = false;
-        this.notes = [];
-        for (let u = 0; u < NUM_USERS; u++) {
-            this.notes.push([]);
-        }
+        this.playerCount = 0;
+        this.initNotes();
 
         this.player = new Player('mah name');
         this.startTime = null;
+    }
+
+    initNotes() {
+        this.notes = [];
+        for (let u = 0; u < this.playerCount; u++) {
+            this.notes.push([]);
+        }
         this.lastNoteInSong = null;
     }
 
@@ -63,10 +65,13 @@ export default class PlayState extends GameState {
         socket.on(SOCKET_EVENTS.HANDLE_NOTE, this.handleNotePlayed.bind(this));
     }
 
-    init(track) {
+    init(track, playerCount) {
         this.trackName = track.name;
         this.trackNotes = track.track;
         this.trackFile = track.file;
+
+        this.playerCount = playerCount;
+        this.initNotes();
     }
 
     handleNotePlayed(data) {
@@ -115,16 +120,16 @@ export default class PlayState extends GameState {
         this.game.camera.y = this.game.world.height - this.game.camera.height;
 
         const trackWidth = this.game.camera.width / (this.trackNotes.length);
-        for (let u = 0; u < NUM_USERS; u++) {
+        for (let u = 0; u < this.playerCount ; u++) {
             for (let i = 0; i < this.trackNotes.length; i++) {
                 // Make the notes and tracks closer together (reduce horizontal spacing)
                 // as more users are added to clearly seperate each user's play area
                 // Draw notes
-                const globalNotePositiveOffset = this.game.camera.width / (this.trackNotes.length * NUM_USERS * 4);
+                const globalNotePositiveOffset = this.game.camera.width / (this.trackNotes.length * this.playerCount  * 4);
                 const noteNegativeOffset = i * globalNotePositiveOffset;
 
-                const globalTrackLocation = (u * this.game.camera.width) / NUM_USERS;
-                const localTrackOffset = ((i * trackWidth) + ((trackWidth - TRACK_LINE_WIDTH) / 2)) / NUM_USERS - noteNegativeOffset;
+                const globalTrackLocation = (u * this.game.camera.width) / this.playerCount ;
+                const localTrackOffset = ((i * trackWidth) + ((trackWidth - TRACK_LINE_WIDTH) / 2)) / this.playerCount  - noteNegativeOffset;
 
                 const trackGraphic = this.game.add.graphics(
                     globalNotePositiveOffset + globalTrackLocation + localTrackOffset, /* x */
@@ -135,8 +140,8 @@ export default class PlayState extends GameState {
                 trackGraphic.endFill();
 
                 for (let j = 0; j < this.trackNotes[i].length; j++) {
-                    const globalNoteLocation = (u * this.game.camera.width) / NUM_USERS;
-                    const localNoteOffset = ((i * trackWidth) + ((trackWidth - NOTE_SIZE.x) / 2)) / NUM_USERS - noteNegativeOffset;
+                    const globalNoteLocation = (u * this.game.camera.width) / this.playerCount ;
+                    const localNoteOffset = ((i * trackWidth) + ((trackWidth - NOTE_SIZE.x) / 2)) / this.playerCount  - noteNegativeOffset;
 
                     const g = this.game.add.graphics(
                         globalNotePositiveOffset + globalNoteLocation + localNoteOffset, /* x */
@@ -147,7 +152,7 @@ export default class PlayState extends GameState {
                     g.drawRoundedRect(
                         0, /* topLeftX */
                         0, /* topLeftY */
-                        NOTE_SIZE.x / NUM_USERS, /* width */
+                        NOTE_SIZE.x / this.playerCount , /* width */
                         NOTE_SIZE.y, /* height */
                         9, /* roundness */
                     );
@@ -175,7 +180,7 @@ export default class PlayState extends GameState {
                     g.drawRoundedRect(
                         3, /* topLeftX */
                         3, /* topLeftY */
-                        (NOTE_SIZE.x / NUM_USERS) - 6, /* width */
+                        (NOTE_SIZE.x / this.playerCount ) - 6, /* width */
                         NOTE_SIZE.y - 6, /* height */
                         9, /* roundness */
                     );
@@ -221,7 +226,7 @@ export default class PlayState extends GameState {
         }
 
         const relativeTime = Date.now() - this.startTime;
-        for (let u = 0; u < NUM_USERS; u++) {
+        for (let u = 0; u < this.playerCount ; u++) {
             for (let i = 0; i < this.notes[u].length; i++) {
                 const note = this.notes[u][i];
                 note.recalculatePosition(relativeTime);
@@ -250,10 +255,9 @@ export default class PlayState extends GameState {
         this.gameTrack = null;
         this.bottomBar = null;
         this.notes.forEach(noteArray => { noteArray.forEach( note => { note.graphics.destroy(); }); });
-        this.notes = [];
-        for (let u = 0; u < NUM_USERS; u++) {
-            this.notes.push([]);
-        }
+        this.notes = null;
+        this.lastNoteInSong = null;
+        this.playerCount = 0;
     }
 
     transitionToSummary() {
