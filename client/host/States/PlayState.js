@@ -69,7 +69,7 @@ export default class PlayState extends GameState {
         const { track, playerGroup } = gameInfo;
 
         this.trackName = track.name;
-        this.trackNotes = track.track;
+        this.trackNotes = track.track.guitar; // Temporary hardcode - will be removed
         this.trackFile = track.file;
 
         this.playerCount = playerGroup.getNumPlayers();
