@@ -26,12 +26,12 @@ export default class JoinState extends GameState {
     initializeSocket(socket) {
         socket.on(SOCKET_EVENTS.JOIN_GAME, ({ id, name, instrument }) => {
             this.playerGroup.addPlayer(id, name, instrument);
-            this.playerPresenter.notifyChanged();
+            this.playerPresenter.render();
         });
 
         socket.on(SOCKET_EVENTS.LEFT_GAME, ({ id }) => {
             this.playerGroup.removePlayer(id);
-            this.playerPresenter.notifyChanged();
+            this.playerPresenter.render();
         });
     }
 
@@ -111,7 +111,7 @@ export default class JoinState extends GameState {
         fetch(`/api/v0/track/${trackFile}`, { method: 'GET' })
             .then(request => request.json())
             .then(response => {
-                this.game.state.start(GAME_STATES.PLAY, false, false, response);
+                this.game.state.start(GAME_STATES.PLAY, true, false, response);
             });
     }
 

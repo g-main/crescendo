@@ -1,12 +1,7 @@
-import crypto from 'crypto';
+import { generateId } from './idmanager';
 
 const hosts = {};
 const rooms = {};
-
-function generateHostId() {
-    const hostId = crypto.randomBytes(8).toString('hex');
-    return !hosts[hostId] ? hostId : generateHostId();
-}
 
 // eslint-disable-next-line no-unused-vars
 function addSection(roomId, section) {
@@ -26,7 +21,7 @@ function removeHost(hostId) {
 
 export default {
     createHost() {
-        const hostId = generateHostId();
+        const hostId = generateId(4, hosts);
         const roomId = hostId.substring(0, 4);
 
         hosts[hostId] = true;
