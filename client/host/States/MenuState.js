@@ -13,8 +13,13 @@ export default class MenuState extends GameState {
         this.game.add.text(this.centerX(575), 370,
             'Sameer Chitley, Jami Boy Mohammad, Hasya Shah, Geoffrey Yu',
             TEXT_STYLES.TEXT_FONT_STYLE);
-        this.game.add.text(this.centerX(245), this.game.camera.height - 150,
-            'Press ENTER to start!', TEXT_STYLES.CALL_TO_ACTION_FONT_STYLE);
+
+        this.game.add.text(
+            this.game.camera.width / 2,
+            this.game.camera.height - 50,
+            'Press ENTER to start!',
+            TEXT_STYLES.CALL_TO_ACTION_FONT_STYLE
+        ).anchor.setTo(0.5, 0.5);
     }
 
     handleStart() {
