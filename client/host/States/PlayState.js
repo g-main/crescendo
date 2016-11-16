@@ -66,7 +66,7 @@ export default class PlayState extends GameState {
     }
 
     init(gameInfo) {
-        console.log(JSON.stringify(gameInfo));
+        const { track, playerGroup } = gameInfo;
 
         this.trackName = track.name;
         this.trackNotes = track.track;
