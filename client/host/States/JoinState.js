@@ -1,10 +1,9 @@
 import { GAME_STATES, TEXT_STYLES, SOCKET_EVENTS } from 'constants';
 import GameState from './GameState';
-import PlayerGroup from '../Models/PlayerGroup';
-import PlayerJoinPresenter from '../Presenters/PlayerJoinPresenter';
+import PlayerCardsView from '../Views/PlayerCardsView';
 
 export default class JoinState extends GameState {
-    constructor(game, roomId, socket) {
+    constructor(game, roomId, socket, playerGroup) {
         super(game);
         this.initializeSocket(socket);
         this.songIndex = 0;
@@ -23,23 +22,25 @@ export default class JoinState extends GameState {
                 ).anchor.setTo(0.5, 0.5);
             });
 
-        this.playerGroup = new PlayerGroup();
-        this.playerPresenter = new PlayerJoinPresenter(game, this.playerGroup);
+        this.playerGroup = playerGroup;
     }
 
     initializeSocket(socket) {
         socket.on(SOCKET_EVENTS.JOIN_GAME, ({ id, name, instrument }) => {
             this.playerGroup.addPlayer(id, name, instrument);
-            this.playerPresenter.render();
+            this.playerCardsView.onModelChange();
         });
 
         socket.on(SOCKET_EVENTS.LEFT_GAME, ({ id }) => {
             this.playerGroup.removePlayer(id);
-            this.playerPresenter.render();
+            this.playerCardsView.onModelChange();
         });
     }
 
     create() {
+        this.playerCardsView = new PlayerCardsView(this.game, this.playerGroup);
+        this.playerCardsView.onModelChange();
+
         // Scroll through songs
         this.game.input.keyboard.addKey(Phaser.Keyboard.O).onDown.add(this.prevSong, this);
         this.game.input.keyboard.addKey(Phaser.Keyboard.P).onDown.add(this.nextSong, this);
@@ -97,23 +98,27 @@ export default class JoinState extends GameState {
             TEXT_STYLES.CALL_TO_ACTION_FONT_STYLE,
         );
         this.startGameText.anchor.setTo(0.5, 0.5);
+
+        this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR)
+                .onDown.add(this.handleStart, this);
     }
 
     handleStart() {
-        const trackFile = this.songList[this.songIndex].file;
-        fetch(`/api/v0/track/${trackFile}`, { method: 'GET' })
-            .then(request => request.json())
-            .then(response => {
-                const gameInfo = {
-                    track: response,
-                    playerGroup: this.playerGroup,
-                };
-                this.game.state.start(GAME_STATES.PLAY,
-                    true,
-                    false,
-                    gameInfo,
-                );
-            });
+        if (this.playerGroup.getNumPlayers() > 0) {
+            const trackFile = this.songList[this.songIndex].file;
+            fetch(`/api/v0/track/${trackFile}`, { method: 'GET' })
+                .then(request => request.json())
+                .then(response => {
+                    const gameInfo = {
+                        track: response,
+                    };
+                    this.game.state.start(GAME_STATES.PLAY,
+                        true,
+                        false,
+                        gameInfo,
+                    );
+                });
+        }
     }
 
     nextSong() {
@@ -131,14 +136,8 @@ export default class JoinState extends GameState {
     update() {
         if (this.playerGroup.getNumPlayers() > 0 && !this.startGameText.visible) {
             this.startGameText.visible = true;
-            // Start game on spae
-            this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR)
-                .onDown.addOnce(this.handleStart, this);
         } else if (this.playerGroup.getNumPlayers() < 1 && this.startGameText.visible) {
             this.startGameText.visible = false;
-            // Start game on spae
-            this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR)
-                .onDown.remove(this.handleStart, this);
         }
     }
 }

@@ -2,6 +2,11 @@ import { GAME_STATES, TEXT_STYLES } from 'constants';
 import GameState from './GameState';
 
 export default class SummaryState extends GameState {
+    constructor(game, playerGroup) {
+        super(game);
+        this.playerGroup = playerGroup;
+    }
+
     create() {
         this.game.add.text(this.centerX(365), 50,
             'Game Summary', TEXT_STYLES.TITLE_FONT_STYLE);
@@ -13,6 +18,7 @@ export default class SummaryState extends GameState {
         }, this);
 
         this.game.input.keyboard.addKey(Phaser.Keyboard.Q).onDown.addOnce(() => {
+            this.playerGroup.clear();
             this.game.state.start(GAME_STATES.MENU);
         }, this);
     }

@@ -5,7 +5,8 @@ import MenuState from './States/MenuState';
 import JoinState from './States/JoinState';
 import PlayState from './States/PlayState';
 import LoadState from './States/LoadState';
-import SummaryState from './States/SummaryState.js';
+import SummaryState from './States/SummaryState';
+import PlayerGroup from './Models/PlayerGroup';
 
 (() => {
     const Phaser = window.Phaser;
@@ -20,12 +21,13 @@ import SummaryState from './States/SummaryState.js';
         };
 
         const game = new Phaser.Game(gameConfig);
+        const playerGroup = new PlayerGroup();
 
         game.state.add(GAME_STATES.LOAD, new LoadState(game));
-        game.state.add(GAME_STATES.PLAY, new PlayState(game, socket));
-        game.state.add(GAME_STATES.JOIN, new JoinState(game, roomId, socket));
+        game.state.add(GAME_STATES.PLAY, new PlayState(game, socket, playerGroup));
+        game.state.add(GAME_STATES.JOIN, new JoinState(game, roomId, socket, playerGroup));
         game.state.add(GAME_STATES.MENU, new MenuState(game));
-        game.state.add(GAME_STATES.SUMMARY, new SummaryState(game));
+        game.state.add(GAME_STATES.SUMMARY, new SummaryState(game, playerGroup));
 
         game.state.start(GAME_STATES.LOAD);
     }

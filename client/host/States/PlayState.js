@@ -11,7 +11,7 @@ const TRACK_KEY = 'track';
 // const END_GAME_OFFSET = 240;
 
 export default class PlayState extends GameState {
-    constructor(game, socket) {
+    constructor(game, socket, playerGroup) {
         super(game);
         this.initializeSocket(socket);
 
@@ -25,6 +25,7 @@ export default class PlayState extends GameState {
 
         this.player = new Player('mah name');
         this.startTime = null;
+        this.playerGroup = playerGroup;
     }
 
     // initNotes() {
@@ -40,11 +41,10 @@ export default class PlayState extends GameState {
     }
 
     init(gameInfo) {
-        const { track, playerGroup } = gameInfo;
+        const { track } = gameInfo;
 
         this.song = new Song(track);
         // this.playerCount = playerGroup.getNumPlayers();
-        this.playerGroup = playerGroup;
         // this.initNotes();
     }
 
@@ -81,6 +81,8 @@ export default class PlayState extends GameState {
 
     create() {
         this.playerView = new PlayerView(this.game, this.playerGroup, this.song);
+
+        this.game.input.keyboard.addKey(Phaser.Keyboard.L).onDown.add(this.transitionToSummary, this);
 
         this.gameTrack = this.game.add.audio(TRACK_KEY);
         this.game.sound.setDecodedCallback(
@@ -144,6 +146,6 @@ export default class PlayState extends GameState {
     }
 
     transitionToSummary() {
-        this.game.state.start(GAME_STATES.SUMMARY);
+        this.game.state.start(GAME_STATES.SUMMARY, true, false, this.playerGroup);
     }
 }

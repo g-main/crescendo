@@ -4,14 +4,14 @@ const CARD_WIDTH = 230;
 const CARD_HEIGHT = 256;
 const CARD_MARGIN = 20;
 
-export default class PlayerPresenter {
+export default class PlayerCardsView {
     constructor(game, playerGroup) {
         this.game = game;
         this.playerGroup = playerGroup;
         this.renderedPlayers = [];
     }
 
-    render() {
+    onModelChange() {
         // Remove rendered players that are no longer in the group
         this.renderedPlayers = this.renderedPlayers.filter(({ player, card }) => {
             if (!this.playerGroup.getById(player.id)) {
@@ -26,7 +26,7 @@ export default class PlayerPresenter {
             if (!this.renderedPlayers.find(({ player }) => (player.id === playerGroupPlayer.id))) {
                 this.renderedPlayers.push({
                     player: playerGroupPlayer,
-                    card: this.renderPlayer(playerGroupPlayer),
+                    card: this.renderPlayerCard(playerGroupPlayer),
                 });
             }
         });
@@ -40,7 +40,7 @@ export default class PlayerPresenter {
         });
     }
 
-    renderPlayer(player) {
+    renderPlayerCard(player) {
         const playerCard = this.game.add.group();
         const cardBackground = this.game.add.graphics(0, 0);
         cardBackground.beginFill(0xffffff, 1);

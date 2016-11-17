@@ -2,7 +2,7 @@ import Player from './Player';
 
 export default class PlayerGroup {
     constructor() {
-        this.players = [];
+        this.clear();
     }
 
     exists(id) {
@@ -33,5 +33,9 @@ export default class PlayerGroup {
 
     getNumPlayers() {
         return this.players.length;
+    }
+
+    clear() {
+        this.players = [];
     }
 }
