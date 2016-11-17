@@ -9,6 +9,7 @@ const NOTE_SIZE = {
 const TRACK_LINE_WIDTH = 10; // pixels
 
 const BOTTOM_BAR_PERCENTAGE = 7 / 10; // percentage of screen at which bar should be at
+const BOTTOM_BAR_THICKNESS = 2; // pixels
 
 export default class PlayView extends View {
     constructor(game, playerGroup, song) {
@@ -33,8 +34,12 @@ export default class PlayView extends View {
         this.bottomBarOffset = this.game.camera.height * (1 - BOTTOM_BAR_PERCENTAGE);
 
         // Bar will be covered with an asset in the future, so this rectangle
-        this.bottomBar = new Phaser.Rectangle(0,
-            this.game.world.height - this.bottomBarOffset - 1, this.game.world.width, 2);
+        this.bottomBar = new Phaser.Rectangle(
+            0,
+            this.game.world.height - this.bottomBarOffset - (BOTTOM_BAR_THICKNESS / 2),
+            this.game.world.width,
+            BOTTOM_BAR_THICKNESS,
+        );
 
         const playerCount = this.playerGroup.getNumPlayers();
 
