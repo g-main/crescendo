@@ -4,6 +4,8 @@ const SOCKET_EVENTS = {
     JOIN_GAME_REQUEST: 'JoinGameRequest', // Controller -> Server
     JOIN_GAME: 'JoinGame',  // Server -> Host
     LEFT_GAME: 'LeftGame',
+    CHANGE_TRACK: 'ChangeTrack',
+    CONNECTED: 'Connected', // Server -> Controller
 };
 
 const INSTRUMENTS = {

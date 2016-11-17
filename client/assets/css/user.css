@@ -35,15 +35,26 @@ input {
 }
 
 #page-wrapper {
+    background: -webkit-linear-gradient(top, rgba(252,79,52,1) 0%, rgba(232,49,98,1) 100%);
+    background: linear-gradient(to bottom, rgba(252,79,52,1) 0%, rgba(232,49,98,1) 100%);
     display: flex;
     flex-flow: column;
     height: 100%;
     padding: 25px 50px;
 }
 
-#page-wrapper.player-setup {
-    background: -webkit-linear-gradient(top, rgba(252,79,52,1) 0%, rgba(232,49,98,1) 100%);
-    background: linear-gradient(to bottom, rgba(252,79,52,1) 0%, rgba(232,49,98,1) 100%);
+#page-wrapper.play {
+    background: #fff;
+}
+
+/* Connecting */
+
+#connecting-wrapper {
+    align-items: center;
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+    justify-content: center;
 }
 
 /* Player Setup */
@@ -207,11 +218,11 @@ input {
     content: '';
     background: url('../img/drums.png') no-repeat center center;
     background-size: contain;
-    height: 40px;
-    left: -80px;
+    height: 22px;
+    left: -45px;
     position: absolute;
     top: 5px;
-    width: 75px;
+    width: 45px;
 }
 
 #metadata-player.instrument-guitar:before {
@@ -219,7 +230,7 @@ input {
     background-size: contain;
 }
 
-.metadata-track-artist,
+#metadata-track-artist,
 #metadata-player-id {
     font-weight: 700;
     text-transform: uppercase;

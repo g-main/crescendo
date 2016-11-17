@@ -27,6 +27,8 @@ export default {
 
             debug(`connected to ${roomId} as ${id}`);
 
+            socket.emit(SOCKET_EVENTS.CONNECTED, { id: id });
+
             socket.on(SOCKET_EVENTS.PLAY_NOTE, (note) => {
                 room.emit(SOCKET_EVENTS.HANDLE_NOTE, note);
             });
