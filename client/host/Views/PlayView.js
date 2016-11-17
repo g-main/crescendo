@@ -7,6 +7,8 @@ const NOTE_SIZE = {
 };
 const TRACK_LINE_WIDTH = 10; // pixels
 
+const BOTTOM_BAR_PERCENTAGE = 7/10; // percentage of screen at which bar should be at
+
 export default class PlayView {
     constructor(game, playerGroup, song) {
         this.game = game;
@@ -18,7 +20,6 @@ export default class PlayView {
 
     debug() {
         this.game.debug.geom(this.bottomBar, '#ffffff');
-        // this.game.debug.text(this.player.score, 40, 160);
         this.game.debug.text(`FPS: ${this.game.time.fps}`, 40, 30);
     }
 
@@ -28,13 +29,11 @@ export default class PlayView {
         //  Modify the world and camera bounds
         this.game.world.resize(this.game.world.width, this.game.world.height);
 
+        this.bottomBarOffset = this.game.camera.height * (1 - BOTTOM_BAR_PERCENTAGE);
+
         // Bar will be covered with an asset in the future, so this rectangle
         this.bottomBar = new Phaser.Rectangle(0,
-            this.game.world.height - 20, this.game.world.width, 2);
-
-        // Position at bottom of world
-        this.game.camera.x = 0;
-        this.game.camera.y = this.game.world.height - this.game.camera.height;
+            this.game.world.height - this.bottomBarOffset - 1, this.game.world.width, 2);
 
         const playerCount = this.playerGroup.getNumPlayers();
 
@@ -60,12 +59,12 @@ export default class PlayView {
                 line.forEach((note, noteIndex) => {
                     const globalNoteLocation = (playerIndex * this.game.camera.width) / playerCount;
                     const localNoteOffset = ((lineIndex * trackWidth) + ((trackWidth - NOTE_SIZE.x) / 2)) / playerCount - noteNegativeOffset;
-                    const y = (this.game.world.height - 20) - ((60 * NOTE_DELTA_Y * line[noteIndex]) / 1000);
+                    const y = (this.game.world.height - this.bottomBarOffset) - ((60 * NOTE_DELTA_Y * line[noteIndex]) / 1000);
 
                     const noteView = new NoteView(
                         this.game,
                         globalNotePositiveOffset + globalNoteLocation + localNoteOffset, /* x */
-                        (this.game.world.height - 20) - ((60 * NOTE_DELTA_Y * line[noteIndex]) / 1000), /* y */
+                        (this.game.world.height - this.bottomBarOffset) - ((60 * NOTE_DELTA_Y * line[noteIndex]) / 1000), /* y */
                         lineIndex,
                         playerCount,
                     );
