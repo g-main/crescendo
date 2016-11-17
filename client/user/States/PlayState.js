@@ -1,8 +1,8 @@
-export default class PlayState {
+import AbstractState from './AbstractState';
+
+export default class PlayState extends AbstractState {
     constructor(player, socket, nextState) {
-        this._player = player;
-        this._socket = socket;
-        this._nextState = nextState || null;
+        super(player, socket, nextState);
 
         this._dom = {
             page: document.getElementById('page-wrapper'),
@@ -23,18 +23,17 @@ export default class PlayState {
     }
 
     show() {
+        super.show();
         this._dom.page.classList.add('play');
-        this._dom.wrapper.classList.remove('hidden');
     }
 
     hide() {
+        super.hide();
         this._dom.page.classList.remove('play');
-        this._dom.wrapper.classList.add('hidden');
     }
 
     next() {
-        this.hide();
-        if (this._nextState) this._nextState.initialize();
+        super.next();
     }
 
     onNotePlayed(ev) {

@@ -1,10 +1,9 @@
+import AbstractState from './AbstractState';
 import { INSTRUMENTS } from 'constants';
 
-export default class PlayerSetupState {
+export default class PlayerSetupState extends AbstractState {
     constructor(player, socket, nextState) {
-        this._player = player;
-        this._socket = socket;
-        this._nextState = nextState || null;
+        super(player, socket, nextState);
 
         this._dom = {
             page: document.getElementById('page-wrapper'),
@@ -27,18 +26,17 @@ export default class PlayerSetupState {
     }
 
     show() {
+        super.show();
         this._dom.page.classList.add('player-setup');
-        this._dom.wrapper.classList.remove('hidden');
     }
 
     hide() {
+        super.hide();
         this._dom.page.classList.remove('player-setup');
-        this._dom.wrapper.classList.add('hidden');
     }
 
     next() {
-        this.hide();
-        if (this._nextState) this._nextState.initialize();
+        super.next();
     }
 
     onInstrumentSelected(ev) {

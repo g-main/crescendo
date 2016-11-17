@@ -1,11 +1,10 @@
+import AbstractState from './AbstractState';
 import Player from '../../host/Models/Player';
 import { SOCKET_EVENTS } from 'constants';
 
-export default class ConnectingState {
+export default class ConnectingState extends AbstractState {
     constructor(player, socket, nextState) {
-        this._player = player;
-        this._socket = socket;
-        this._nextState = nextState || null;
+        super(player, socket, nextState);
 
         this._dom = {
             page: document.getElementById('page-wrapper'),
@@ -21,18 +20,17 @@ export default class ConnectingState {
     }
 
     show() {
+        super.show();
         this._dom.page.classList.add('connecting');
-        this._dom.wrapper.classList.remove('hidden');
     }
 
     hide() {
+        super.hide();
         this._dom.page.classList.remove('connecting');
-        this._dom.wrapper.classList.add('hidden');
     }
 
     next() {
-        this.hide();
-        if (this._nextState) this._nextState.initialize();
+        super.next();
     }
 
     onSocketConnected(data) {
