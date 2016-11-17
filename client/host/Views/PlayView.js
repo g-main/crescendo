@@ -43,11 +43,14 @@ export default class PlayView extends View {
             const trackWidth = this.game.camera.width / track.length;
 
             track.forEach((line, lineIndex) => {
-                const globalNotePositiveOffset = this.game.camera.width / (track.length * playerCount * 4);
+                const globalNotePositiveOffset =
+                    this.game.camera.width / (track.length * playerCount * 4);
                 const noteNegativeOffset = lineIndex * globalNotePositiveOffset;
 
                 const globalTrackLocation = (playerIndex * this.game.camera.width) / playerCount;
-                const localTrackOffset = ((lineIndex * trackWidth) + ((trackWidth - TRACK_LINE_WIDTH) / 2)) / playerCount - noteNegativeOffset;
+                const localTrackOffset =
+                    (((lineIndex * trackWidth) +
+                        ((trackWidth - TRACK_LINE_WIDTH) / 2)) / playerCount) - noteNegativeOffset;
 
                 const trackGraphic = this.game.add.graphics(
                     globalNotePositiveOffset + globalTrackLocation + localTrackOffset, /* x */
@@ -59,13 +62,17 @@ export default class PlayView extends View {
 
                 line.forEach((note, noteIndex) => {
                     const globalNoteLocation = (playerIndex * this.game.camera.width) / playerCount;
-                    const localNoteOffset = ((lineIndex * trackWidth) + ((trackWidth - NOTE_SIZE.x) / 2)) / playerCount - noteNegativeOffset;
-                    const y = (this.game.world.height - this.bottomBarOffset) - ((60 * NOTE_DELTA_Y * line[noteIndex]) / 1000);
+                    const localNoteOffset =
+                        (((lineIndex * trackWidth) +
+                            ((trackWidth - NOTE_SIZE.x) / 2)) / playerCount) - noteNegativeOffset;
+                    const y = (this.game.world.height - this.bottomBarOffset) -
+                        ((60 * NOTE_DELTA_Y * line[noteIndex]) / 1000);
 
                     const noteView = new NoteView(
                         this.game,
                         globalNotePositiveOffset + globalNoteLocation + localNoteOffset, /* x */
-                        (this.game.world.height - this.bottomBarOffset) - ((60 * NOTE_DELTA_Y * line[noteIndex]) / 1000), /* y */
+                        (this.game.world.height - this.bottomBarOffset) -
+                            ((60 * NOTE_DELTA_Y * line[noteIndex]) / 1000), /* y */
                         lineIndex,
                         playerCount,
                     );
