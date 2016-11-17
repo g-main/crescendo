@@ -1,3 +1,4 @@
+import View from './View';
 import NoteView from './NoteView';
 
 const NOTE_DELTA_Y = 4;
@@ -7,11 +8,11 @@ const NOTE_SIZE = {
 };
 const TRACK_LINE_WIDTH = 10; // pixels
 
-const BOTTOM_BAR_PERCENTAGE = 7/10; // percentage of screen at which bar should be at
+const BOTTOM_BAR_PERCENTAGE = 7 / 10; // percentage of screen at which bar should be at
 
-export default class PlayView {
+export default class PlayView extends View {
     constructor(game, playerGroup, song) {
-        this.game = game;
+        super(game);
         this.playerGroup = playerGroup;
         this.song = song;
         this.notes = [];

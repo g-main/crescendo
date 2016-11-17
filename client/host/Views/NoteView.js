@@ -1,12 +1,14 @@
+import View from './View';
+
 const NOTE_DELTA_Y = 4;
 const NOTE_SIZE = {
     x: 100,
     y: 20,
 };
 
-export default class NoteView {
+export default class NoteView extends View {
     constructor(game, x, y, lineIndex, playerCount) {
-        this.game = game;
+        super(game);
         this.initialPosition = y;
         this.graphics = this.game.add.graphics(x, y);
         this.lineIndex = lineIndex;

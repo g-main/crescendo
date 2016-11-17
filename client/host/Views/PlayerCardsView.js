@@ -1,12 +1,14 @@
 import { TEXT_STYLES } from 'constants';
 
+import View from './View';
+
 const CARD_WIDTH = 230;
 const CARD_HEIGHT = 256;
 const CARD_MARGIN = 20;
 
-export default class PlayerCardsView {
+export default class PlayerCardsView extends View {
     constructor(game, playerGroup) {
-        this.game = game;
+        super(game);
         this.playerGroup = playerGroup;
         this.renderedPlayers = [];
     }
