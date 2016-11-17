@@ -2,30 +2,36 @@ import Player from './Player';
 
 export default class PlayerGroup {
     constructor() {
-        this.players = {};
+        this.players = [];
+    }
+
+    exists(id) {
+        return !!this.getById(id);
+    }
+
+    getById(id) {
+        return this.players.find(player => player.id === id);
+    }
+
+    getByIndex(index) {
+        return this.players[index];
     }
 
     addPlayer(id, name, instrument) {
-        if (this.players[id]) return;
-        this.players[id] = new Player(id, name, instrument);
+        if (this.exists(id)) return;
+        this.players.push(new Player(id, name, instrument));
     }
 
     removePlayer(id) {
-        if (!this.players[id]) return;
-        delete this.players[id];
-    }
-
-    getPlayer(id) {
-        return this.players[id];
+        if (!this.exists(id)) return;
+        this.players.splice(this.players.findIndex(player => player.id === id), 1);
     }
 
     forEach(callback) {
-        Object.keys(this.players).forEach((key) => {
-            callback(this.players[key]);
-        });
+        this.players.forEach(callback);
     }
 
     getNumPlayers() {
-        return Object.keys(this.players).length;
+        return this.players.length;
     }
 }

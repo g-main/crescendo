@@ -14,7 +14,7 @@ export default class PlayerPresenter {
     render() {
         // Remove rendered players that are no longer in the group
         this.renderedPlayers = this.renderedPlayers.filter(({ player, card }) => {
-            if (!this.playerGroup.getPlayer(player.id)) {
+            if (!this.playerGroup.getById(player.id)) {
                 card.destroy();
                 return false;
             }
