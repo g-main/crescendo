@@ -22,6 +22,12 @@ const GAME_STATES = {
     SUMMARY: 'Summary',
 };
 
+const GAME_DIFFICULTY = {
+    EASY: 'Easy',
+    MEDIUM: 'Medium',
+    HARD: 'Hard',
+};
+
 const TEXT_STYLES = {
     TITLE_FONT_STYLE: {
         font: '100px Lato',
@@ -51,6 +57,7 @@ export {
     SOCKET_EVENTS,
     INSTRUMENTS,
     GAME_STATES,
+    GAME_DIFFICULTY,
     TEXT_STYLES,
     TRACK_EXTENSION,
 };

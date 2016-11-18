@@ -12,15 +12,11 @@ export default {
             .filter(file => path.extname(file) === TRACK_EXTENSION)
             .forEach(file => {
                 const trackPath = path.resolve(tracksPath, file);
-                trackList.push({
-                    file,
-                    name: JSON.parse(fs.readFileSync(trackPath, 'utf8')).name,
-                });
+                const { name, difficulty } = JSON.parse(fs.readFileSync(trackPath, 'utf8'));
+                trackList.push({ file, name, difficulty });
             });
 
-        res.json({
-            tracks: trackList,
-        });
+        res.json({ tracks: trackList });
     },
 
     getTrack(req, res) {

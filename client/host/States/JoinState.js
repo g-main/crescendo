@@ -13,14 +13,7 @@ export default class JoinState extends GameState {
 
         fetch('/api/v0/tracks', { method: 'GET' })
             .then(request => request.json())
-            .then(response => {
-                this.songList = response.tracks;
-                this.songText = this.game.add.text(
-                    this.game.camera.width / 2, 120,
-                    this.songList[this.songIndex].name,
-                    TEXT_STYLES.CALL_TO_ACTION_FONT_STYLE,
-                ).anchor.setTo(0.5, 0.5);
-            });
+            .then(response => { this.songList = response.tracks; });
 
         this.playerGroup = playerGroup;
     }
@@ -67,6 +60,13 @@ export default class JoinState extends GameState {
             TEXT_STYLES.CALL_TO_ACTION_FONT_STYLE,
         );
         this.songText.anchor.setTo(0.5, 0.5);
+
+        this.songDifficulty = this.game.add.text(
+            this.game.camera.width / 2, 160,
+            this.songList[this.songIndex].difficulty,
+            TEXT_STYLES.SMALL_TEXT_FONT_STYLE,
+        );
+        this.songDifficulty.anchor.setTo(0.5, 0.5);
 
         // Arrow keys to navigate (change song)
         this.game.add.text(
@@ -126,6 +126,7 @@ export default class JoinState extends GameState {
     nextSong() {
         this.songIndex = (this.songIndex + 1) % this.songList.length;
         this.songText.setText(this.songList[this.songIndex].name);
+        this.songDifficulty.setText(this.songList[this.songIndex].difficulty);
     }
 
     prevSong() {
@@ -133,6 +134,7 @@ export default class JoinState extends GameState {
             this.songIndex = this.songList.length - 1;
         }
         this.songText.setText(this.songList[this.songIndex].name);
+        this.songDifficulty.setText(this.songList[this.songIndex].difficulty);
     }
 
     update() {

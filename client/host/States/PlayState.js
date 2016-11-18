@@ -8,10 +8,6 @@ import Score from '../Models/Score';
 
 const TRACK_KEY = 'track';
 
-// The amount of time (in note travel distance) after which the
-// last note moves offscreen before we move to the next state
-// const END_GAME_OFFSET = 240;
-
 export default class PlayState extends GameState {
     constructor(game, socket, playerGroup) {
         super(game);
@@ -23,21 +19,11 @@ export default class PlayState extends GameState {
         this.bottomBar = null;
         this.gameTrack = null;
         this.musicReady = false;
-        // this.playerCount = 0;
-        // this.initNotes();
 
         this.player = new Player('mah name');
         this.startTime = null;
         this.playerGroup = playerGroup;
     }
-
-    // initNotes() {
-    //     this.notes = [];
-    //     for (let u = 0; u < this.playerCount; u++) {
-    //         this.notes.push([]);
-    //     }
-    //     this.lastNoteInSong = null;
-    // }
 
     initializeSocket() {
         this.socket.on(SOCKET_EVENTS.HANDLE_NOTE, this.handleNotePlayed.bind(this));
@@ -45,10 +31,7 @@ export default class PlayState extends GameState {
 
     init(gameInfo) {
         const { track } = gameInfo;
-
         this.song = new Song(track);
-        // this.playerCount = playerGroup.getNumPlayers();
-        // this.initNotes();
     }
 
     handleNotePlayed({ id, color, timestamp }) {
@@ -70,7 +53,7 @@ export default class PlayState extends GameState {
             return true;
         });
         if (missedEveryNote) {
-            this.socket.emit(SOCKET_EVENTS.MISSED_NOTE, { id, color })
+            this.socket.emit(SOCKET_EVENTS.MISSED_NOTE, { id, color });
         }
     }
 
@@ -111,7 +94,8 @@ export default class PlayState extends GameState {
         });
         this.playView.noteViews = this.noteViews;
 
-        this.game.input.keyboard.addKey(Phaser.Keyboard.L).onDown.add(this.transitionToSummary, this);
+        this.game.input.keyboard.addKey(Phaser.Keyboard.L)
+            .onDown.add(this.transitionToSummary, this);
 
         this.gameTrack = this.game.add.audio(TRACK_KEY);
         this.game.sound.setDecodedCallback(
@@ -134,44 +118,21 @@ export default class PlayState extends GameState {
         }
 
         const relativeTime = Date.now() - this.startTime;
-        // for (let u = 0; u < this.playerCount ; u++) {
-        //     for (let i = 0; i < this.notes[u].length; i++) {
-        //         const note = this.notes[u][i];
-        //         note.recalculatePosition(relativeTime);
-        //     }
-        // }
         this.playView.update(relativeTime);
 
-        if (this.gameTrack.totalDuration * 1000 - this.gameTrack.currentTime <= 0) {
+        if ((this.gameTrack.totalDuration * 1000) - this.gameTrack.currentTime <= 0) {
             this.transitionToSummary();
         }
-
-        // Check for last note having moved off screen ( plus an offset )
-        // if (this.lastNoteInSong.y > this.game.camera.y +
-        //         this.game.camera.height + END_GAME_OFFSET) {
-        //     this.transitionToSummary();
-        // }
     }
 
     render() {
-        // Debug / text
-        // TODO: Turn this into an actual rectangle (using graphics)
         this.playView.debug();
-        // this.game.debug.geom(this.bottomBar, '#ffffff');
-        // this.game.debug.text(this.player.score, 40, 160);
-
-        // this.game.debug.text(`FPS: ${this.game.time.fps}`, 40, 30);
     }
 
     shutdown() {
         this.gameTrack.stop();
         this.gameTrack.destroy();
         this.gameTrack = null;
-        // this.bottomBar = null;
-        // this.notes.forEach(noteArray => { noteArray.forEach( note => { note.graphics.destroy(); }); });
-        // this.notes = null;
-        // this.lastNoteInSong = null;
-        // this.playerCount = 0;
     }
 
     transitionToSummary() {
