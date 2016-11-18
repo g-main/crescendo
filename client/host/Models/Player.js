@@ -1,9 +1,11 @@
+import Score from './Score';
+
 export default class Player {
     constructor(id, name, instrument) {
         this._id = id;
         this._name = name;
         this._instrument = instrument;
-        this._score = 0;
+        this._score = new Score();
     }
 
     get id() {
@@ -18,8 +20,9 @@ export default class Player {
         return this._name;
     }
 
+    /* Returns a numeric value */
     get score() {
-        return this._score;
+        return this._score.score;
     }
 
     set instrument(i) {
@@ -30,7 +33,7 @@ export default class Player {
         this._name = n;
     }
 
-    set score(s) {
-        this._score = s;
+    set score(score) {
+        this._score.increment(score);
     }
 }
