@@ -42,6 +42,10 @@ export default class JoinState extends GameState {
                 resTimestamp: Date.now()
             });
         });
+
+        socket.on(SOCKET_EVENTS.PLAYER_READY, () => {
+            this.broadcastSong();
+        });
     }
 
     create() {
@@ -150,14 +154,18 @@ export default class JoinState extends GameState {
         }
     }
 
-    handleSongChange() {
-        this.songText.setText(this.songList[this.songIndex].name);
-        this.songDifficulty.setText(this.songList[this.songIndex].difficulty);
-        this.songArtist.setText(this.songList[this.songIndex].artist);
+    broadcastSong() {
         this.socket.emit(SOCKET_EVENTS.CHANGE_TRACK, {
             name: this.songList[this.songIndex].name,
             artist: this.songList[this.songIndex].artist,
         });
+    }
+
+    changeSong() {
+        this.songText.setText(this.songList[this.songIndex].name);
+        this.songDifficulty.setText(this.songList[this.songIndex].difficulty);
+        this.songArtist.setText(this.songList[this.songIndex].artist);
+        this.broadcastSong();
     }
 
     nextSong() {
