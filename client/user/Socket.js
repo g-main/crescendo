@@ -39,4 +39,8 @@ export default class Socket {
     playNote(data) {
         this._socket.emit(SOCKET_EVENTS.PLAY_NOTE, data);
     }
+
+    playerReady(data) {
+        this._socket.emit(SOCKET_EVENTS.PLAYER_READY, data);
+    }
 }

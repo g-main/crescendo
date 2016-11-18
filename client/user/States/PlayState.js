@@ -17,10 +17,17 @@ export default class PlayState extends AbstractState {
         const controllerButtons = document.querySelectorAll('.button');
 
         controllerButtons.forEach((button) => {
-            button.addEventListener('touchend', this.onNotePlayed.bind(this));
+            if ('ontouchstart' in document.documentElement) {
+                button.addEventListener('touchend', this.onNotePlayed.bind(this));
+            } else {
+                button.addEventListener('click', this.onNotePlayed.bind(this));
+            }
         });
 
         this._socket.addListener(SOCKET_EVENTS.MISSED_NOTE, this.onMissedNote.bind(this));
+        this._socket.addListener(SOCKET_EVENTS.CHANGE_TRACK, this.onTrackChange.bind(this));
+
+        this._socket.playerReady({ id: this._player.id });
 
         this.show();
     }
@@ -55,6 +62,7 @@ export default class PlayState extends AbstractState {
     }
 
     onTrackChange(track) {
-        // TODO: implement once server sends event.
+        this._dom.trackArtist.innerHTML = track.artist;
+        this._dom.trackName.innerHTML = track.name;
     }
 }

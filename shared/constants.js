@@ -8,7 +8,8 @@ const SOCKET_EVENTS = {
     CONNECTED: 'Connected', // Server -> Controller
     MISSED_NOTE: 'MissedNote', // Host -> Server -> Controller
     CALIBRATION_REQUEST: 'CalibrationRequest', // Controller -> Server -> Host
-    CALIBRATION_RESPONSE: 'CalibrationResponse', // Host -> Server -> Controller
+    CALIBRATION_RESPONSE: 'CalibrationResponse', // Host -> Server -> Controller,
+    PLAYER_READY: 'PlayerReady', // Controller -> Host -> Server 
 };
 
 const INSTRUMENTS = {

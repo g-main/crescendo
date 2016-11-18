@@ -49,6 +49,14 @@ export default {
                 allocatedIds[id].emit(SOCKET_EVENTS.CALIBRATION_RESPONSE, { id, reqTimestamp, resTimestamp });
             });
 
+            socket.on(SOCKET_EVENTS.CHANGE_TRACK, (data) => {
+                room.emit(SOCKET_EVENTS.CHANGE_TRACK, data);
+            });
+
+            socket.on(SOCKET_EVENTS.PLAYER_READY, (data) => {
+                room.emit(SOCKET_EVENTS.PLAYER_READY, data);
+            });
+
             socket.on('disconnect', () => {
                 delete allocatedIds[id];
                 room.emit(SOCKET_EVENTS.LEFT_GAME, { id });
