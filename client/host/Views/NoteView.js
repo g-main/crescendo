@@ -1,5 +1,6 @@
 import View from './View';
 import Score from '../Models/Score';
+import { TRACK_LINE_DEPTH } from './PlayView';
 
 const NOTE_DELTA_Y = 4;
 const NOTE_SIZE = {
@@ -7,7 +8,7 @@ const NOTE_SIZE = {
     y: 20,
 };
 const CREATE_AFTER = -100;
-const HIDE_AFTER = 50;
+const HIDE_AFTER = TRACK_LINE_DEPTH;
 const DELETE_AFTER = 500;
 
 const EXCELLENT_DELTA = 100;
@@ -28,6 +29,7 @@ export default class NoteView extends View {
         this.globalNoteTrackPositiveOffset = globalNoteTrackPositiveOffset;
 
         this.graphics = null;
+        this.fadeAnim = null;
 
         this.initialY = (this.game.world.height - this.bottomBarOffset) -
             ((60 * NOTE_DELTA_Y * this.playAt) / 1000);
@@ -84,6 +86,8 @@ export default class NoteView extends View {
             9, /* roundness */
         );
         this.graphics.endFill();
+        this.fadeAnim = this.game.add.tween(this.graphics)
+                                        .to({ alpha: 0 }, 300, Phaser.Easing.Linear.None, false);
     }
 
     update(timeElapsed) {
@@ -96,6 +100,14 @@ export default class NoteView extends View {
 
         if (this.isVisible && this.graphics) {
             this.graphics.y = this.y;
+
+            // Start the fade animation once it crosses the bottom bar
+            if (this.fadeAnim && !this.fadeAnim.isRunning &&
+                    this.graphics.y >= this.game.world.height - this.bottomBarOffset) {
+
+                this.fadeAnim.start();
+            }
+
             if (this.y > (this.game.world.height - this.bottomBarOffset) + HIDE_AFTER) {
                 this.graphics.destroy();
                 this.isVisible = false;
@@ -108,6 +120,10 @@ export default class NoteView extends View {
     }
 
     hide() {
+        if (this.fadeAnim && this.fadeAnim.isRunning) {
+            this.fadeAnim.stop();
+            this.fadeAnim = null;
+        }
         this.isVisible = false;
         this.graphics.destroy();
     }

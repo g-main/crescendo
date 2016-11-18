@@ -11,6 +11,8 @@ const BOTTOM_BAR_THICKNESS = 2; // pixels
 
 const GROUP_INFO_INNER_PADDING = 10; // pixels
 
+export const TRACK_LINE_DEPTH = 100; // pixels
+
 const addText =
     (game, width, height, text, style = TEXT_STYLES.SMALL_TEXT_FONT_STYLE, xAnchor = 0) => {
         const textView = game.add.text(width, height, text, style);
@@ -83,7 +85,7 @@ export default class PlayView extends View {
                     0, /* y */
                 );
                 trackGraphic.beginFill(0xffffff, 0.6);
-                trackGraphic.drawRect(0, 0, TRACK_LINE_WIDTH, this.bottomBar.y + 70);
+                trackGraphic.drawRect(0, 0, TRACK_LINE_WIDTH, this.bottomBar.y + TRACK_LINE_DEPTH);
                 trackGraphic.endFill();
                 trackGraphicsArr.push(trackGraphic);
             });
@@ -127,8 +129,8 @@ export default class PlayView extends View {
                 this._noteViews[playerId][lineIndex] = line.filter((noteView) => {
                     noteView.update(timeElapsed);
 
+                    // Register a MISS if an unplayed note has "gone off screen"
                     if (!noteView.isPlayable && !noteView.playerAlreadyPlayed) {
-                        // Register a MISS if the note has "gone off screen" and was not played by the player
                         this.playerGroup.getById(playerId).addScore(Score.MISS);
                     }
 
@@ -141,7 +143,6 @@ export default class PlayView extends View {
     notify(subject) {
         if (subject instanceof Player) {
             this.scoreViews[subject.id].setText(subject.score);
-            // TODO: Animate the view based on updated score!
         }
     }
 }
