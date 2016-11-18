@@ -1,4 +1,5 @@
 const MISS_SCORE = -5;
+const BAD_SCORE = -5;
 const GOOD_SCORE = 10;
 const EXCELLENT_SCORE = 20;
 
@@ -15,6 +16,7 @@ export default class Score {
 
     reset() {
         this.numMiss = 0;
+        this.numBad = 0;
         this.numGood = 0;
         this.numExcellent = 0;
         this.currentScore = 0;
@@ -28,6 +30,9 @@ export default class Score {
         if (score === Score.MISS) {
             this.numMiss++;
             this.currentScore = Math.max(this.currentScore + MISS_SCORE, 0);
+        } else if (score === Score.BAD) {
+            this.numBad++;
+            this.currentScore = Math.max(this.currentScore + BAD_SCORE, 0)
         } else if (score === Score.GOOD) {
             this.numGood++;
             this.currentScore += GOOD_SCORE;
@@ -51,6 +56,7 @@ class ScoreEnum {
 }
 
 Score.MISS = new ScoreEnum('MISS');
+Score.BAD = new ScoreEnum('BAD');
 Score.GOOD = new ScoreEnum('GOOD');
 Score.EXCELLENT = new ScoreEnum('EXCELLENT');
 

@@ -11,8 +11,9 @@ const CREATE_AFTER = -100;
 const HIDE_AFTER = TRACK_LINE_DEPTH;
 const DELETE_AFTER = 500;
 
-const EXCELLENT_DELTA = 100;
-const GOOD_DELTA = 200;
+const EXCELLENT_DELTA = 50;
+const GOOD_DELTA = 150;
+const BAD_DELTA = 250;
 
 export default class NoteView extends View {
     constructor(game,
@@ -141,6 +142,9 @@ export default class NoteView extends View {
         } else if (delta <= GOOD_DELTA) {
             this.playerAlreadyPlayed = true;
             return Score.GOOD;
+        } else if (delta <= BAD_DELTA) {
+            this.playerAlreadyPlayed = true;
+            return Score.BAD;
         }
         return Score.MISS;
     }
