@@ -1,6 +1,5 @@
 import { GAME_STATES, SOCKET_EVENTS } from 'constants';
 import GameState from './GameState';
-import Player from '../Models/Player';
 import Song from '../Models/Song';
 import PlayView from '../Views/PlayView';
 import NoteView from '../Views/NoteView';
@@ -11,27 +10,21 @@ const TRACK_KEY = 'track';
 export default class PlayState extends GameState {
     constructor(game, socket, playerGroup) {
         super(game);
+
         this.socket = socket;
-        this.initializeSocket();
-
-        // Declare class members here
-        this.playing = false;
-        this.bottomBar = null;
-        this.gameTrack = null;
-        this.musicReady = false;
-
-        this.player = new Player('mah name');
-        this.startTime = null;
-        this.playerGroup = playerGroup;
-    }
-
-    initializeSocket() {
         this.socket.on(SOCKET_EVENTS.HANDLE_NOTE, this.handleNotePlayed.bind(this));
+        this.playerGroup = playerGroup;
     }
 
     init(gameInfo) {
         const { track } = gameInfo;
         this.song = new Song(track);
+
+        this.playing = false;
+        this.bottomBar = null;
+        this.gameTrack = null;
+        this.musicReady = false;
+        this.startTime = null;
     }
 
     handleNotePlayed({ id, color, timestamp }) {
@@ -121,6 +114,7 @@ export default class PlayState extends GameState {
         this.playView.update(relativeTime);
 
         if ((this.gameTrack.totalDuration * 1000) - this.gameTrack.currentTime <= 0) {
+            this.gameTrack.restart();
             this.transitionToSummary();
         }
     }
