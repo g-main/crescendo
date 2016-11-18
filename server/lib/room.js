@@ -1,4 +1,4 @@
-import { generateId } from './idmanager';
+import generateId from '../utils/generateId';
 
 const hosts = {};
 const rooms = {};

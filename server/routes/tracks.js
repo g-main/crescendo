@@ -1,26 +1,11 @@
-import fs from 'fs';
-import path from 'path';
-import { TRACK_EXTENSION } from '../../shared/constants.js';
-
-const tracksPath = path.resolve(__dirname, '..', '..', 'shared', 'tracks');
+import track from '../lib/tracks';
 
 export default {
     getTracks(req, res) {
-        const trackList = [];
-
-        fs.readdirSync(tracksPath)
-            .filter(file => path.extname(file) === TRACK_EXTENSION)
-            .forEach(file => {
-                const trackPath = path.resolve(tracksPath, file);
-                const { name, difficulty } = JSON.parse(fs.readFileSync(trackPath, 'utf8'));
-                trackList.push({ file, name, difficulty });
-            });
-
-        res.json({ tracks: trackList });
+        res.json({ tracks: track.getTracks() });
     },
 
     getTrack(req, res) {
-        const trackPath = path.resolve(tracksPath, req.params.trackFile);
-        res.json(JSON.parse(fs.readFileSync(trackPath, 'utf8')));
+        res.json(track.getTrack(req.params.trackFile));
     },
 };

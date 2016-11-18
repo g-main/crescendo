@@ -1,6 +1,6 @@
 import debugModule from 'debug';
 import socketio from 'socket.io';
-import { generateId } from './idmanager';
+import generateId from '../utils/generateId';
 
 import { SOCKET_EVENTS } from '../../shared/constants';
 
@@ -27,7 +27,7 @@ export default {
 
             debug(`connected to ${roomId} as ${id}`);
 
-            socket.emit(SOCKET_EVENTS.CONNECTED, { id: id });
+            socket.emit(SOCKET_EVENTS.CONNECTED, { id });
 
             socket.on(SOCKET_EVENTS.PLAY_NOTE, (note) => {
                 room.emit(SOCKET_EVENTS.HANDLE_NOTE, note);
