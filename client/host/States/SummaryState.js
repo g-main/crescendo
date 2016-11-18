@@ -14,6 +14,7 @@ export default class SummaryState extends GameState {
             'Press R to start a new game or Q to exit', TEXT_STYLES.CALL_TO_ACTION_FONT_STYLE);
 
         this.game.input.keyboard.addKey(Phaser.Keyboard.R).onDown.addOnce(() => {
+            this.playerGroup.resetScores();
             this.game.state.start(GAME_STATES.JOIN);
         }, this);
 
