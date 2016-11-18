@@ -93,13 +93,17 @@ export default class NoteView extends View {
 
         if (this.graphics) {
             this.graphics.y = this.y;
-            if (this.y > this.game.world.height - this.bottomBarOffset + REMOVE_AFTER) {
+            if (this.y > (this.game.world.height - this.bottomBarOffset) + REMOVE_AFTER) {
                 this.graphics.destroy();
                 // Return false to have PlayView delete this object
                 return false;
             }
         }
         return true;
+    }
+
+    hide() {
+        this.graphics.destroy();
     }
 
     isHit(playerPlayedAt) {

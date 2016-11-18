@@ -29,6 +29,7 @@ export default class PlayState extends GameState {
         const missedEveryNote = this.noteViews[id][lineIndex].every((noteView) => {
             const score = noteView.isHit(relativeTime);
             if (score !== Score.MISS) {
+                noteView.hide();
                 this.playerGroup.getById(id).addScore(score);
                 return false;
             }
