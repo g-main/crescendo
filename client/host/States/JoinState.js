@@ -103,6 +103,14 @@ export default class JoinState extends GameState {
 
         this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR)
                 .onDown.add(this.handleStart, this);
+
+        this.game.input.keyboard.addKey(Phaser.Keyboard.J)
+                .onDown.add(this.handleOverwriteStart, this);
+    }
+
+    handleOverwriteStart() {
+        this.playerGroup.addPlayer('000', 'Test Name', 'guitar');
+        this.handleStart();
     }
 
     handleStart() {

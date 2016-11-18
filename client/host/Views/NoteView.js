@@ -40,7 +40,7 @@ export default class NoteView extends View {
             (((this.lineIndex * trackWidth) +
                 ((trackWidth - NOTE_SIZE.x) / 2)) / this.playerCount) - noteNegativeOffset;
 
-        const x = globalNotePositiveOffset + globalNoteLocation + localNoteOffset
+        const x = globalNotePositiveOffset + globalNoteLocation + localNoteOffset;
 
         this.graphics = this.game.add.graphics(x, this.y);
 
