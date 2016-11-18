@@ -5,6 +5,8 @@ const NOTE_SIZE = {
     x: 100,
     y: 20,
 };
+const CREATE_AFTER = -100;
+const REMOVE_AFTER = 100;
 
 export default class NoteView extends View {
     constructor(game, { playAt, lineIndex, lineCount, playerIndex, playerCount, bottomBarOffset, globalNoteTrackPositiveOffset }) {
@@ -18,7 +20,10 @@ export default class NoteView extends View {
         this.globalNoteTrackPositiveOffset = globalNoteTrackPositiveOffset;
 
         this.graphics = null;
-        this.create(); // TODO: will be removed
+
+        this.initialY = (this.game.world.height - this.bottomBarOffset) -
+            ((60 * NOTE_DELTA_Y * this.playAt) / 1000);
+        this.y = this.initialY;
     }
 
     create() {
@@ -31,10 +36,8 @@ export default class NoteView extends View {
                 ((trackWidth - NOTE_SIZE.x) / 2)) / this.playerCount) - noteNegativeOffset;
 
         const x = globalNotePositiveOffset + globalNoteLocation + localNoteOffset
-        const y = (this.game.world.height - this.bottomBarOffset) -
-            ((60 * NOTE_DELTA_Y * this.playAt) / 1000);
-        this.graphics = this.game.add.graphics(x, y);
-        this.initialPosition = y; // TODO: will be removed
+
+        this.graphics = this.game.add.graphics(x, this.y);
 
         this.graphics.beginFill(0xffffff, 1);
         this.graphics.drawRoundedRect(
@@ -76,6 +79,21 @@ export default class NoteView extends View {
     }
 
     update(timeElapsed) {
-        this.graphics.y = this.initialPosition + (((NOTE_DELTA_Y * 60) / 1000) * timeElapsed);
+        this.y = this.initialY + (((NOTE_DELTA_Y * 60) / 1000) * timeElapsed);
+
+        // Lazily create the note graphic
+        if (!this.graphics && (this.y > CREATE_AFTER)) {
+            this.create();
+        }
+
+        if (this.graphics) {
+            this.graphics.y = this.y;
+            if (this.y > this.game.world.height - this.bottomBarOffset + REMOVE_AFTER) {
+                this.graphics.destroy();
+                // Return false to have PlayView delete this object
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -68,9 +68,9 @@ export default class PlayView extends View {
 
     update(timeElapsed) {
         Object.keys(this._noteViews).forEach((playerId) => {
-            this._noteViews[playerId].forEach((line) => {
-                line.forEach((noteView) => {
-                    noteView.update(timeElapsed);
+            this._noteViews[playerId].forEach((line, lineIndex) => {
+                this._noteViews[playerId][lineIndex] = line.filter((noteView) => {
+                    return noteView.update(timeElapsed);
                 });
             });
         });
