@@ -36,7 +36,7 @@ export default class PlayerGroup {
     }
 
     resetScores() {
-        this.players.forEach(player => player.resetScore());
+        this.forEach(player => { player.resetScore(); });
     }
 
     clear() {
