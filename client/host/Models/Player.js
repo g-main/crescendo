@@ -38,7 +38,6 @@ export default class Player extends Observable {
     }
 
     addScore(score) {
-        console.log("incrementing score", score.toString());
         this._score.increment(score);
         this.update();
     }
