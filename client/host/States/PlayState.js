@@ -135,6 +135,6 @@ export default class PlayState extends GameState {
     }
 
     transitionToSummary() {
-        this.game.state.start(GAME_STATES.SUMMARY, true, false, this.playerGroup);
+        this.game.state.start(GAME_STATES.SUMMARY, true, false, this.song);
     }
 }

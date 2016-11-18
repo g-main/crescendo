@@ -1,22 +1,13 @@
-import { TEXT_STYLES } from 'constants';
-
 import Player from '../Models/Player';
 import View from './View';
 import Score from '../Models/Score';
-
-const TRACK_LINE_WIDTH = 10; // pixels
 
 const BOTTOM_BAR_PERCENTAGE = 7 / 10; // percentage of screen at which bar should be at
 const BOTTOM_BAR_THICKNESS = 2; // pixels
 
 const GROUP_INFO_INNER_PADDING = 10; // pixels
 
-const addText =
-    (game, width, height, text, style = TEXT_STYLES.SMALL_TEXT_FONT_STYLE, xAnchor = 0) => {
-        const textView = game.add.text(width, height, text, style);
-        textView.anchor.setTo(xAnchor, 0.5);
-        return textView;
-    };
+export const TRACK_LINE_DEPTH = 100; // pixels
 
 const capitalize = word => word.charAt(0).toUpperCase().concat(word.slice(1));
 
@@ -71,20 +62,17 @@ export default class PlayView extends View {
             // Draw player information
             const globalGraphicLocation = (playerIndex * this.game.camera.width) / playerCount;
             const localGraphicOffset = this.game.camera.width / (playerCount * 2);
-            addText(
-                this.game,
+            this.addText(
                 globalGraphicLocation + localGraphicOffset + GROUP_INFO_INNER_PADDING,
                 this.game.camera.height - 80,
                 player.name,
             );
-            addText(
-                this.game,
+            this.addText(
                 globalGraphicLocation + localGraphicOffset + GROUP_INFO_INNER_PADDING,
                 this.game.camera.height - 57,
                 capitalize(player.instrument),
             );
-            const scoreView = addText(
-                this.game,
+            const scoreView = this.addText(
                 globalGraphicLocation + localGraphicOffset + GROUP_INFO_INNER_PADDING,
                 this.game.camera.height - 35,
                 '0',

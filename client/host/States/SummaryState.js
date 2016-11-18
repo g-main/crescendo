@@ -1,5 +1,6 @@
-import { GAME_STATES, TEXT_STYLES } from 'constants';
+import { GAME_STATES } from 'constants';
 import GameState from './GameState';
+import SummaryView from '../Views/SummaryView';
 
 export default class SummaryState extends GameState {
     constructor(game, playerGroup) {
@@ -7,11 +8,13 @@ export default class SummaryState extends GameState {
         this.playerGroup = playerGroup;
     }
 
+    init(song) {
+        this.song = song;
+    }
+
     create() {
-        this.game.add.text(this.centerX(365), 50,
-            'Game Summary', TEXT_STYLES.TITLE_FONT_STYLE);
-        this.game.add.text(this.centerX(450), this.game.camera.height - 100,
-            'Press R to start a new game or Q to exit', TEXT_STYLES.CALL_TO_ACTION_FONT_STYLE);
+        const summaryView = new SummaryView(this.game, this.playerGroup, this.song);
+        summaryView.initialize();
 
         this.game.input.keyboard.addKey(Phaser.Keyboard.R).onDown.addOnce(() => {
             this.playerGroup.resetScores();
@@ -22,9 +25,5 @@ export default class SummaryState extends GameState {
             this.playerGroup.clear();
             this.game.state.start(GAME_STATES.MENU);
         }, this);
-    }
-
-    centerX(offset) {
-        return (this.game.camera.width / 2) - offset;
     }
 }

@@ -34,6 +34,10 @@ export default class Player extends Observable {
         return this._score.score;
     }
 
+    get rawScore() {
+        return this._score;
+    }
+
     set calibration(c) {
         this._calibration = c;
     }
