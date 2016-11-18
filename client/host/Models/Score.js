@@ -17,21 +17,23 @@ export default class Score {
         this.numMiss = 0;
         this.numGood = 0;
         this.numExcellent = 0;
+        this.currentScore = 0;
     }
 
     get score() {
-        return (MISS_SCORE * this.numMiss) +
-                (GOOD_SCORE * this.numGood) +
-                (EXCELLENT_SCORE * this.numExcellent);
+        return this.currentScore;
     }
 
     increment(score) {
         if (score === Score.MISS) {
             this.numMiss++;
+            this.currentScore = Math.max(this.currentScore + MISS_SCORE, 0);
         } else if (score === Score.GOOD) {
             this.numGood++;
+            this.currentScore += GOOD_SCORE;
         } else if (score === Score.EXCELLENT) {
             this.numExcellent++;
+            this.currentScore += EXCELLENT_SCORE;
         } else {
             throw new ScoreException();
         }
