@@ -170,14 +170,14 @@ export default class JoinState extends GameState {
 
     nextSong() {
         this.songIndex = (this.songIndex + 1) % this.songList.length;
-        this.handleSongChange();
+        this.changeSong();
     }
 
     prevSong() {
         if ((--this.songIndex) < 0) {
             this.songIndex = this.songList.length - 1;
         }
-        this.handleSongChange();
+        this.changeSong();
     }
 
     update() {
