@@ -12,8 +12,8 @@ export default {
             .filter(file => path.extname(file) === TRACK_EXTENSION)
             .forEach(file => {
                 const trackPath = path.resolve(tracksPath, file);
-                const { name, difficulty } = JSON.parse(fs.readFileSync(trackPath, 'utf8'));
-                trackList.push({ file, name, difficulty });
+                const { name, difficulty, artist } = JSON.parse(fs.readFileSync(trackPath, 'utf8'));
+                trackList.push({ file, name, difficulty, artist });
             });
 
         return trackList;

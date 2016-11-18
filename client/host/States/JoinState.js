@@ -7,6 +7,7 @@ const CORNER_PADDING = 10;
 export default class JoinState extends GameState {
     constructor(game, roomId, socket, playerGroup) {
         super(game);
+        this.socket = socket;
         this.initializeSocket(socket);
         this.songIndex = 0;
         this.roomId = roomId;
@@ -72,8 +73,15 @@ export default class JoinState extends GameState {
         );
         this.songText.anchor.setTo(0.5, 0.5);
 
-        this.songDifficulty = this.game.add.text(
+        this.songArtist = this.game.add.text(
             this.game.camera.width / 2, 160,
+            this.songList[this.songIndex].artist,
+            TEXT_STYLES.SMALL_TEXT_FONT_STYLE,
+        );
+        this.songArtist.anchor.setTo(0.5, 0.5);
+
+        this.songDifficulty = this.game.add.text(
+            this.game.camera.width / 2, 200,
             this.songList[this.songIndex].difficulty,
             TEXT_STYLES.SMALL_TEXT_FONT_STYLE,
         );
@@ -142,18 +150,26 @@ export default class JoinState extends GameState {
         }
     }
 
-    nextSong() {
-        this.songIndex = (this.songIndex + 1) % this.songList.length;
+    handleSongChange() {
         this.songText.setText(this.songList[this.songIndex].name);
         this.songDifficulty.setText(this.songList[this.songIndex].difficulty);
+        this.songArtist.setText(this.songList[this.songIndex].artist);
+        this.socket.emit(SOCKET_EVENTS.CHANGE_TRACK, {
+            name: this.songList[this.songIndex].name,
+            artist: this.songList[this.songIndex].artist,
+        });
+    }
+
+    nextSong() {
+        this.songIndex = (this.songIndex + 1) % this.songList.length;
+        this.handleSongChange();
     }
 
     prevSong() {
         if ((--this.songIndex) < 0) {
             this.songIndex = this.songList.length - 1;
         }
-        this.songText.setText(this.songList[this.songIndex].name);
-        this.songDifficulty.setText(this.songList[this.songIndex].difficulty);
+        this.handleSongChange();
     }
 
     update() {
