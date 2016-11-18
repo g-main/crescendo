@@ -7,16 +7,35 @@ const NOTE_SIZE = {
 };
 
 export default class NoteView extends View {
-    constructor(game, x, y, lineIndex, playerCount) {
+    constructor(game, { playAt, lineIndex, lineCount, playerIndex, playerCount, bottomBarOffset, globalNoteTrackPositiveOffset }) {
         super(game);
-        this.initialPosition = y;
-        this.graphics = this.game.add.graphics(x, y);
+        this.playAt = playAt;
         this.lineIndex = lineIndex;
+        this.playerIndex = playerIndex;
         this.playerCount = playerCount;
-        this.initialize();
+        this.bottomBarOffset = bottomBarOffset;
+        this.lineCount = lineCount;
+        this.globalNoteTrackPositiveOffset = globalNoteTrackPositiveOffset;
+
+        this.graphics = null;
+        this.create(); // TODO: will be removed
     }
 
-    initialize() {
+    create() {
+        const trackWidth = this.game.camera.width / this.lineCount;
+        const globalNotePositiveOffset = this.globalNoteTrackPositiveOffset / this.lineCount;
+        const noteNegativeOffset = this.lineIndex * globalNotePositiveOffset;
+        const globalNoteLocation = (this.playerIndex * this.game.camera.width) / this.playerCount;
+        const localNoteOffset =
+            (((this.lineIndex * trackWidth) +
+                ((trackWidth - NOTE_SIZE.x) / 2)) / this.playerCount) - noteNegativeOffset;
+
+        const x = globalNotePositiveOffset + globalNoteLocation + localNoteOffset
+        const y = (this.game.world.height - this.bottomBarOffset) -
+            ((60 * NOTE_DELTA_Y * this.playAt) / 1000);
+        this.graphics = this.game.add.graphics(x, y);
+        this.initialPosition = y; // TODO: will be removed
+
         this.graphics.beginFill(0xffffff, 1);
         this.graphics.drawRoundedRect(
             0, /* topLeftX */

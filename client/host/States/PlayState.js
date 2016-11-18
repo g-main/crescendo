@@ -2,7 +2,8 @@ import { GAME_STATES, SOCKET_EVENTS } from 'constants';
 import GameState from './GameState';
 import Player from '../Models/Player';
 import Song from '../Models/Song';
-import PlayerView from '../Views/PlayView';
+import PlayView from '../Views/PlayView';
+import NoteView from '../Views/NoteView';
 
 const TRACK_KEY = 'track';
 
@@ -80,7 +81,31 @@ export default class PlayState extends GameState {
     }
 
     create() {
-        this.playerView = new PlayerView(this.game, this.playerGroup, this.song);
+        this.playView = new PlayView(this.game, this.playerGroup, this.song);
+        this.noteViews = {};
+        this.playerGroup.forEach((player, playerIndex) => {
+            const track = this.song.getTrack(player.instrument);
+            const playerNotesByLine = [];
+
+            track.forEach((line, lineIndex) => {
+                const notesInLine = [];
+
+                line.forEach((note) => {
+                    notesInLine.push(new NoteView(this.game, {
+                        playAt: note,
+                        lineIndex,
+                        lineCount: track.length,
+                        playerIndex,
+                        playerCount: this.playerGroup.getNumPlayers(),
+                        bottomBarOffset: this.playView.bottomBarOffset,
+                        globalNoteTrackPositiveOffset: this.playView.globalNoteTrackPositiveOffset,
+                    }));
+                });
+                playerNotesByLine.push(notesInLine);
+            });
+            this.noteViews[player.id] = playerNotesByLine;
+        });
+        this.playView.noteViews = this.noteViews;
 
         this.game.input.keyboard.addKey(Phaser.Keyboard.L).onDown.add(this.transitionToSummary, this);
 
@@ -111,7 +136,7 @@ export default class PlayState extends GameState {
         //         note.recalculatePosition(relativeTime);
         //     }
         // }
-        this.playerView.update(relativeTime);
+        this.playView.update(relativeTime);
 
         if (this.gameTrack.totalDuration * 1000 - this.gameTrack.currentTime <= 0) {
             this.transitionToSummary();
@@ -127,7 +152,7 @@ export default class PlayState extends GameState {
     render() {
         // Debug / text
         // TODO: Turn this into an actual rectangle (using graphics)
-        this.playerView.debug();
+        this.playView.debug();
         // this.game.debug.geom(this.bottomBar, '#ffffff');
         // this.game.debug.text(this.player.score, 40, 160);
 

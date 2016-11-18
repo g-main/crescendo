@@ -1,11 +1,5 @@
 import View from './View';
-import NoteView from './NoteView';
 
-const NOTE_DELTA_Y = 4;
-const NOTE_SIZE = {
-    x: 100,
-    y: 20,
-};
 const TRACK_LINE_WIDTH = 10; // pixels
 
 const BOTTOM_BAR_PERCENTAGE = 7 / 10; // percentage of screen at which bar should be at
@@ -25,6 +19,10 @@ export default class PlayView extends View {
         this.game.debug.text(`FPS: ${this.game.time.fps}`, 40, 30);
     }
 
+    set noteViews(v) {
+        this._noteViews = v;
+    }
+
     initialize() {
         this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
 
@@ -42,14 +40,14 @@ export default class PlayView extends View {
         );
 
         const playerCount = this.playerGroup.getNumPlayers();
+        this.globalNoteTrackPositiveOffset = this.game.camera.width / (playerCount * 4);
 
         this.playerGroup.forEach((player, playerIndex) => {
             const track = this.song.getTrack(player.instrument);
             const trackWidth = this.game.camera.width / track.length;
 
             track.forEach((line, lineIndex) => {
-                const globalNotePositiveOffset =
-                    this.game.camera.width / (track.length * playerCount * 4);
+                const globalNotePositiveOffset = this.globalNoteTrackPositiveOffset / track.length;
                 const noteNegativeOffset = lineIndex * globalNotePositiveOffset;
 
                 const globalTrackLocation = (playerIndex * this.game.camera.width) / playerCount;
@@ -64,35 +62,17 @@ export default class PlayView extends View {
                 trackGraphic.beginFill(0xffffff, 1);
                 trackGraphic.drawRect(0, 0, TRACK_LINE_WIDTH, this.game.world.height);
                 trackGraphic.endFill();
-
-                line.forEach((note, noteIndex) => {
-                    const globalNoteLocation = (playerIndex * this.game.camera.width) / playerCount;
-                    const localNoteOffset =
-                        (((lineIndex * trackWidth) +
-                            ((trackWidth - NOTE_SIZE.x) / 2)) / playerCount) - noteNegativeOffset;
-                    const y = (this.game.world.height - this.bottomBarOffset) -
-                        ((60 * NOTE_DELTA_Y * line[noteIndex]) / 1000);
-
-                    const noteView = new NoteView(
-                        this.game,
-                        globalNotePositiveOffset + globalNoteLocation + localNoteOffset, /* x */
-                        (this.game.world.height - this.bottomBarOffset) -
-                            ((60 * NOTE_DELTA_Y * line[noteIndex]) / 1000), /* y */
-                        lineIndex,
-                        playerCount,
-                    );
-
-                    this.notes.push(noteView);
-
-                    if (this.lastNoteInSong == null || this.lastNoteInSong.initialPosition > y) {
-                        this.lastNoteInSong = noteView;
-                    }
-                });
             });
         });
     }
 
     update(timeElapsed) {
-        this.notes.forEach(note => note.update(timeElapsed));
+        Object.keys(this._noteViews).forEach((playerId) => {
+            this._noteViews[playerId].forEach((line) => {
+                line.forEach((noteView) => {
+                    noteView.update(timeElapsed);
+                });
+            });
+        });
     }
 }
