@@ -27,11 +27,13 @@ export default class JoinState extends GameState {
 
     initializeSocket(socket) {
         socket.on(SOCKET_EVENTS.JOIN_GAME, ({ id, name, instrument }) => {
+            if (this.state.current !== GAME_STATES.JOIN) return;
             this.playerGroup.addPlayer(id, name, instrument);
             this.playerCardsView.onModelChange();
         });
 
         socket.on(SOCKET_EVENTS.LEFT_GAME, ({ id }) => {
+            if (this.state.current !== GAME_STATES.JOIN) return;
             this.playerGroup.removePlayer(id);
             this.playerCardsView.onModelChange();
         });
