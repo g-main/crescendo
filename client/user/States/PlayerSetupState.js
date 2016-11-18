@@ -1,5 +1,5 @@
-import AbstractState from './AbstractState';
 import { INSTRUMENTS } from 'constants';
+import AbstractState from './AbstractState';
 
 export default class PlayerSetupState extends AbstractState {
     constructor(player, socket, nextState) {
@@ -11,7 +11,7 @@ export default class PlayerSetupState extends AbstractState {
             name: document.getElementById('player-name'),
             playerMetadata: document.getElementById('metadata-player'),
             playerName: document.getElementById('metadata-player-name'),
-            instrumentMetadata: document.getElementById('metadata-instrument')
+            instrumentMetadata: document.getElementById('metadata-instrument'),
         };
     }
 
@@ -52,7 +52,7 @@ export default class PlayerSetupState extends AbstractState {
             id: this._player.id,
             name: this._player.name,
             instrument: this._player.instrument,
-            calibration: this._player.calibration
+            calibration: this._player.calibration,
         });
 
         setTimeout(this.next.bind(this), 1000);

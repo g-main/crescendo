@@ -11,7 +11,7 @@ export default class CalibrationState extends AbstractState {
         this._dom = {
             page: document.getElementById('page-wrapper'),
             wrapper: document.getElementById('calibration-wrapper'),
-            progress: document.getElementById('calibration-progress')
+            progress: document.getElementById('calibration-progress'),
         };
     }
 
@@ -43,7 +43,7 @@ export default class CalibrationState extends AbstractState {
     sendCalibrationRequest() {
         this._socket.calibrationRequest({
             id: this._player.id,
-            reqTimestamp: Date.now()
+            reqTimestamp: Date.now(),
         });
     }
 
@@ -53,7 +53,7 @@ export default class CalibrationState extends AbstractState {
         if (this._trips.length < NUM_TRIPS) { // More trips?
             // Update progress view with %.
             const percent = (this._trips.length / NUM_TRIPS) * 100;
-            this._dom.progress.innerHTML = percent.toFixed(2) + '%';
+            this._dom.progress.innerHTML = `${percent.toFixed(2)}%`;
 
             this.sendCalibrationRequest();
         } else { // Last trip?
@@ -68,7 +68,7 @@ export default class CalibrationState extends AbstractState {
         this._player.calibration = Math.floor(average);
 
         // Update progress view with average ms.
-        this._dom.progress.innerHTML = average.toFixed(2) + ' ms';
+        this._dom.progress.innerHTML = `${average.toFixed(2)} ms`;
 
         // Go to next state.
         setTimeout(this.next.bind(this), 1000);
