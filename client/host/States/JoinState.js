@@ -128,11 +128,12 @@ export default class JoinState extends GameState {
                 .onDown.add(this.handleStart, this);
 
         this.game.input.keyboard.addKey(Phaser.Keyboard.J)
-                .onDown.add(this.handleOverwriteStart, this);
+                .onDown.add(this.forceStart, this);
     }
 
-    handleOverwriteStart() {
+    forceStart() {
         this.playerGroup.addPlayer('000', 'Test Name', 'guitar');
+        this.playerGroup.addPlayer('001', 'Test Name 2', 'drums');
         this.handleStart();
     }
 
