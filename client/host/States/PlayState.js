@@ -13,6 +13,9 @@ const colorMap = {
     red: 3,
 };
 
+const PULSE_UP = 10;
+const PULSE_DOWN = 150;
+
 export default class PlayState extends GameState {
     constructor(game, socket, playerGroup) {
         super(game);
@@ -25,6 +28,12 @@ export default class PlayState extends GameState {
     handleNotePlayed({ id, color, timestamp }) {
         const lineIndex = colorMap[color];
         const relativeTime = timestamp - this.startTime;
+
+        const lineGraphics = this.playView.playerLines[id][lineIndex];
+        this.game.add.tween(lineGraphics).to({ alpha: 1.6 }, PULSE_UP, Phaser.Easing.None, true);
+        setTimeout(() => {
+            this.game.add.tween(lineGraphics).to({ alpha: 1 }, PULSE_DOWN, Phaser.Easing.None, true);
+        }, PULSE_UP);
 
         const missedEveryNote = this.noteViews[id][lineIndex].every((noteView) => {
             const score = noteView.isHit(relativeTime);

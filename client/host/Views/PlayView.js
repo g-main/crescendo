@@ -57,6 +57,7 @@ export default class PlayView extends View {
 
         const playerCount = this.playerGroup.getNumPlayers();
         this.globalNoteTrackPositiveOffset = this.game.camera.width / (playerCount * 4);
+        this.playerLines = {};
 
         this.playerGroup.forEach((player, playerIndex) => {
             // Subscribe each player to this view.
@@ -66,6 +67,7 @@ export default class PlayView extends View {
 
             const track = this.song.getTrack(player.instrument);
             const trackWidth = this.game.camera.width / track.length;
+            const trackGraphicsArr = [];
 
             track.forEach((line, lineIndex) => {
                 const globalNotePositiveOffset = this.globalNoteTrackPositiveOffset / track.length;
@@ -80,10 +82,12 @@ export default class PlayView extends View {
                     globalNotePositiveOffset + globalTrackLocation + localTrackOffset, /* x */
                     0, /* y */
                 );
-                trackGraphic.beginFill(0xffffff, 0.7);
+                trackGraphic.beginFill(0xffffff, 0.6);
                 trackGraphic.drawRect(0, 0, TRACK_LINE_WIDTH, this.bottomBar.y + 70);
                 trackGraphic.endFill();
+                trackGraphicsArr.push(trackGraphic);
             });
+            this.playerLines[player.id] = trackGraphicsArr;
 
             // Draw player information
             const globalGraphicLocation = (playerIndex * this.game.camera.width) / playerCount;
