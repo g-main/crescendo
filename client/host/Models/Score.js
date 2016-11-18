@@ -9,8 +9,11 @@ class ScoreException {
 }
 
 export default class Score {
-
     constructor() {
+        this.reset();
+    }
+
+    reset() {
         this.numMiss = 0;
         this.numGood = 0;
         this.numExcellent = 0;
@@ -33,7 +36,6 @@ export default class Score {
             throw new ScoreException();
         }
     }
-
 }
 
 class ScoreEnum {

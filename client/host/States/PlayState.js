@@ -6,6 +6,12 @@ import NoteView from '../Views/NoteView';
 import Score from '../Models/Score';
 
 const TRACK_KEY = 'track';
+const colorMap = {
+    blue: 0,
+    green: 1,
+    yellow: 2,
+    red: 3,
+};
 
 export default class PlayState extends GameState {
     constructor(game, socket, playerGroup) {
@@ -16,24 +22,7 @@ export default class PlayState extends GameState {
         this.playerGroup = playerGroup;
     }
 
-    init(gameInfo) {
-        const { track } = gameInfo;
-        this.song = new Song(track);
-
-        this.playing = false;
-        this.bottomBar = null;
-        this.gameTrack = null;
-        this.musicReady = false;
-        this.startTime = null;
-    }
-
     handleNotePlayed({ id, color, timestamp }) {
-        const colorMap = {
-            blue: 0,
-            green: 1,
-            yellow: 2,
-            red: 3,
-        };
         const lineIndex = colorMap[color];
         const relativeTime = timestamp - this.startTime;
 
@@ -50,17 +39,23 @@ export default class PlayState extends GameState {
         }
     }
 
+    init(gameInfo) {
+        const { track } = gameInfo;
+        this.song = new Song(track);
+
+        this.bottomBar = null;
+        this.gameTrack = null;
+        this.startTime = null;
+    }
+
     preload() {
         this.game.load.audio('track', `tracks/${this.song.file}`);
-
-        // Load assets
         this.game.stage.disableVisibilityChange = true;
-
-        // Enable FPS
         this.game.time.advancedTiming = true;
     }
 
     create() {
+        // Create views
         this.playView = new PlayView(this.game, this.playerGroup, this.song);
         this.noteViews = {};
         this.playerGroup.forEach((player, playerIndex) => {
@@ -87,26 +82,22 @@ export default class PlayState extends GameState {
         });
         this.playView.noteViews = this.noteViews;
 
+        // Initialize input listeners
         this.game.input.keyboard.addKey(Phaser.Keyboard.L)
             .onDown.add(this.transitionToSummary, this);
 
+        // Initialize audio
         this.gameTrack = this.game.add.audio(TRACK_KEY);
         this.game.sound.setDecodedCallback(
             [this.gameTrack],
-            () => { this.musicReady = true; },
-            this,
-        );
+            () => {
+                this.gameTrack.play();
+                this.startTime = Date.now();
+            }, this);
     }
 
     update() {
-        if (this.musicReady) {
-            this.gameTrack.play();
-            this.playing = true;
-            this.musicReady = false;
-            this.startTime = Date.now();
-        }
-
-        if (!this.playing) {
+        if (!this.startTime) {
             return;
         }
 
