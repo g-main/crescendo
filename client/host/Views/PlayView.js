@@ -80,8 +80,8 @@ export default class PlayView extends View {
                     globalNotePositiveOffset + globalTrackLocation + localTrackOffset, /* x */
                     0, /* y */
                 );
-                trackGraphic.beginFill(0xffffff, 1);
-                trackGraphic.drawRect(0, 0, TRACK_LINE_WIDTH, this.bottomBar.y + 100);
+                trackGraphic.beginFill(0xffffff, 0.7);
+                trackGraphic.drawRect(0, 0, TRACK_LINE_WIDTH, this.bottomBar.y + 70);
                 trackGraphic.endFill();
             });
 

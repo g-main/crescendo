@@ -7,7 +7,7 @@ const NOTE_SIZE = {
     y: 20,
 };
 const CREATE_AFTER = -100;
-const REMOVE_AFTER = 100;
+const REMOVE_AFTER = 50;
 
 const EXCELLENT_DELTA = 100;
 const GOOD_DELTA = 200;
