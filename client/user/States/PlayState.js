@@ -17,7 +17,7 @@ export default class PlayState extends AbstractState {
         const controllerButtons = document.querySelectorAll('.button');
 
         controllerButtons.forEach((button) => {
-            button.addEventListener('click', this.onNotePlayed.bind(this));
+            button.addEventListener('touchend', this.onNotePlayed.bind(this));
         });
 
         this._socket.addListener(SOCKET_EVENTS.MISSED_NOTE, this.onMissedNote.bind(this));

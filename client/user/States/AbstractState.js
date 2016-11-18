@@ -17,7 +17,7 @@ export default class AbstractState {
 
     hide() {
         if (this._dom && this._dom.wrapper) {
-            this._dom.wrapper.classList.add('hidden');
+            this._dom.wrapper.parentNode.removeChild(this._dom.wrapper);
         }
     }
 
