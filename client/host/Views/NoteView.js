@@ -1,6 +1,6 @@
 import View from './View';
 import Score from '../Models/Score';
-import { TRACK_LINE_DEPTH } from './PlayView';
+import { TRACK_LINE_DEPTH } from './TrackView';
 
 const NOTE_DELTA_Y = 4;
 const NOTE_SIZE = {

@@ -11,8 +11,6 @@ const BOTTOM_BAR_THICKNESS = 2; // pixels
 
 const GROUP_INFO_INNER_PADDING = 10; // pixels
 
-export const TRACK_LINE_DEPTH = 100; // pixels
-
 const addText =
     (game, width, height, text, style = TEXT_STYLES.SMALL_TEXT_FONT_STYLE, xAnchor = 0) => {
         const textView = game.add.text(width, height, text, style);
@@ -59,37 +57,12 @@ export default class PlayView extends View {
 
         const playerCount = this.playerGroup.getNumPlayers();
         this.globalNoteTrackPositiveOffset = this.game.camera.width / (playerCount * 4);
-        this.playerLines = {};
 
         this.playerGroup.forEach((player, playerIndex) => {
             // Subscribe each player to this view.
             // Updates to the model will be reflected in `this` view.
             // THIS OBJECT MUST HAVE A `notify` METHOD IMPLEMENTED!
             player.subscribe(this);
-
-            const track = this.song.getTrack(player.instrument);
-            const trackWidth = this.game.camera.width / track.length;
-            const trackGraphicsArr = [];
-
-            track.forEach((line, lineIndex) => {
-                const globalNotePositiveOffset = this.globalNoteTrackPositiveOffset / track.length;
-                const noteNegativeOffset = lineIndex * globalNotePositiveOffset;
-
-                const globalTrackLocation = (playerIndex * this.game.camera.width) / playerCount;
-                const localTrackOffset =
-                    (((lineIndex * trackWidth) +
-                        ((trackWidth - TRACK_LINE_WIDTH) / 2)) / playerCount) - noteNegativeOffset;
-
-                const trackGraphic = this.game.add.graphics(
-                    globalNotePositiveOffset + globalTrackLocation + localTrackOffset, /* x */
-                    0, /* y */
-                );
-                trackGraphic.beginFill(0xffffff, 0.6);
-                trackGraphic.drawRect(0, 0, TRACK_LINE_WIDTH, this.bottomBar.y + TRACK_LINE_DEPTH);
-                trackGraphic.endFill();
-                trackGraphicsArr.push(trackGraphic);
-            });
-            this.playerLines[player.id] = trackGraphicsArr;
 
             // Draw player information
             const globalGraphicLocation = (playerIndex * this.game.camera.width) / playerCount;

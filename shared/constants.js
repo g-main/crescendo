@@ -52,6 +52,10 @@ const TEXT_STYLES = {
         font: '25px Lato',
         fill: '#000000',
     },
+    TEXT_FEEDBACK: {
+        font: '40px Lato',
+        fill: '#ffffff',
+    },
 };
 
 const TRACK_EXTENSION = '.trk';

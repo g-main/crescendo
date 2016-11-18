@@ -1,8 +1,9 @@
-import { GAME_STATES, SOCKET_EVENTS } from 'constants';
+import { GAME_STATES, SOCKET_EVENTS, TEXT_STYLES } from 'constants';
 import GameState from './GameState';
 import Song from '../Models/Song';
 import PlayView from '../Views/PlayView';
 import NoteView from '../Views/NoteView';
+import TrackView from '../Views/TrackView';
 import Score from '../Models/Score';
 
 const TRACK_KEY = 'track';
@@ -12,9 +13,6 @@ const colorMap = {
     yellow: 2,
     red: 3,
 };
-
-const PULSE_UP = 10;
-const PULSE_DOWN = 150;
 
 export default class PlayState extends GameState {
     constructor(game, socket, playerGroup) {
@@ -28,18 +26,14 @@ export default class PlayState extends GameState {
     handleNotePlayed({ id, color, timestamp }) {
         const lineIndex = colorMap[color];
         const relativeTime = Date.now() - this.startTime - this.playerGroup.getById(id).calibration;
-
-        const lineGraphics = this.playView.playerLines[id][lineIndex];
-        this.game.add.tween(lineGraphics).to({ alpha: 1.6 }, PULSE_UP, Phaser.Easing.None, true);
-        setTimeout(() => {
-            this.game.add.tween(lineGraphics).to({ alpha: 1 }, PULSE_DOWN, Phaser.Easing.None, true);
-        }, PULSE_UP);
+        this.trackViews[id].indicateLinePressed(lineIndex);
 
         const missedEveryNote = this.noteViews[id][lineIndex].every((noteView) => {
             const score = noteView.isHit(relativeTime);
             if (score !== Score.MISS) {
                 noteView.hide();
                 this.playerGroup.getById(id).addScore(score);
+                this.trackViews[id].displayScoreTextFeedback(score);
                 return false;
             }
             return true;
@@ -68,8 +62,17 @@ export default class PlayState extends GameState {
         // Create views
         this.playView = new PlayView(this.game, this.playerGroup, this.song);
         this.noteViews = {};
+        this.trackViews = {};
+
         this.playerGroup.forEach((player, playerIndex) => {
             const track = this.song.getTrack(player.instrument);
+            this.trackViews[player.id] = new TrackView(this.game, {
+                track,
+                globalNoteTrackPositiveOffset: this.playView.globalNoteTrackPositiveOffset,
+                bottomBarY: this.game.world.height - this.playView.bottomBarOffset,
+                playerIndex,
+                playerCount: this.playerGroup.getNumPlayers()
+            });
             const playerNotesByLine = [];
 
             track.forEach((line, lineIndex) => {
