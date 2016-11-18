@@ -71,7 +71,7 @@ export default class PlayState extends GameState {
                 globalNoteTrackPositiveOffset: this.playView.globalNoteTrackPositiveOffset,
                 bottomBarY: this.game.world.height - this.playView.bottomBarOffset,
                 playerIndex,
-                playerCount: this.playerGroup.getNumPlayers()
+                playerCount: this.playerGroup.getNumPlayers(),
             });
             const playerNotesByLine = [];
 

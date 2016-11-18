@@ -15,7 +15,9 @@ const EXCELLENT_DELTA = 100;
 const GOOD_DELTA = 200;
 
 export default class NoteView extends View {
-    constructor(game, { playAt, lineIndex, lineCount, playerIndex, playerCount, bottomBarOffset, globalNoteTrackPositiveOffset }) {
+    constructor(game,
+            { playAt, lineIndex, lineCount, playerIndex, playerCount,
+            bottomBarOffset, globalNoteTrackPositiveOffset }) {
         super(game);
         this.playAt = playAt;
         this.playerAlreadyPlayed = false;
@@ -104,7 +106,6 @@ export default class NoteView extends View {
             // Start the fade animation once it crosses the bottom bar
             if (this.fadeAnim && !this.fadeAnim.isRunning &&
                     this.graphics.y >= this.game.world.height - this.bottomBarOffset) {
-
                 this.fadeAnim.start();
             }
 
@@ -114,7 +115,8 @@ export default class NoteView extends View {
             }
         }
 
-        if (this.isPlayable && this.y > (this.game.world.height - this.bottomBarOffset) + DELETE_AFTER) {
+        if (this.isPlayable &&
+                this.y > (this.game.world.height - this.bottomBarOffset) + DELETE_AFTER) {
             this.isPlayable = false;
         }
     }
