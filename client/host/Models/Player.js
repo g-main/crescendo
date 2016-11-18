@@ -1,11 +1,15 @@
+import Observable from './Observable';
 import Score from './Score';
 
-export default class Player {
+export default class Player extends Observable {
+
     constructor(id, name, instrument) {
+        super();
         this._id = id;
         this._name = name;
         this._instrument = instrument;
         this._score = new Score();
+        this.observers = [];
     }
 
     get id() {
@@ -33,7 +37,13 @@ export default class Player {
         this._name = n;
     }
 
-    set score(score) {
+    addScore(score) {
+        console.log("incrementing score");
         this._score.increment(score);
+        this.update();
+    }
+
+    subscribe(observer) {
+        this.observers.push(observer);
     }
 }
