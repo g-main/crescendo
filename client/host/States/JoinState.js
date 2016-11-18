@@ -2,6 +2,8 @@ import { GAME_STATES, TEXT_STYLES, SOCKET_EVENTS } from 'constants';
 import GameState from './GameState';
 import PlayerCardsView from '../Views/PlayerCardsView';
 
+const CORNER_OFFSET = 10;
+
 export default class JoinState extends GameState {
     constructor(game, roomId, socket, playerGroup) {
         super(game);
@@ -51,7 +53,7 @@ export default class JoinState extends GameState {
 
         // Room ID
         this.game.add.text(
-            this.game.camera.width, 0,
+            this.game.camera.width - CORNER_OFFSET, CORNER_OFFSET,
             `Room ID: ${this.roomId}`,
             TEXT_STYLES.SMALL_TEXT_FONT_STYLE
         ).anchor.setTo(1, 0);
