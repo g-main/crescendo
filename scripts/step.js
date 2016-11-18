@@ -16,6 +16,7 @@ var stepFile = fs.readFileSync(process.argv[2], 'utf8').split('\n').map(function
 var position = 0;
 
 var title = advanceAndGetMetadataForKey('TITLE');
+var artist = advanceAndGetMetadataForKey('ARTIST');
 var bpm = +(advanceAndGetMetadataForKey('BPMS').split('=')[1]);
 var beatsPerMeasure = 4;
 var tracks = [[], [], [], []];
@@ -35,6 +36,7 @@ while (position < stepFile.length) {
 }
 
 console.log(JSON.stringify({
+    artist: artist,
     name: title,
     track: {
         guitar: tracks,
