@@ -33,12 +33,20 @@ export default {
                 room.emit(SOCKET_EVENTS.HANDLE_NOTE, note);
             });
 
-            socket.on(SOCKET_EVENTS.JOIN_GAME_REQUEST, ({ name, instrument }) => {
-                room.emit(SOCKET_EVENTS.JOIN_GAME, { id, name, instrument });
+            socket.on(SOCKET_EVENTS.JOIN_GAME_REQUEST, ({ name, instrument, calibration }) => {
+                room.emit(SOCKET_EVENTS.JOIN_GAME, { id, name, instrument, calibration });
             });
 
             socket.on(SOCKET_EVENTS.MISSED_NOTE, (data) => {
                 allocatedIds[data.id].emit(SOCKET_EVENTS.MISSED_NOTE, data);
+            });
+
+            socket.on(SOCKET_EVENTS.CALIBRATION_REQUEST, ({ id, reqTimestamp }) => {
+                room.emit(SOCKET_EVENTS.CALIBRATION_REQUEST, {id, reqTimestamp });
+            });
+
+            socket.on(SOCKET_EVENTS.CALIBRATION_RESPONSE, ({ id, reqTimestamp, resTimestamp }) => {
+                allocatedIds[id].emit(SOCKET_EVENTS.CALIBRATION_RESPONSE, { id, reqTimestamp, resTimestamp });
             });
 
             socket.on('disconnect', () => {

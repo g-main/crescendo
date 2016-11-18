@@ -17,9 +17,9 @@ export default class PlayerGroup {
         return this.players[index];
     }
 
-    addPlayer(id, name, instrument) {
+    addPlayer(id, name, instrument, calibration) {
         if (this.exists(id)) return;
-        this.players.push(new Player(id, name, instrument));
+        this.players.push(new Player(id, name, instrument, calibration));
     }
 
     removePlayer(id) {

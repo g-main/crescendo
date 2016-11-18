@@ -28,6 +28,10 @@ export default class Socket {
         }
     }
 
+    calibrationRequest(data) {
+        this._socket.emit(SOCKET_EVENTS.CALIBRATION_REQUEST, data);
+    }
+
     joinGame(data) {
         this._socket.emit(SOCKET_EVENTS.JOIN_GAME_REQUEST, data);
     }

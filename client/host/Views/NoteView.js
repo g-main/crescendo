@@ -7,7 +7,8 @@ const NOTE_SIZE = {
     y: 20,
 };
 const CREATE_AFTER = -100;
-const REMOVE_AFTER = 50;
+const HIDE_AFTER = 50;
+const DELETE_AFTER = 500;
 
 const EXCELLENT_DELTA = 100;
 const GOOD_DELTA = 200;
@@ -17,6 +18,8 @@ export default class NoteView extends View {
         super(game);
         this.playAt = playAt;
         this.playerAlreadyPlayed = false;
+        this.isVisible = true;
+        this.isPlayable = true;
         this.lineIndex = lineIndex;
         this.playerIndex = playerIndex;
         this.playerCount = playerCount;
@@ -91,18 +94,21 @@ export default class NoteView extends View {
             this.create();
         }
 
-        if (this.graphics) {
+        if (this.isVisible && this.graphics) {
             this.graphics.y = this.y;
-            if (this.y > (this.game.world.height - this.bottomBarOffset) + REMOVE_AFTER) {
+            if (this.y > (this.game.world.height - this.bottomBarOffset) + HIDE_AFTER) {
                 this.graphics.destroy();
-                // Return false to have PlayView delete this object
-                return false;
+                this.isVisible = false;
             }
         }
-        return true;
+
+        if (this.isPlayable && this.y > (this.game.world.height - this.bottomBarOffset) + DELETE_AFTER) {
+            this.isPlayable = false;
+        }
     }
 
     hide() {
+        this.isVisible = false;
         this.graphics.destroy();
     }
 
@@ -110,6 +116,7 @@ export default class NoteView extends View {
         if (this.playerAlreadyPlayed) return Score.MISS;
 
         const delta = Math.abs(playerPlayedAt - this.playAt);
+
         if (delta <= EXCELLENT_DELTA) {
             this.playerAlreadyPlayed = true;
             return Score.EXCELLENT;

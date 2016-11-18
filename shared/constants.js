@@ -7,6 +7,8 @@ const SOCKET_EVENTS = {
     CHANGE_TRACK: 'ChangeTrack',
     CONNECTED: 'Connected', // Server -> Controller
     MISSED_NOTE: 'MissedNote', // Host -> Server -> Controller
+    CALIBRATION_REQUEST: 'CalibrationRequest', // Controller -> Server -> Host
+    CALIBRATION_RESPONSE: 'CalibrationResponse', // Host -> Server -> Controller
 };
 
 const INSTRUMENTS = {

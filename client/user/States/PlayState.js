@@ -1,4 +1,5 @@
 import AbstractState from './AbstractState';
+import { SOCKET_EVENTS } from 'constants';
 
 export default class PlayState extends AbstractState {
     constructor(player, socket, nextState) {
@@ -18,6 +19,8 @@ export default class PlayState extends AbstractState {
         controllerButtons.forEach((button) => {
             button.addEventListener('click', this.onNotePlayed.bind(this));
         });
+
+        this._socket.addListener(SOCKET_EVENTS.MISSED_NOTE, this.onMissedNote.bind(this));
 
         this.show();
     }
@@ -41,9 +44,14 @@ export default class PlayState extends AbstractState {
         while (button.className !== 'button') button = button.parentNode;
         this._socket.playNote({
             id: this._player.id,
-            color: button.dataset.ring,
-            timestamp: Date.now()
+            color: button.dataset.ring
         });
+    }
+
+    onMissedNote(data) {
+        if (typeof navigator !== 'undefined' && navigator.vibrate) {
+            navigator.vibrate(200);
+        }
     }
 
     onTrackChange(track) {

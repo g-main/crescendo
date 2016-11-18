@@ -3,17 +3,22 @@ import Score from './Score';
 
 export default class Player extends Observable {
 
-    constructor(id, name, instrument) {
+    constructor(id, name, instrument, calibration) {
         super();
         this._id = id;
         this._name = name;
         this._instrument = instrument;
+        this._calibration = calibration;
         this._score = new Score();
         this.observers = [];
     }
 
     get id() {
         return this._id;
+    }
+
+    get calibration() {
+        return this._calibration;
     }
 
     get instrument() {
@@ -27,6 +32,10 @@ export default class Player extends Observable {
     /* Returns a numeric value */
     get score() {
         return this._score.score;
+    }
+
+    set calibration(c) {
+        this._calibration = c;
     }
 
     set instrument(i) {

@@ -38,6 +38,6 @@ export default class ConnectingState extends AbstractState {
         // since we need to get the playerId from the server.
         this._player.player = new Player(data.id, 'Werner', null);
 
-        setTimeout(this.next.bind(this), 3000);
+        setTimeout(this.next.bind(this), 1000);
     }
 }

@@ -10,10 +10,16 @@
   </head>
   <body>
       <div id="page-wrapper" class="player-setup">
-          <div id="connecting-wrapper">
+          <div id="connecting-wrapper" class="state-wrapper">
               <div>Loading...</div>
           </div>
-          <div id="player-setup-wrapper" class="hidden">
+
+          <div id="calibration-wrapper" class="state-wrapper hidden">
+              <div>Calibrating...</div>
+              <div id="calibration-progress"></div>
+          </div>
+
+          <div id="player-setup-wrapper" class="state-wrapper hidden">
               <div id="player-setup-header-wrapper">
                   <div id="player-setup-header">Welcome to Crescendo!</div>
                   <div class="horizontal-separator white"></div>
@@ -32,7 +38,7 @@
                   </div>
               </div>
           </div>
-          <div id="play-wrapper" class="hidden">
+          <div id="play-wrapper" class="state-wrapper hidden">
               <div id="button-wrapper">
                   <div class="button" data-ring="blue">
                       <div class="button-color-ring ring-blue"></div>

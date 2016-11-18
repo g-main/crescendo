@@ -27,7 +27,7 @@ export default class PlayState extends GameState {
 
     handleNotePlayed({ id, color, timestamp }) {
         const lineIndex = colorMap[color];
-        const relativeTime = timestamp - this.startTime;
+        const relativeTime = Date.now() - this.startTime - this.playerGroup.getById(id).calibration;
 
         const lineGraphics = this.playView.playerLines[id][lineIndex];
         this.game.add.tween(lineGraphics).to({ alpha: 1.6 }, PULSE_UP, Phaser.Easing.None, true);
