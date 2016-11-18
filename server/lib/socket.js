@@ -41,12 +41,12 @@ export default {
                 allocatedIds[data.id].emit(SOCKET_EVENTS.MISSED_NOTE, data);
             });
 
-            socket.on(SOCKET_EVENTS.CALIBRATION_REQUEST, ({ id, reqTimestamp }) => {
-                room.emit(SOCKET_EVENTS.CALIBRATION_REQUEST, {id, reqTimestamp });
+            socket.on(SOCKET_EVENTS.CALIBRATION_REQUEST, (data) => {
+                room.emit(SOCKET_EVENTS.CALIBRATION_REQUEST, data);
             });
 
-            socket.on(SOCKET_EVENTS.CALIBRATION_RESPONSE, ({ id, reqTimestamp, resTimestamp }) => {
-                allocatedIds[id].emit(SOCKET_EVENTS.CALIBRATION_RESPONSE, { id, reqTimestamp, resTimestamp });
+            socket.on(SOCKET_EVENTS.CALIBRATION_RESPONSE, (data) => {
+                allocatedIds[data.id].emit(SOCKET_EVENTS.CALIBRATION_RESPONSE, data);
             });
 
             socket.on(SOCKET_EVENTS.CHANGE_TRACK, (data) => {

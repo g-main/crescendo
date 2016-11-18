@@ -41,16 +41,15 @@ export default class CalibrationState extends AbstractState {
     }
 
     sendCalibrationRequest() {
-        const reqTimestamp = Date.now();
-
         this._socket.calibrationRequest({
             id: this._player.id,
-            reqTimestamp
+            reqTimestamp: Date.now()
         });
     }
 
-    onCalibrationResponse({ id, reqTimestamp, resTimestamp }) {
-        this._trips.push(resTimestamp - reqTimestamp);
+    onCalibrationResponse({ id, reqTimestamp }) {
+        this._trips.push(Date.now() - reqTimestamp);
+
         if (this._trips.length < NUM_TRIPS) { // More trips?
             // Update progress view with %.
             const percent = (this._trips.length / NUM_TRIPS) * 100;
@@ -63,7 +62,7 @@ export default class CalibrationState extends AbstractState {
     }
 
     onCalibrationFinished() {
-        const average = this._trips.reduce((a, b) => a + b, 0) / this._trips.length;
+        const average = this._trips.reduce((a, b) => a + b, 0) / (this._trips.length * 2);
 
         // Update player model with calibration.
         this._player.calibration = Math.floor(average);

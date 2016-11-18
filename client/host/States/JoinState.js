@@ -34,13 +34,9 @@ export default class JoinState extends GameState {
             this.playerCardsView.onModelChange();
         });
 
-        socket.on(SOCKET_EVENTS.CALIBRATION_REQUEST, ({ id, reqTimestamp }) => {
+        socket.on(SOCKET_EVENTS.CALIBRATION_REQUEST, (data) => {
             if (this.state.current !== GAME_STATES.JOIN) return;
-            socket.emit(SOCKET_EVENTS.CALIBRATION_RESPONSE, {
-                id,
-                reqTimestamp,
-                resTimestamp: Date.now()
-            });
+            socket.emit(SOCKET_EVENTS.CALIBRATION_RESPONSE, data);
         });
 
         socket.on(SOCKET_EVENTS.PLAYER_READY, () => {
