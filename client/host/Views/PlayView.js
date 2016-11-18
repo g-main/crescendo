@@ -121,7 +121,12 @@ export default class PlayView extends View {
         Object.keys(this._noteViews).forEach((playerId) => {
             this._noteViews[playerId].forEach((line, lineIndex) => {
                 this._noteViews[playerId][lineIndex] = line.filter((noteView) => {
-                    return noteView.update(timeElapsed);
+                    const shouldKeep = noteView.update(timeElapsed);
+                    if (!shouldKeep && !noteView.playerAlreadyPlayed) {
+                        // Register a MISS if the note has "gone off screen" and was not played by the player
+                        this.playerGroup.getById(playerId).addScore(Score.MISS);
+                    }
+                    return shouldKeep;
                 });
             });
         });
