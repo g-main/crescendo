@@ -23,7 +23,7 @@ export default {
         const room = io.of(`/${roomId}`);
         room.on('connection', (socket) => {
             const id = generateId(16, allocatedIds);
-            allocatedIds[id] = true;
+            allocatedIds[id] = socket;
 
             debug(`connected to ${roomId} as ${id}`);
 
@@ -35,6 +35,10 @@ export default {
 
             socket.on(SOCKET_EVENTS.JOIN_GAME_REQUEST, ({ name, instrument }) => {
                 room.emit(SOCKET_EVENTS.JOIN_GAME, { id, name, instrument });
+            });
+
+            socket.on(SOCKET_EVENTS.MISSED_NOTE, (data) => {
+                allocatedIds[data.id].emit(SOCKET_EVENTS.MISSED_NOTE, data);
             });
 
             socket.on('disconnect', () => {

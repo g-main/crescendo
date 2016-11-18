@@ -1,4 +1,5 @@
 import View from './View';
+import Score from '../Models/Score';
 
 const NOTE_DELTA_Y = 4;
 const NOTE_SIZE = {
@@ -8,10 +9,14 @@ const NOTE_SIZE = {
 const CREATE_AFTER = -100;
 const REMOVE_AFTER = 100;
 
+const EXCELLENT_DELTA = 100;
+const GOOD_DELTA = 200;
+
 export default class NoteView extends View {
     constructor(game, { playAt, lineIndex, lineCount, playerIndex, playerCount, bottomBarOffset, globalNoteTrackPositiveOffset }) {
         super(game);
         this.playAt = playAt;
+        this.playerAlreadyPlayed = false;
         this.lineIndex = lineIndex;
         this.playerIndex = playerIndex;
         this.playerCount = playerCount;
@@ -95,5 +100,19 @@ export default class NoteView extends View {
             }
         }
         return true;
+    }
+
+    isHit(playerPlayedAt) {
+        if (this.playerAlreadyPlayed) return Score.MISS;
+
+        const delta = Math.abs(playerPlayedAt - this.playAt);
+        if (delta <= EXCELLENT_DELTA) {
+            this.playerAlreadyPlayed = true;
+            return Score.EXCELLENT;
+        } else if (delta <= GOOD_DELTA) {
+            this.playerAlreadyPlayed = true;
+            return Score.GOOD;
+        }
+        return Score.MISS;
     }
 }

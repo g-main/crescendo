@@ -6,6 +6,7 @@ const SOCKET_EVENTS = {
     LEFT_GAME: 'LeftGame',
     CHANGE_TRACK: 'ChangeTrack',
     CONNECTED: 'Connected', // Server -> Controller
+    MISSED_NOTE: 'MissedNote', // Host -> Server -> Controller
 };
 
 const INSTRUMENTS = {

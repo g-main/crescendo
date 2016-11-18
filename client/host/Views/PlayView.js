@@ -1,4 +1,5 @@
 import View from './View';
+import Score from '../Models/Score';
 
 const TRACK_LINE_WIDTH = 10; // pixels
 

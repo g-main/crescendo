@@ -4,6 +4,7 @@ import Player from '../Models/Player';
 import Song from '../Models/Song';
 import PlayView from '../Views/PlayView';
 import NoteView from '../Views/NoteView';
+import Score from '../Models/Score';
 
 const TRACK_KEY = 'track';
 
@@ -14,7 +15,8 @@ const TRACK_KEY = 'track';
 export default class PlayState extends GameState {
     constructor(game, socket, playerGroup) {
         super(game);
-        this.initializeSocket(socket);
+        this.socket = socket;
+        this.initializeSocket();
 
         // Declare class members here
         this.playing = false;
@@ -37,8 +39,8 @@ export default class PlayState extends GameState {
     //     this.lastNoteInSong = null;
     // }
 
-    initializeSocket(socket) {
-        socket.on(SOCKET_EVENTS.HANDLE_NOTE, this.handleNotePlayed.bind(this));
+    initializeSocket() {
+        this.socket.on(SOCKET_EVENTS.HANDLE_NOTE, this.handleNotePlayed.bind(this));
     }
 
     init(gameInfo) {
@@ -49,25 +51,27 @@ export default class PlayState extends GameState {
         // this.initNotes();
     }
 
-    handleNotePlayed(data) {
-        // const color = {
-        //     blue: 0,
-        //     green: 1,
-        //     yellow: 2,
-        //     red: 3,
-        // };
+    handleNotePlayed({ id, color, timestamp }) {
+        const colorMap = {
+            blue: 0,
+            green: 1,
+            yellow: 2,
+            red: 3,
+        };
+        const lineIndex = colorMap[color];
+        const relativeTime = timestamp - this.startTime;
 
-        // const trackIndex = color[data.color];
-        // const relativeTime = data.timestamp - this.startTime;
-
-        // this.trackNotes[trackIndex].forEach(note => {
-        //     if (relativeTime > note - 250 && relativeTime <= note + 250) {
-        //         this.player.score += 10;
-        //     }
-        // });
-        // TODO: delete note on success (if implemented, need to keep last note)
-        // Suggsted: don't delete the note, there are only so many ever drawn on screen
-        // and not enough remain in memory for a leak (if properly destroyed)
+        const missedEveryNote = this.noteViews[id][lineIndex].every((noteView) => {
+            const score = noteView.isHit(relativeTime);
+            if (score !== Score.MISS) {
+                this.playerGroup.getById(id).addScore(score);
+                return false;
+            }
+            return true;
+        });
+        if (missedEveryNote) {
+            this.socket.emit(SOCKET_EVENTS.MISSED_NOTE, { id, color })
+        }
     }
 
     preload() {
