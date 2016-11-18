@@ -39,6 +39,10 @@ export default class PlayView extends View {
         this._noteViews = v;
     }
 
+    set trackViews(v) {
+        this._trackViews = v;
+    }
+
     initialize() {
         this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
 
@@ -105,6 +109,7 @@ export default class PlayView extends View {
                     // Register a MISS if an unplayed note has "gone off screen"
                     if (!noteView.isPlayable && !noteView.playerAlreadyPlayed) {
                         this.playerGroup.getById(playerId).addScore(Score.MISS);
+                        this._trackViews[playerId].displayScoreTextFeedback(Score.MISS);
                     }
 
                     return noteView.isPlayable;

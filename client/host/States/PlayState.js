@@ -94,6 +94,7 @@ export default class PlayState extends GameState {
             this.noteViews[player.id] = playerNotesByLine;
         });
         this.playView.noteViews = this.noteViews;
+        this.playView.trackViews = this.trackViews;
 
         // Initialize input listeners
         this.game.input.keyboard.addKey(Phaser.Keyboard.L)
