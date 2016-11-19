@@ -66,7 +66,7 @@ export default class TrackView extends View {
 
     displayScoreTextFeedback(score) {
         const text = this.game.add
-                        .text(this.middleOfTrack, 150, score.name, TEXT_STYLES.TEXT_FEEDBACK);
+                        .text(this.middleOfTrack, 150, score, TEXT_STYLES.TEXT_FEEDBACK);
         this.game.add.tween(text).to({ y: 120 }, TEXT_FEEDBACK, Phaser.Easing.None, true);
         text.anchor.x = 0.5;
         setTimeout(() => {

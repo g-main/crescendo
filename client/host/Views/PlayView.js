@@ -97,7 +97,6 @@ export default class PlayView extends View {
                     // Register a MISS if an unplayed note has "gone off screen"
                     if (!noteView.isPlayable && !noteView.playerAlreadyPlayed) {
                         this.playerGroup.getById(playerId).addScore('MISS');
-                        this._trackViews[playerId].displayScoreTextFeedback('MISS');
                     }
 
                     return noteView.isPlayable;
