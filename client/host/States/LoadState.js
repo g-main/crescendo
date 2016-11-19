@@ -5,8 +5,6 @@ import {
  } from 'constants';
 import GameState from './GameState';
 
-const TOTAL_NUM_FILES = 4;
-
 export default class LoadState extends GameState {
 
     constructor(game) {
@@ -38,7 +36,7 @@ export default class LoadState extends GameState {
         const loadingText = this.game.add.text(
             this.game.camera.width / 2,
             (this.game.camera.height / 2) + offset,
-            `Loading...`,
+            'Loading...',
             TEXT_STYLES.TEXT_FONT_STYLE,
         );
         loadingText.anchor.setTo(0.5, 0.5);
