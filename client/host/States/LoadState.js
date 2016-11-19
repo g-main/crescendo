@@ -7,12 +7,6 @@ import GameState from './GameState';
 
 export default class LoadState extends GameState {
 
-    constructor(game) {
-        super(game);
-        this.anims = [];
-        this.completedAnimations = 0;
-    }
-
     _start() {
         this.game.load.image(INSTRUMENTS.DRUMS, 'assets/img/drums.png');
         this.game.load.image(INSTRUMENTS.GUITAR, 'assets/img/guitar.png');
@@ -28,8 +22,7 @@ export default class LoadState extends GameState {
     }
 
     _create() {
-        const load = this.game.load;
-        load.onLoadComplete.add(this._loadComplete.bind(this), this);
+        this.game.load.onLoadComplete.add(this._loadComplete.bind(this), this);
 
         const { font } = TEXT_STYLES.TITLE_FONT_STYLE;
         const offset = parseInt(font.substr(0, font.indexOf('px')), 10);
