@@ -1,5 +1,4 @@
 import View from './View';
-import Score from '../Models/Score';
 import { TRACK_LINE_DEPTH } from './TrackView';
 
 const NOTE_DELTA_Y = 4;
@@ -132,20 +131,20 @@ export default class NoteView extends View {
     }
 
     isHit(playerPlayedAt) {
-        if (this.playerAlreadyPlayed) return Score.MISS;
+        if (this.playerAlreadyPlayed) return 'MISS';
 
         const delta = Math.abs(playerPlayedAt - this.playAt);
 
         if (delta <= EXCELLENT_DELTA) {
             this.playerAlreadyPlayed = true;
-            return Score.EXCELLENT;
+            return 'EXCELLENT';
         } else if (delta <= GOOD_DELTA) {
             this.playerAlreadyPlayed = true;
-            return Score.GOOD;
+            return 'GOOD';
         } else if (delta <= BAD_DELTA) {
             this.playerAlreadyPlayed = true;
-            return Score.BAD;
+            return 'BAD';
         }
-        return Score.MISS;
+        return 'MISS';
     }
 }

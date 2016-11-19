@@ -18,52 +18,30 @@ export default class SummaryView extends View {
             'Press R to start a new game or Q to exit', TEXT_STYLES.CALL_TO_ACTION_FONT_STYLE);
 
         this.playerGroup.forEach((player, playerIndex) => {
+            let stringValues = [
+                player.name,
+            ];
+
+            stringValues = stringValues.concat(Object.keys(player.rawScore.types)
+                .map(type => `${type} ${player.rawScore.scores[type]}`));
+
             // Draw player information
+            const textHeight = 40;
             const globalGraphicLocation = (playerIndex * this.game.camera.width) / playerCount;
             const localGraphicOffset = this.game.camera.width / (playerCount * 2);
+            const localGraphicInitialHeight = (this.game.camera.height / 2)
+                - ((textHeight / 2) * stringValues.length);
 
-            // The number 5 below represents the # of lines per person.
-            const localGraphicInitialHeight = (this.game.camera.height / 2) - (20 * 5);
 
-            this.addText(
-                globalGraphicLocation + localGraphicOffset,
-                localGraphicInitialHeight,
-                player.name,
-                TEXT_STYLES.SMALL_TEXT_FONT_STYLE,
-                0.5
-            );
-
-            this.addText(
-                globalGraphicLocation + localGraphicOffset,
-                localGraphicInitialHeight + 40,
-                `MISS ${player.rawScore.numMiss}`,
-                TEXT_STYLES.SMALL_TEXT_FONT_STYLE,
-                0.5
-            );
-
-            this.addText(
-                globalGraphicLocation + localGraphicOffset,
-                localGraphicInitialHeight + 80,
-                `GOOD ${player.rawScore.numGood}`,
-                TEXT_STYLES.SMALL_TEXT_FONT_STYLE,
-                0.5
-            );
-
-            this.addText(
-                globalGraphicLocation + localGraphicOffset,
-                localGraphicInitialHeight + 120,
-                `EXCELLENT ${player.rawScore.numExcellent}`,
-                TEXT_STYLES.SMALL_TEXT_FONT_STYLE,
-                0.5
-            );
-
-            this.addText(
-                globalGraphicLocation + localGraphicOffset,
-                localGraphicInitialHeight + 160,
-                `TOTAL ${player.score}`,
-                TEXT_STYLES.SMALL_TEXT_FONT_STYLE,
-                0.5
-            );
+            stringValues.forEach((str, index) => {
+                this.addText(
+                    globalGraphicLocation + localGraphicOffset,
+                    localGraphicInitialHeight + (textHeight * index),
+                    str,
+                    TEXT_STYLES.SMALL_TEXT_FONT_STYLE,
+                    0.5
+                );
+            });
         });
     }
 

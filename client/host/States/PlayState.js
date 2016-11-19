@@ -1,10 +1,9 @@
-import { GAME_STATES, SOCKET_EVENTS, TEXT_STYLES } from 'constants';
+import { GAME_STATES, SOCKET_EVENTS } from 'constants';
 import GameState from './GameState';
 import Song from '../Models/Song';
 import PlayView from '../Views/PlayView';
 import NoteView from '../Views/NoteView';
 import TrackView from '../Views/TrackView';
-import Score from '../Models/Score';
 
 const TRACK_KEY = 'track';
 const colorMap = {
@@ -23,14 +22,14 @@ export default class PlayState extends GameState {
         this.playerGroup = playerGroup;
     }
 
-    handleNotePlayed({ id, color, timestamp }) {
+    handleNotePlayed({ id, color }) {
         const lineIndex = colorMap[color];
         const relativeTime = Date.now() - this.startTime - this.playerGroup.getById(id).calibration;
         this.trackViews[id].indicateLinePressed(lineIndex);
 
         const missedEveryNote = this.noteViews[id][lineIndex].every((noteView) => {
             const score = noteView.isHit(relativeTime);
-            if (score !== Score.MISS) {
+            if (score !== 'MISS') {
                 noteView.hide();
                 this.playerGroup.getById(id).addScore(score);
                 this.trackViews[id].displayScoreTextFeedback(score);
