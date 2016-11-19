@@ -56,7 +56,7 @@ export default class PlayState extends AbstractState {
         });
     }
 
-    onMissedNote(data) {
+    onMissedNote() {
         if (typeof navigator !== 'undefined' && navigator.vibrate) {
             navigator.vibrate(200);
         }

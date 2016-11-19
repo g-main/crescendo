@@ -9,7 +9,7 @@ const SOCKET_EVENTS = {
     MISSED_NOTE: 'MissedNote', // Host -> Server -> Controller
     CALIBRATION_REQUEST: 'CalibrationRequest', // Controller -> Server -> Host
     CALIBRATION_RESPONSE: 'CalibrationResponse', // Host -> Server -> Controller,
-    PLAYER_READY: 'PlayerReady', // Controller -> Host -> Server 
+    PLAYER_READY: 'PlayerReady', // Controller -> Host -> Server
 };
 
 const INSTRUMENTS = {

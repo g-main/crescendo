@@ -1,6 +1,5 @@
 import Player from '../Models/Player';
 import View from './View';
-import Score from '../Models/Score';
 
 const BOTTOM_BAR_PERCENTAGE = 7 / 10; // percentage of screen at which bar should be at
 const BOTTOM_BAR_THICKNESS = 2; // pixels

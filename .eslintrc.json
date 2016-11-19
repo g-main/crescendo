@@ -15,6 +15,7 @@
     "window": false,
     "Phaser": false,
     "screen": false,
-    "document": false
+    "document": false,
+    "navigator": false
   }
 }

@@ -8,7 +8,8 @@
     "frontend": "$(npm bin)/webpack --progress --colors --config client/webpack.config.js --watch",
     "server": "DEBUG=crescendo:* $(npm bin)/nodemon --exec babel-node --use-strict index.js --watch index.js --watch server",
     "build": "$(npm bin)/webpack --progress --colors --config client/webpack.config.js",
-    "lint": "$(npm bin)/eslint"
+    "lint": "$(npm bin)/eslint",
+    "test": "npm run lint ."
   },
   "author": "",
   "license": "ISC",

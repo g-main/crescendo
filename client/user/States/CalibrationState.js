@@ -47,7 +47,7 @@ export default class CalibrationState extends AbstractState {
         });
     }
 
-    onCalibrationResponse({ id, reqTimestamp }) {
+    onCalibrationResponse({ reqTimestamp }) {
         this._trips.push(Date.now() - reqTimestamp);
 
         if (this._trips.length < NUM_TRIPS) { // More trips?
