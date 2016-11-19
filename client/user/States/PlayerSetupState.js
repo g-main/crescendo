@@ -73,14 +73,14 @@ export default class PlayerSetupState extends AbstractState {
         // Update "view".
         this._dom.instrumentMetadata.innerHTML = this._player.instrument;
         switch (instrument) {
-            case INSTRUMENTS.DRUMS:
-                this._dom.instrumentMetadata.classList.add('instrument-drums');
-                break;
-            case INSTRUMENTS.GUITAR:
-                this._dom.playerMetadata.classList.add('instrument-guitar');
-                break;
-            default:
-                break;
+        case INSTRUMENTS.DRUMS:
+            this._dom.instrumentMetadata.classList.add('instrument-drums');
+            break;
+        case INSTRUMENTS.GUITAR:
+            this._dom.playerMetadata.classList.add('instrument-guitar');
+            break;
+        default:
+            break;
         }
     }
 }

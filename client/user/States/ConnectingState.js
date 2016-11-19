@@ -1,6 +1,6 @@
+import { SOCKET_EVENTS } from 'constants';
 import AbstractState from './AbstractState';
 import Player from '../../host/Models/Player';
-import { SOCKET_EVENTS } from 'constants';
 
 export default class ConnectingState extends AbstractState {
     constructor(player, socket, nextState) {
@@ -8,7 +8,7 @@ export default class ConnectingState extends AbstractState {
 
         this._dom = {
             page: document.getElementById('page-wrapper'),
-            wrapper: document.getElementById('connecting-wrapper')
+            wrapper: document.getElementById('connecting-wrapper'),
         };
     }
 

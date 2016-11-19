@@ -1,5 +1,5 @@
-import AbstractState from './AbstractState';
 import { SOCKET_EVENTS } from 'constants';
+import AbstractState from './AbstractState';
 
 const NUM_TRIPS = 7;
 

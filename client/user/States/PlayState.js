@@ -1,5 +1,5 @@
-import AbstractState from './AbstractState';
 import { SOCKET_EVENTS } from 'constants';
+import AbstractState from './AbstractState';
 
 export default class PlayState extends AbstractState {
     constructor(player, socket, nextState) {
@@ -9,12 +9,12 @@ export default class PlayState extends AbstractState {
             page: document.getElementById('page-wrapper'),
             wrapper: document.getElementById('play-wrapper'),
             trackArtist: document.getElementById('metadata-track-artist'),
-            trackName: document.getElementById('metadata-track-title')
+            trackName: document.getElementById('metadata-track-title'),
         };
     }
 
     initialize() {
-        const controllerButtons = document.querySelectorAll('.button');
+        const controllerButtons = document.querySelectorAll('.button-target');
 
         controllerButtons.forEach((button) => {
             if ('ontouchstart' in document.documentElement) {
@@ -48,10 +48,11 @@ export default class PlayState extends AbstractState {
 
     onNotePlayed(ev) {
         let button = ev.target;
-        while (button.className !== 'button') button = button.parentNode;
+        while (button.className !== 'button-target') button = button.parentNode;
+
         this._socket.playNote({
             id: this._player.id,
-            color: button.dataset.ring
+            color: button.dataset.ring,
         });
     }
 
