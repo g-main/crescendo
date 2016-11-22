@@ -20,7 +20,7 @@ To play, hit the corresponding button on your instrument as the note on screen s
 This codebase uses `eslint` for linting. `npm run lint` points to the local `node_modules`' `eslint` binary for ease of use. Sample usage: `npm run lint index.js`, although integration with IDE/text editor is highly encouraged.
 
 ## Authors
-- Sameer Chitley
-- Geoffrey Yu
-- Hasya Shah
-- Jami Boy Mohammad
+- [Sameer Chitley](https://github.com/rageandqq)
+- [Geoffrey Yu](https://github.com/geoffxy)
+- [Hasya Shah](https://github.com/hasyashah)
+- [Jami Boy Mohammad](https://github.com/jamiboy16)
