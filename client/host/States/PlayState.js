@@ -32,7 +32,7 @@ export default class PlayState extends GameState {
             if (score !== 'MISS') {
                 noteView.hide();
                 this.playerGroup.getById(id).addScore(score);
-                this.trackViews[id].displayScoreTextFeedback(score);
+                this.trackViews[id].displayScoreTextFeedback(score, lineIndex);
                 return false;
             }
             return true;

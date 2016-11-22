@@ -26,7 +26,6 @@ export default class TrackView extends View {
     create() {
         const trackWidth = this.game.camera.width / this.track.length;
         const globalNotePositiveOffset = this.globalNoteTrackPositiveOffset / this.track.length;
-        this.middleOfTrack = 0;
 
         this.track.forEach((line, lineIndex) => {
             const noteNegativeOffset = lineIndex * globalNotePositiveOffset;
@@ -44,15 +43,7 @@ export default class TrackView extends View {
             trackGraphic.drawRect(0, 0, TRACK_LINE_WIDTH, this.bottomBarY + 70);
             trackGraphic.endFill();
             this.trackGraphics.push(trackGraphic);
-
-            const middleLineIndex = Math.floor((this.track.length - 1) / 2);
-            if (lineIndex === middleLineIndex || lineIndex === middleLineIndex + 1) {
-                this.middleOfTrack +=
-                    globalNotePositiveOffset + globalTrackLocation + localTrackOffset;
-            }
         });
-        this.middleOfTrack += TRACK_LINE_WIDTH;
-        this.middleOfTrack /= 2;
     }
 
     indicateLinePressed(lineIndex) {
@@ -64,9 +55,10 @@ export default class TrackView extends View {
         }, PULSE_UP);
     }
 
-    displayScoreTextFeedback(score) {
+    displayScoreTextFeedback(score, lineIndex) {
+        const xLocation = this.trackGraphics[lineIndex].x + (TRACK_LINE_WIDTH / 2);
         const text = this.game.add
-                        .text(this.middleOfTrack, 150, score, TEXT_STYLES.TEXT_FEEDBACK);
+                        .text(xLocation, 150, score, TEXT_STYLES.TEXT_FEEDBACK);
         this.game.add.tween(text).to({ y: 120 }, TEXT_FEEDBACK, Phaser.Easing.None, true);
         text.anchor.x = 0.5;
         setTimeout(() => {
