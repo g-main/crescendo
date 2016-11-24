@@ -23,7 +23,8 @@ export default class SummaryView extends View {
             ];
 
             stringValues = stringValues.concat(Object.keys(player.rawScore.types)
-                .map(type => `${type} ${player.rawScore.scores[type]}`));
+                .map(type => `${type}: ${player.rawScore.scores[type]}`));
+            stringValues.push(`TOTAL: ${player.score}`);
 
             // Draw player information
             const textHeight = 40;
