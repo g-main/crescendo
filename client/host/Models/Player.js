@@ -58,8 +58,4 @@ export default class Player extends Observable {
     resetScore() {
         this._score.reset();
     }
-
-    subscribe(observer) {
-        this.observers.push(observer);
-    }
 }
